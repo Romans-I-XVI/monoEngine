@@ -24,7 +24,9 @@ namespace monogame
 		}
 		protected override void Initialize ()
 		{
-			new Room_Main ();
+			//new Room_Main ();
+			//new Room_Play ();
+			//RoomManager.ChangeRoom ("Room_Main");
 			base.Initialize ();
 		}
 

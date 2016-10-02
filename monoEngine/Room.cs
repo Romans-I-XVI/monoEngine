@@ -8,14 +8,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace monogame
 {
-	abstract class Room : Entity
+	public abstract class Room
 	{
-		public Room ()
-		{
-			EntityManager.Clear ();
-			EntityManager.Add (this);
+	
+		public Room(){
+			RoomManager.Add(this);
 		}
 
+		public virtual void OnSwitchTo(){
+		}
+
+		public virtual void OnSwitchAway() {
+		}
 	}
 }
 

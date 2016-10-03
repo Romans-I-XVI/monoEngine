@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)InputHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Room.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoomManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rectangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

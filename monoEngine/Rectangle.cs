@@ -10,17 +10,21 @@ namespace monogame
 	public static class Rectangle
 	{
 		static bool isValid = false;
-		static Texture2D Texture;
+		static Texture2D RectangleTexture;
 
-		public static void Initialize(GraphicsDeviceManager graphics){
+		public static void Initialize(){
 			isValid = true;
-			Texture = new Texture2D (graphics.GraphicsDevice, 1, 1);
-			Texture.SetData (new Color[] { Color.White });
+			RectangleTexture = new Texture2D (GameRoot.graphicsDevice, 1, 1);
+			RectangleTexture.SetData (new Color[] { Color.White });
+		}
+
+		public static Texture2D GetTexture(){
+			return RectangleTexture;
 		}
 
 		public static void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, Color color, Vector2 origin = default(Vector2), float layerDepth = 0f){
 			if (isValid) {
-				spriteBatch.Draw (Texture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
+				spriteBatch.Draw (RectangleTexture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
 			}
 		}
 
@@ -29,7 +33,7 @@ namespace monogame
 				Vector2 position = new Vector2 (x, y);
 				Vector2 scale = new Vector2 (width, height);
 				Vector2 origin = new Vector2 (origin_x, origin_y);
-				spriteBatch.Draw (Texture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
+				spriteBatch.Draw (RectangleTexture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
 			}
 		}
 

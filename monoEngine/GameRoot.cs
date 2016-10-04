@@ -9,12 +9,13 @@ namespace monogame
 {
 	public class GameRoot : Game
 	{
-		public static GameRoot Instance { get; private set; }
-		public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
-		public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
+		static GraphicsDeviceManager graphics;
+		static SpriteBatch spriteBatch;
 
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+		public static GameRoot Instance { get; private set; }
+		public static Viewport Viewport { get { return GameRoot.graphicsDevice.Viewport; } }
+		public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
+		public static GraphicsDevice graphicsDevice { get { return graphics.GraphicsDevice; } }
 
 		public GameRoot ()
 		{
@@ -28,12 +29,12 @@ namespace monogame
 			new Room_Play ();
 			RoomManager.ChangeRoom ("Room_Main");
 			base.Initialize ();
+			Rectangle.Initialize ();
 		}
 
 		protected override void LoadContent ()
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
-			Rectangle.Initialize (graphics);
 		}
 		protected override void Update (GameTime gameTime)
 		{
@@ -48,10 +49,8 @@ namespace monogame
 		{
 			graphics.GraphicsDevice.Clear (Color.Black);
 
-			spriteBatch.Begin (); 
+			EntityManager.DrawToRenderTargets (spriteBatch);
 			EntityManager.Draw (spriteBatch);
-			base.Draw (gameTime);
-			spriteBatch.End ();       
 		}
 	}
 }

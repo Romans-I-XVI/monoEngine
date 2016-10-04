@@ -10,11 +10,16 @@ namespace monogame
 	abstract class Entity
 	{
 		protected Image Image;
+		public RenderTarget2D renderTarget = null;
 		public Vector2 Position = new Vector2();
 		public bool IsExpired = false;
 
 		public Entity(){
 			EntityManager.Add (this);
+		}
+
+		public void SetRenderCanvas (RenderCanvas renderCanvas){
+			this.renderTarget = renderCanvas.othersRenderTarget;
 		}
 
 		public virtual void Update (GameTime gameTime) {}

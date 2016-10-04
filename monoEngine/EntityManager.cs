@@ -12,6 +12,7 @@ namespace monogame
 	static class EntityManager
 	{
 		static List<Entity> Entities = new List<Entity>();
+		static List<RenderTarget2D> RenderTargets = new List<RenderTarget2D> ();
 
 		public static void Add(Entity entity){
 			Entities.Add (entity);
@@ -39,12 +40,33 @@ namespace monogame
 			Entities = Entities.Where(x => !x.IsExpired).ToList();
 		}
 
-		public static void Draw(SpriteBatch spriteBatch){
-			foreach (var entity in Entities) {
-				entity.DrawBegin (spriteBatch);
-				entity.Draw (spriteBatch);
-				entity.DrawEnd (spriteBatch);
+		public static void DrawToRenderTargets (SpriteBatch spriteBatch){
+			foreach (var renderCanvas in Entities.OfType<RenderCanvas>()) {
+				GameRoot.graphicsDevice.SetRenderTarget (renderCanvas.othersRenderTarget);
+				spriteBatch.Begin ();
+				foreach (var entity in Entities) {
+					if (entity.renderTarget == renderCanvas.othersRenderTarget) {
+						entity.DrawBegin (spriteBatch);
+						entity.Draw (spriteBatch);
+						entity.DrawEnd (spriteBatch);
+					}
+				}
+				spriteBatch.End ();
+				GameRoot.graphicsDevice.SetRenderTarget (null);
 			}
+						
+		}
+
+		public static void Draw(SpriteBatch spriteBatch){
+			spriteBatch.Begin ();
+			foreach (var entity in Entities) {
+				if (entity.renderTarget == null) {
+					entity.DrawBegin (spriteBatch);
+					entity.Draw (spriteBatch);
+					entity.DrawEnd (spriteBatch);
+				}
+			}
+			spriteBatch.End ();
 		}
 
 	}

@@ -13,11 +13,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Image.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)InputHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Room.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoomManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rectangle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderCanvas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

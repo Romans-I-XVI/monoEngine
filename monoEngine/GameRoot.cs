@@ -39,7 +39,7 @@ namespace monogame
 		protected override void Update (GameTime gameTime)
 		{
 			
-			InputHandler.Update();
+			Input.Update ();
 			EntityManager.Update(gameTime);
 			base.Update (gameTime);
 

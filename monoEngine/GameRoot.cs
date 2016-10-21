@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 
-namespace monogame
+namespace Engine
 {
 	public class GameRoot : Game
 	{
@@ -25,11 +25,11 @@ namespace monogame
 		}
 		protected override void Initialize ()
 		{
-			new Room_Main ();
-			new Room_Play ();
+			new MonoGameTiles.Room_Main ();
+			new MonoGameTiles.Room_Play ();
 			RoomManager.ChangeRoom ("Room_Main");
 			base.Initialize ();
-			Rectangle.Initialize ();
+			RectangleDrawer.Initialize ();
 		}
 
 		protected override void LoadContent ()

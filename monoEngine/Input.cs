@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 
 
-namespace monogame
+namespace Engine
 {
 	static public class Input
 	{
@@ -68,12 +68,45 @@ namespace monogame
 				return (!previousGamepadState [player_index].IsButtonDown (button) && currentGamepadState [player_index].IsButtonDown (button));
 			}
 
+			public static bool isPressed(Buttons button){
+				bool is_pressed = false;
+				foreach (PlayerIndex key in Enum.GetValues(typeof(PlayerIndex))) {
+					if (!previousGamepadState [key].IsButtonDown (button) && currentGamepadState [key].IsButtonDown (button)) {
+						is_pressed = true;
+						break;
+					}
+				}
+				return is_pressed;
+			}
+
 			public static bool isReleased(Buttons button, PlayerIndex player_index) {
 				return (previousGamepadState [player_index].IsButtonDown (button) && !currentGamepadState [player_index].IsButtonDown (button));
 			}
 
+			public static bool isReleased(Buttons button) {
+				bool is_released = false;
+				foreach (PlayerIndex key in Enum.GetValues(typeof(PlayerIndex))) {
+					if (previousGamepadState [key].IsButtonDown (button) && !currentGamepadState [key].IsButtonDown (button)) {
+						is_released = true;
+						break;
+					}
+				}
+				return is_released;
+			}
+
 			public static bool isHeld(Buttons button, PlayerIndex player_index) {
 				return currentGamepadState [player_index].IsButtonDown (button);
+			}
+
+			public static bool isHeld(Buttons button) {
+				bool is_held = false;
+				foreach (PlayerIndex key in Enum.GetValues(typeof(PlayerIndex))) {
+					if (currentGamepadState [key].IsButtonDown (button)) {
+						is_held = true;
+						break;
+					}
+				}
+				return is_held;
 			}
 
 			public static Vector2 leftThumbstick(PlayerIndex player_index){

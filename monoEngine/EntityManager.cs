@@ -7,12 +7,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 
-namespace monogame
+namespace Engine
 {
 	static class EntityManager
 	{
 		static List<Entity> Entities = new List<Entity>();
-		static List<RenderTarget2D> RenderTargets = new List<RenderTarget2D> ();
 
 		public static void Add(Entity entity){
 			Entities.Add (entity);

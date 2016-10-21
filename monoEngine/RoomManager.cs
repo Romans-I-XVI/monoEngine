@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace monogame
+namespace Engine
 {
 	public static class RoomManager
 	{

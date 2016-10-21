@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input;
 
-namespace monogame
+namespace Engine
 {
-	public static class Rectangle
+	public static class RectangleDrawer
 	{
 		static bool isValid = false;
 		static Texture2D RectangleTexture;
@@ -35,6 +35,13 @@ namespace monogame
 				Vector2 origin = new Vector2 (origin_x, origin_y);
 				spriteBatch.Draw (RectangleTexture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
 			}
+		}
+
+		public static void DrawAround(SpriteBatch spriteBatch, Vector2 position, Vector2 size, Color color, float border, float layerDepth = 0f){
+			Draw (spriteBatch, position.X - border, position.Y - border, size.X + border * 2, border, color, layerDepth: layerDepth);
+			Draw (spriteBatch, position.X - border, position.Y - border, border, size.Y + border * 2, color, layerDepth: layerDepth);
+			Draw (spriteBatch, position.X - border, position.Y + size.Y, size.X + border * 2, border, color, layerDepth: layerDepth);
+			Draw (spriteBatch, position.X + size.X, position.Y - border, border, size.Y + border * 2, color, layerDepth: layerDepth);
 		}
 
 	}

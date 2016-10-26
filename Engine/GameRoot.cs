@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameTiles;
 
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
@@ -48,18 +49,19 @@ namespace Engine
 			gamepadListenerThree.ButtonDown += EntityManager.GamepadEvents.onButtonDown;
 			gamepadListenerFour.ButtonDown += EntityManager.GamepadEvents.onButtonDown;
 
-
-			new MonoGameTiles.Room_Main ();
-			new MonoGameTiles.Room_Play ();
-			RoomManager.ChangeRoom ("Room_Main");
+            RectangleDrawer.Initialize();
 			base.Initialize ();
-			RectangleDrawer.Initialize ();
 		}
 			
 
 		protected override void LoadContent ()
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
+            TextureHolder.Init(this);
+
+            new Room_Main();
+            new Room_Play();
+            RoomManager.ChangeRoom("Room_Main");
 		}
 		protected override void Update (GameTime gameTime)
 		{

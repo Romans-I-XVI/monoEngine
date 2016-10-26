@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Engine
 {
-	public class Image
+	public class Sprite
 	{
 		public Texture2D texture { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Engine
 		public Color Color = Color.White;
 
 
-		public Image (Texture2D texture)
+		public Sprite (Texture2D texture)
 		{
 			this.texture = texture;
 		}

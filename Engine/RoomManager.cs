@@ -23,12 +23,15 @@ namespace Engine
 
 		public static void ChangeRoom(string room){
 			if (Rooms.ContainsKey (room)) {
-				if (Rooms.ContainsKey (current)) {
-					Rooms [current].OnSwitchAway ();
-				}
-				EntityManager.Clear ();
-				current = room;
-				Rooms [current].OnSwitchTo ();
+                if (Rooms.ContainsKey(current))
+                {
+                    Rooms[current].OnSwitchAway(Rooms[room]);
+                    EntityManager.ChangeRoom(Rooms[current], Rooms[room]);
+                    Rooms[room].OnSwitchTo(Rooms[current]);
+                }
+                else
+                    Rooms[room].OnSwitchTo(null);
+                current = room;
 			}
 		}
 	}

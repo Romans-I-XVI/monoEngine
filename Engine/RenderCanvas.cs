@@ -12,7 +12,7 @@ namespace Engine
 
 		public RenderCanvas(int width, int height) {
 			this.othersRenderTarget = new RenderTarget2D (GameRoot.graphicsDevice, width, height);
-			this.Image = new Image(this.othersRenderTarget);
+			this.Sprite = new Sprite(this.othersRenderTarget);
 		}
 
 	}

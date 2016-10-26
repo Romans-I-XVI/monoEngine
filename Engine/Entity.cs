@@ -10,18 +10,34 @@ namespace Engine
 {
 	abstract class Entity
 	{
-		protected Image Image;
+		protected Sprite Sprite;
+		protected Room Room { get { return RoomManager.Current();} }
 		public RenderTarget2D renderTarget = null;
 		public Vector2 Position = new Vector2();
 		public bool IsExpired = false;
+        public bool IsPersistent = false;
 
-		public Entity(){
+		protected Entity ()
+		{
 			EntityManager.Add (this);
 		}
 
-		public void SetRenderCanvas (RenderCanvas renderCanvas){
+		public void SetRenderCanvas (RenderCanvas renderCanvas) 
+		{
 			this.renderTarget = renderCanvas.othersRenderTarget;
 		}
+
+		public void Destroy()
+		{
+			this.IsExpired = true;
+		}
+		//Event override methods
+
+		public virtual void onCreate() {}
+
+		public virtual void onDestroy() {}
+
+		public virtual void onChangeRoom(Room previous_room, Room next_room) {}
 
 		public virtual void onMouse(MouseState state) {}
 
@@ -51,8 +67,8 @@ namespace Engine
 
 		public virtual void onDraw(SpriteBatch spriteBatch)
 		{
-			if (Image != null) {
-				Image.Draw (spriteBatch, Position);
+			if (Sprite != null) {
+				Sprite.Draw (spriteBatch, Position);
 			}
 		}
 	}

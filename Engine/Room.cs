@@ -10,14 +10,14 @@ namespace Engine
 	public abstract class Room
 	{
 	
-		public Room(){
+		protected Room(){
 			RoomManager.Add(this);
 		}
 
-		public virtual void OnSwitchTo(){
+		public virtual void OnSwitchTo(Room previous_room){
 		}
 
-		public virtual void OnSwitchAway() {
+		public virtual void OnSwitchAway(Room next_room) {
 		}
 	}
 }

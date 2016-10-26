@@ -67,9 +67,8 @@ namespace Engine
 
 		public virtual void onDraw(SpriteBatch spriteBatch)
 		{
-			if (Sprite != null) {
+			if (Sprite != null)
 				Sprite.Draw (spriteBatch, Position);
-			}
 		}
 	}
 }

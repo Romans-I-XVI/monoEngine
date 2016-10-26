@@ -18,7 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)RenderCanvas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Room.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoomManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)InputManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Timespan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tweens.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

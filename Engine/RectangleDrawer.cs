@@ -36,12 +36,24 @@ namespace Engine
 			}
 		}
 
-		public static void DrawAround(SpriteBatch spriteBatch, Vector2 position, Vector2 size, Color color, float border, float layerDepth = 0f){
-			Draw (spriteBatch, position.X - border, position.Y - border, size.X + border * 2, border, color, layerDepth: layerDepth);
-			Draw (spriteBatch, position.X - border, position.Y - border, border, size.Y + border * 2, color, layerDepth: layerDepth);
-			Draw (spriteBatch, position.X - border, position.Y + size.Y, size.X + border * 2, border, color, layerDepth: layerDepth);
-			Draw (spriteBatch, position.X + size.X, position.Y - border, border, size.Y + border * 2, color, layerDepth: layerDepth);
-		}
+        public static void DrawAround(SpriteBatch spriteBatch, float x, float y, float width, float height, Color color, float border, float layerDepth = 0f)
+        {
+            Draw(spriteBatch, x - border, y - border, width + border * 2, border, color, layerDepth: layerDepth);
+            Draw(spriteBatch, x - border, y - border, border, height + border * 2, color, layerDepth: layerDepth);
+            Draw(spriteBatch, x - border, y + height, width + border * 2, border, color, layerDepth: layerDepth);
+            Draw(spriteBatch, x + width, y - border, border, height + border * 2, color, layerDepth: layerDepth);
+        }
+
+        public static void DrawAround(SpriteBatch spriteBatch, Vector2 position, Vector2 size, Color color, float border, float layerDepth = 0f)
+        {
+            DrawAround(spriteBatch, position.X, position.Y, size.X, size.Y, color, border, layerDepth);
+        }
+
+        public static void DrawAround(SpriteBatch spriteBatch, Rectangle rectangle, Color color, float border, float layerDepth = 0f)
+        {
+            DrawAround(spriteBatch, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, color, border, layerDepth);
+        }
+
 
 	}
 }

@@ -2,12 +2,12 @@
 
 namespace Engine
 {
-    public class Timespan
+    public class GameTimeSpan
     {
         private Timer _timer;
         private int _elapsed_milliseconds;
 
-        public Timespan()
+        public GameTimeSpan()
         {
             _elapsed_milliseconds = 0;
             _timer = new Timer(1);

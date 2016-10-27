@@ -14,6 +14,7 @@ namespace Engine
 		public Vector2 Origin = new Vector2();
 		public Vector2 Scale = new Vector2(1.0f, 1.0f);
 		public float Depth = 1f;
+        public float Alpha = 255f;
 		public Color Color = Color.White;
 
 
@@ -24,7 +25,7 @@ namespace Engine
 
 		public void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
-			spriteBatch.Draw (texture, position: position, origin: Origin, rotation: Orientation, scale: Scale, color: Color, layerDepth: Depth);
+            spriteBatch.Draw (texture, position: position, origin: Origin, rotation: Orientation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}
 
 

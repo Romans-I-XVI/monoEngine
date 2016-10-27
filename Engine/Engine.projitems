@@ -17,10 +17,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)RenderCanvas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Room.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoomManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Timespan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tweens.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextureHolder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameTimeSpan.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

@@ -1,38 +1,36 @@
 ﻿using System.Timers;
+using System;
 
 namespace Engine
 {
     public class GameTimeSpan
     {
-        private Timer _timer;
-        private int _elapsed_milliseconds;
+        private DateTime _timestamp;
 
         public GameTimeSpan()
         {
-            _elapsed_milliseconds = 0;
-            _timer = new Timer(1);
-            _timer.Start();
-            _timer.Elapsed += (sender, e) => _elapsed_milliseconds += 1;
+            Mark();
         }
 
-        public void Mark(int mark_to = 0)
+        public void Mark(float mark_to = 0)
         {
-            _elapsed_milliseconds = mark_to;
+            _timestamp = DateTime.Now;
+            _timestamp.AddMilliseconds(mark_to);
         }
 
-        public int TotalMilliseconds
+        public float TotalMilliseconds
         {
             get 
             {
-                return _elapsed_milliseconds;
+                return (float)DateTime.Now.Subtract(_timestamp).TotalMilliseconds;
             }
         }
 
-        public int TotalSeconds
+        public float TotalSeconds
         {
             get
             {
-                return _elapsed_milliseconds / 1000;
+                return (float)DateTime.Now.Subtract(_timestamp).TotalSeconds;
             }
         }
 

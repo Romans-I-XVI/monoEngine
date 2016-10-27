@@ -48,6 +48,10 @@ namespace Engine
 			gamepadListenerTwo.ButtonDown += EntityManager.GamepadEvents.onButtonDown;
 			gamepadListenerThree.ButtonDown += EntityManager.GamepadEvents.onButtonDown;
 			gamepadListenerFour.ButtonDown += EntityManager.GamepadEvents.onButtonDown;
+            gamepadListenerOne.ButtonUp += EntityManager.GamepadEvents.onButtonUp;
+            gamepadListenerTwo.ButtonUp += EntityManager.GamepadEvents.onButtonUp;
+            gamepadListenerThree.ButtonUp += EntityManager.GamepadEvents.onButtonUp;
+            gamepadListenerFour.ButtonUp += EntityManager.GamepadEvents.onButtonUp;
 
             RectangleDrawer.Initialize();
 			base.Initialize ();

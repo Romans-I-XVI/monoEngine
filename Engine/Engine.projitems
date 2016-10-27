@@ -11,7 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GameRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RectangleDrawer.cs" />
@@ -20,6 +19,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)RoomManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Timespan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tweens.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameRoot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextureHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

@@ -66,7 +66,7 @@ namespace Engine
 			foreach (var renderCanvas in _entities.OfType<RenderCanvas>()) 
             {
 				GameRoot.graphicsDevice.SetRenderTarget (renderCanvas.othersRenderTarget);
-				spriteBatch.Begin ();
+                spriteBatch.Begin (SpriteSortMode.BackToFront);
 				foreach (var entity in _entities) 
                 {
 					if (entity.renderTarget == renderCanvas.othersRenderTarget) 
@@ -84,7 +84,7 @@ namespace Engine
 
 		public static void Draw(SpriteBatch spriteBatch)
         {
-			spriteBatch.Begin ();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
 			foreach (var entity in _entities) 
             {
 				if (entity.renderTarget == null) 

@@ -66,6 +66,7 @@ namespace Engine
 			foreach (var renderCanvas in _entities.OfType<RenderCanvas>()) 
             {
 				GameRoot.graphicsDevice.SetRenderTarget (renderCanvas.othersRenderTarget);
+                GameRoot.graphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Begin (SpriteSortMode.BackToFront);
 				foreach (var entity in _entities) 
                 {

@@ -30,7 +30,6 @@ namespace Engine
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
-
 			Content.RootDirectory = "Content";
 		}
 		protected override void Initialize ()

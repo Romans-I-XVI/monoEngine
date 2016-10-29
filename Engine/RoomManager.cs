@@ -2,37 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// should be using your project here
+using MonoGameTiles;
 namespace Engine
 {
 	public static class RoomManager
 	{
-		static private Dictionary<string, Room> Rooms = new Dictionary<string, Room>();
-		static private string current = "";
+        static private readonly Dictionary<Rooms, Room> _rooms = new Dictionary<Rooms, Room>();
+        static private Rooms _current;
+        public static Room CurrentRoom
+        {
+            get
+            {
+                if (_rooms.ContainsKey(_current))
+                    return _rooms[_current];
+                return null;
+            }
+        }
 
 		public static void Add(Room room){
-			Rooms.Add (room.GetType().Name, room);
+            if (_rooms.ContainsKey(room.Type))
+                _rooms.Remove(room.Type);
+            _rooms.Add (room.Type, room);
 		}
 
-		public static Room Get(string name){
-			return Rooms [name];
+        public static void Remove(Rooms name)
+        {
+            if (_rooms.ContainsKey(name))
+                _rooms.Remove(name);
+        }
+
+		public static Room Get(Rooms name){
+            if (_rooms.ContainsKey(name))
+			    return _rooms [name];
+            return null;
 		}
 
-		public static Room Current(){
-			return Rooms [current];
-		}
-
-		public static void ChangeRoom(string room){
-			if (Rooms.ContainsKey (room)) {
-                if (Rooms.ContainsKey(current))
+        public static bool ChangeRoom(Rooms name, params object[] args){
+			if (_rooms.ContainsKey (name)) {
+                if (CurrentRoom != null)
                 {
-                    Rooms[current].OnSwitchAway(Rooms[room]);
-                    EntityManager.ChangeRoom(Rooms[current], Rooms[room]);
-                    Rooms[room].OnSwitchTo(Rooms[current]);
+                    _rooms[_current].OnSwitchAway(_rooms[name]);
+                    EntityManager.ChangeRoom(_rooms[_current], _rooms[name]);
+                    _rooms[name].OnSwitchTo(_rooms[_current], args);
                 }
                 else
-                    Rooms[room].OnSwitchTo(null);
-                current = room;
+                    _rooms[name].OnSwitchTo(null, args);
+                _current = name;
 			}
+            return false;
 		}
 	}
 }

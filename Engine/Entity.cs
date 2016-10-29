@@ -11,7 +11,7 @@ namespace Engine
 	abstract class Entity
 	{
 		protected Sprite Sprite;
-		protected Room Room { get { return RoomManager.Current();} }
+		protected Room Room { get { return RoomManager.CurrentRoom;} }
 		public RenderTarget2D renderTarget = null;
 		public Vector2 Position = new Vector2();
 		public bool IsExpired = false;

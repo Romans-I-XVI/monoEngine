@@ -10,6 +10,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.InputListeners;
 using MonoGame.Extended.ViewportAdapters;
+using Newtonsoft.Json;
 
 namespace Engine
 {
@@ -65,10 +66,25 @@ namespace Engine
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
             TextureHolder.Init(this);
-
             new Room_Main();
             new Room_Play();
-            RoomManager.ChangeRoom("Room_Main");
+            int[,] array2D = new int[,] {
+                {1, 2, 2, 41, 42, 43, 3, 3, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 52},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1 ,1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1 ,1},
+                {1, 6, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7}
+            };
+            RoomManager.ChangeRoom(Rooms.MainMenu, array2D);
 		}
 		protected override void Update (GameTime gameTime)
 		{

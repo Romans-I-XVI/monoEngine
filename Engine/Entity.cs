@@ -8,7 +8,7 @@ using MonoGame.Extended.InputListeners;
 
 namespace Engine
 {
-	abstract class Entity
+	public abstract class Entity
 	{
 		protected Sprite Sprite;
 		protected Room Room { get { return RoomManager.CurrentRoom;} }

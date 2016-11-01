@@ -39,16 +39,17 @@ namespace Engine
 		}
 
         public static bool ChangeRoom(Rooms name, params object[] args){
+            Rooms _previous = _current;
 			if (_rooms.ContainsKey (name)) {
-                if (CurrentRoom != null)
+                _current = name;
+                if (Get(_previous) != null)
                 {
-                    _rooms[_current].OnSwitchAway(_rooms[name]);
-                    EntityManager.ChangeRoom(_rooms[_current], _rooms[name]);
-                    _rooms[name].OnSwitchTo(_rooms[_current], args);
+                    _rooms[_previous].OnSwitchAway(_rooms[_current]);
+                    EntityManager.ChangeRoom(_rooms[_previous], _rooms[_current]);
+                    _rooms[_current].OnSwitchTo(_rooms[_previous], args);
                 }
                 else
-                    _rooms[name].OnSwitchTo(null, args);
-                _current = name;
+                    _rooms[_current].OnSwitchTo(null, args);
 			}
             return false;
 		}

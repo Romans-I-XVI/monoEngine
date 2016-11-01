@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Engine
 {
-	class RenderCanvas : Entity
+	public class RenderCanvas : Entity
 	{
 		public readonly RenderTarget2D othersRenderTarget;
         public readonly Vector2 Size;

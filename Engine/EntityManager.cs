@@ -23,6 +23,7 @@ namespace Engine
 
         public static void Add(Entity entity)
         {
+            entity.IsExpired = false;
 			_entities.Add (entity);
 			entity.onCreate();
 		}

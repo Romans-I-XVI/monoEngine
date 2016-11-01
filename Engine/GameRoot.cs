@@ -68,6 +68,7 @@ namespace Engine
             TextureHolder.Init(this);
             new Room_Main();
             new Room_Play();
+            new Room_OnlineLevels();
             int[,] array2D = new int[,] {
                 {1, 2, 2, 41, 42, 43, 3, 3, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 52},
@@ -84,7 +85,7 @@ namespace Engine
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7}
             };
-            RoomManager.ChangeRoom(Rooms.MainMenu, array2D);
+            RoomManager.ChangeRoom(Rooms.OnlineLevels, array2D);
 		}
 		protected override void Update (GameTime gameTime)
 		{

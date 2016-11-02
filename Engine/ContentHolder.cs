@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 //This should reference what the current project is.
 using MonoGameTiles;
@@ -11,7 +12,7 @@ namespace Engine
     public static class ContentHolder
     {
         private static readonly Dictionary<AvailableTextures, Texture2D> _textures = new Dictionary<AvailableTextures, Texture2D>();
-        private static readonly Dictionary<AvailableFonts, SpriteFont> _fonts = new Dictionary<AvailableFonts, SpriteFont>();
+        private static readonly Dictionary<AvailableFonts, BitmapFont> _bitmap_fonts = new Dictionary<AvailableFonts, BitmapFont>();
         private static bool IsInitialized = false;
 
         public static Texture2D Get(AvailableTextures texture)
@@ -26,11 +27,11 @@ namespace Engine
             }
         }
 
-        public static SpriteFont Get(AvailableFonts font)
+        public static BitmapFont Get(AvailableFonts font)
         {
             if (IsInitialized)
             {
-                return _fonts[font];
+                return _bitmap_fonts[font];
             }
             else
             {
@@ -50,7 +51,7 @@ namespace Engine
                 foreach (AvailableFonts available_font in Enum.GetValues(typeof(AvailableFonts)))
                 {
                     string enum_string = available_font.ToString();
-                    _fonts.Add(available_font, game.Content.Load<SpriteFont>("fonts/"+enum_string));
+                    _bitmap_fonts.Add(available_font, game.Content.Load<BitmapFont>("fonts/" + enum_string));
                 }
                 IsInitialized = true;
             }

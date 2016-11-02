@@ -65,7 +65,7 @@ namespace Engine
 		protected override void LoadContent ()
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
-            TextureHolder.Init(this);
+            ContentHolder.Init(this);
             new Room_Main();
             new Room_Play();
             new Room_OnlineLevels();

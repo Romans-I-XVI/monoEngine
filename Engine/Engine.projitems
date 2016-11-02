@@ -19,7 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RoomManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tweens.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameRoot.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TextureHolder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContentHolder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameTimeSpan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>

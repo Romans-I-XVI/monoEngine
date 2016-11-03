@@ -22,6 +22,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ContentHolder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameTimeSpan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFocusable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Directions.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

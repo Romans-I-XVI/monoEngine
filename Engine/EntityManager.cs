@@ -12,6 +12,7 @@ namespace Engine
 	static class EntityManager
 	{
 		static List<Entity> _entities = new List<Entity>();
+        private static bool _processed_focusable_input;
 
         public static void ChangeRoom(Room previous_room, Room next_room)
         {
@@ -51,14 +52,17 @@ namespace Engine
 			};
 			foreach (var entity in _entities.ToList()) 
             {
-				entity.onMouse(mouseState);
-				entity.onKey(keyboardState);
-				entity.onButton(gamepadStates);
+                if (ShouldProcessInput(entity))
+                {
+                    entity.onMouse(mouseState);
+                    entity.onKey(keyboardState);
+                    entity.onButton(gamepadStates);
+                }
 				entity.onUpdate (gameTime);
 				if (entity.IsExpired)
 					entity.onDestroy();
 			}
-
+            _processed_focusable_input = false;
 			_entities = _entities.Where(x => !x.IsExpired).ToList();
 		}
 
@@ -103,20 +107,23 @@ namespace Engine
 		{
 			public static void onMouseDown(object sender, MouseEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
-					entity.onMouseDown(e);
+                foreach (var entity in _entities.ToList())
+                    if (ShouldProcessInput(entity))
+					    entity.onMouseDown(e);
 			}
 
 			public static void onMouseUp(object sender, MouseEventArgs e)
 			{
 				foreach (var entity in _entities.ToList())
-					entity.onMouseUp(e);
+                    if (ShouldProcessInput(entity))
+					    entity.onMouseUp(e);
 			}
 
 			public static void onMouseWheel(object sender, MouseEventArgs e)
 			{
 				foreach (var entity in _entities.ToList())
-					entity.onMouseWheel(e);
+                    if (ShouldProcessInput(entity))
+					    entity.onMouseWheel(e);
 			}
 
 		}
@@ -127,13 +134,15 @@ namespace Engine
 			public static void onKeyPressed(object sender, KeyboardEventArgs e)
 			{
 				foreach (var entity in _entities.ToList())
-					entity.onKeyDown(e);
+                    if (ShouldProcessInput(entity))
+					    entity.onKeyDown(e);
 			}
 
 			public static void onKeyReleased(object sender, KeyboardEventArgs e)
 			{
 				foreach (var entity in _entities.ToList())
-					entity.onKeyUp(e);
+                    if (ShouldProcessInput(entity))
+					    entity.onKeyUp(e);
 			}
 			
 		}
@@ -143,15 +152,31 @@ namespace Engine
 			public static void onButtonDown(object sender, GamePadEventArgs e)
 			{
 				foreach (var entity in _entities.ToList())
-					entity.onButtonDown(e);
+                    if (ShouldProcessInput(entity))
+					    entity.onButtonDown(e);
 			}
 
 			public static void onButtonUp(object sender, GamePadEventArgs e)
 			{
 				foreach (var entity in _entities.ToList())
-					entity.onButtonUp(e);
+                    if (ShouldProcessInput(entity))
+					    entity.onButtonUp(e);
 			}
 		}
+
+        private static bool ShouldProcessInput(Entity entity)
+        {
+            if (!(entity is IFocusable))
+            {
+                return true;
+            }
+            else if (entity is IFocusable && ((IFocusable)entity).IsFocused && !_processed_focusable_input)
+            {
+                _processed_focusable_input = true;
+                return true;
+            }
+            return false;
+        }
 
 	}
 }

@@ -70,7 +70,7 @@ namespace Engine
             new Room_Play();
             new Room_OnlineLevels();
             new Room_LocalLevels();
-            RoomManager.ChangeRoom(Rooms.MainMenu);
+            RoomManager.ChangeRoom<Room_Main>();
 		}
 		protected override void Update (GameTime gameTime)
 		{

@@ -21,7 +21,6 @@ namespace Engine
             Clear();
         }
 
-
         public static void Add(Entity entity)
         {
             entity.IsExpired = false;

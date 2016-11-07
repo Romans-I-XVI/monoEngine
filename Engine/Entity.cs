@@ -10,9 +10,10 @@ namespace Engine
 {
 	public abstract class Entity
 	{
-		protected Sprite Sprite;
+		protected Sprite _sprite;
 		protected Room Room { get { return RoomManager.CurrentRoom;} }
-		public RenderTarget2D renderTarget = null;
+        public Sprite Sprite { get { return _sprite; } }
+        public RenderTarget2D renderTarget = null;
 		public Vector2 Position = new Vector2();
 		public bool IsExpired = false;
         public bool IsPersistent = false;
@@ -67,8 +68,8 @@ namespace Engine
 
 		public virtual void onDraw(SpriteBatch spriteBatch)
 		{
-			if (Sprite != null)
-				Sprite.Draw (spriteBatch, Position);
+			if (_sprite != null)
+				_sprite.Draw (spriteBatch, Position);
 		}
 	}
 }

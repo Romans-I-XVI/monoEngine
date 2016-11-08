@@ -13,6 +13,7 @@ namespace Engine
 	{
 		static List<Entity> _entities = new List<Entity>();
         private static bool _processed_focusable_input;
+        public static bool ProcessedFocusableInput { get { return _processed_focusable_input;} }
 
         public static void ChangeRoom(Room previous_room, Room next_room)
         {

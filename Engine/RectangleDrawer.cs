@@ -23,7 +23,7 @@ namespace Engine
 
 		public static void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, Color color, Vector2 origin = default(Vector2), float layerDepth = 0f){
 			if (isValid) {
-				spriteBatch.Draw (RectangleTexture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
+                spriteBatch.Draw (RectangleTexture, position: new Vector2(position.X - origin.X, position.Y - origin.Y), scale: scale, color: color, layerDepth: layerDepth);
 			}
 		}
 

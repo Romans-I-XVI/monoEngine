@@ -66,10 +66,16 @@ namespace Engine
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
             ContentHolder.Init(this);
-            new Room_Main();
-            new Room_Play();
-            new Room_OnlineLevels();
-            new Room_LocalLevels();
+            Room r;
+            r = new Room_Main();
+            r.Initialize();
+            r = new Room_Play();
+            r.Initialize();
+            r = new Room_OnlineLevels();
+            r.Initialize();
+            r = new Room_LocalLevels();
+            r.Initialize();
+            new Selector();
             RoomManager.ChangeRoom<Room_Main>();
 		}
 		protected override void Update (GameTime gameTime)

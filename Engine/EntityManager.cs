@@ -78,20 +78,24 @@ namespace Engine
         {
 			foreach (var renderCanvas in _entities.OfType<RenderCanvas>()) 
             {
-				GameRoot.graphicsDevice.SetRenderTarget (renderCanvas.othersRenderTarget);
-                GameRoot.graphicsDevice.Clear(renderCanvas.BackgroundColor);
-                spriteBatch.Begin (SpriteSortMode.BackToFront);
-				foreach (var entity in _entities) 
+                if (renderCanvas.ShouldDraw)
                 {
-					if (entity.renderTarget == renderCanvas.othersRenderTarget) 
+                    GameRoot.graphicsDevice.SetRenderTarget(renderCanvas.othersRenderTarget);
+                    GameRoot.graphicsDevice.Clear(renderCanvas.BackgroundColor);
+                    spriteBatch.Begin(SpriteSortMode.BackToFront);
+                    foreach (var entity in _entities)
                     {
-						entity.onDrawBegin (spriteBatch);
-						entity.onDraw (spriteBatch);
-						entity.onDrawEnd (spriteBatch);
-					}
-				}
-				spriteBatch.End ();
-				GameRoot.graphicsDevice.SetRenderTarget (null);
+                        if (entity.renderTarget == renderCanvas.othersRenderTarget)
+                        {
+                            entity.onDrawBegin(spriteBatch);
+                            entity.onDraw(spriteBatch);
+                            entity.onDrawEnd(spriteBatch);
+                        }
+                    }
+                    spriteBatch.End ();
+    				GameRoot.graphicsDevice.SetRenderTarget (null);
+                }
+
 			}
 						
 		}
@@ -101,7 +105,7 @@ namespace Engine
             spriteBatch.Begin(SpriteSortMode.BackToFront);
 			foreach (var entity in _entities) 
             {
-				if (entity.renderTarget == null) 
+                if (entity.renderTarget == null && entity.ShouldDraw) 
                 {
 					entity.onDrawBegin (spriteBatch);
 					entity.onDraw (spriteBatch);

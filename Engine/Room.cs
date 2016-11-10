@@ -29,6 +29,7 @@ namespace Engine
                 EntityManager.Clear();
                 OnCreate();
                 Entities = EntityManager.Entities.Where(x => !(x.IsPersistent)).ToList();
+                Console.WriteLine(Entities.Count);
                 EntityManager.Clear();
                 foreach (var entity in temp_entities)
                 {
@@ -45,13 +46,7 @@ namespace Engine
 
         public virtual void OnCreate() { }
 
-		public virtual void OnSwitchTo(Room previous_room, params object[] args){ 
-            foreach (var entity in _saved_entities)
-            {
-                EntityManager.Add(entity);
-            }
-            _saved_entities.Clear();
-        }
+		public virtual void OnSwitchTo(Room previous_room, params object[] args){}
 
 		public virtual void OnSwitchAway(Room next_room) { }
 	}

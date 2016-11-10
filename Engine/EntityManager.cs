@@ -18,10 +18,13 @@ namespace Engine
 
         public static void ChangeRoom(Room previous_room, Room next_room)
         {
-            if (previous_room.Persistent)
-                previous_room.Entities = _entities.Where(x => !(x.IsPersistent)).ToList();
-            foreach (var entity in _entities.ToList())
-                entity.onChangeRoom(previous_room, next_room);
+            if (previous_room != null)
+            {
+                if (previous_room.Persistent)
+                    previous_room.Entities = _entities.Where(x => !(x.IsPersistent)).ToList();
+                foreach (var entity in _entities.ToList())
+                    entity.onChangeRoom(previous_room, next_room);
+            }
             Clear();
             if (next_room.Persistent)
             {

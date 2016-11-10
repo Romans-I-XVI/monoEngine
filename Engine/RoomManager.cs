@@ -53,9 +53,11 @@ namespace Engine
                         _rooms[_current].PreviousRoom = _previous;
                     _rooms[_current].OnSwitchTo(_rooms[_previous], args);
                 }
-                else
+                else 
+                {
                     EntityManager.ChangeRoom(null, _rooms[_current]);
                     _rooms[_current].OnSwitchTo(null, args);
+                }
                 return true;
             }
             return false;

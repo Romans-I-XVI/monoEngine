@@ -80,9 +80,8 @@ namespace Engine
 		}
 		protected override void Update (GameTime gameTime)
 		{
+            base.Update(gameTime);
 			EntityManager.Update(gameTime);
-			base.Update (gameTime);
-
 		}
 
 		protected override void Draw (GameTime gameTime)

@@ -57,6 +57,7 @@ namespace Engine
             gamepadListenerThree.ButtonUp += EntityManager.GamepadEvents.onButtonUp;
             gamepadListenerFour.ButtonUp += EntityManager.GamepadEvents.onButtonUp;
 
+            HttpUtilities.GetUserData();
             RectangleDrawer.Initialize();
 			base.Initialize ();
 		}

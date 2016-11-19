@@ -21,18 +21,18 @@ namespace Engine
 			return RectangleTexture;
 		}
 
-		public static void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, Color color, Vector2 origin = default(Vector2), float layerDepth = 0f){
+		public static void Draw(SpriteBatch spriteBatch, Rectangle rectangle, Color color, Vector2 origin = default(Vector2), float layerDepth = 0f){
 			if (isValid) {
-                spriteBatch.Draw (RectangleTexture, position: new Vector2(position.X - origin.X, position.Y - origin.Y), scale: scale, color: color, layerDepth: layerDepth);
+                spriteBatch.Draw (RectangleTexture, position: new Vector2(rectangle.X - origin.X, rectangle.Y - origin.Y), scale: new Vector2((float)rectangle.Width, (float)rectangle.Height), color: color, layerDepth: layerDepth);
 			}
 		}
 
 		public static void Draw(SpriteBatch spriteBatch, float x, float y, float width, float height, Color color, float origin_x = 0f, float origin_y = 0f, float layerDepth = 0f){
 			if (isValid) {
 				Vector2 position = new Vector2 (x, y);
-				Vector2 scale = new Vector2 (width, height);
+                Rectangle rectangle = new Rectangle((int)x, (int)y, (int)width, (int)height);
 				Vector2 origin = new Vector2 (origin_x, origin_y);
-				spriteBatch.Draw (RectangleTexture, position: position, scale: scale, color: color, layerDepth: layerDepth, origin: origin);
+                Draw(spriteBatch, rectangle, color, origin, layerDepth);
 			}
 		}
 

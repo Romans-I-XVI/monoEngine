@@ -76,6 +76,10 @@ namespace Engine
             r.Initialize();
             r = new Room_LocalLevels();
             r.Initialize();
+            r = new Room_EditorLevels();
+            r.Initialize();
+            r = new Room_Editor();
+            r.Initialize();
             new Selector();
             RoomManager.ChangeRoom<Room_Main>();
 		}

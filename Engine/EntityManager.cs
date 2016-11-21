@@ -88,7 +88,7 @@ namespace Engine
                     spriteBatch.Begin(SpriteSortMode.BackToFront);
                     foreach (var entity in _entities)
                     {
-                        if (entity.renderTarget == renderCanvas.othersRenderTarget)
+                        if (entity.renderTarget == renderCanvas)
                         {
                             entity.onDrawBegin(spriteBatch);
                             entity.onDraw(spriteBatch);

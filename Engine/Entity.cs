@@ -13,7 +13,7 @@ namespace Engine
 		protected Sprite _sprite;
 		protected Room Room { get { return RoomManager.CurrentRoom;} }
         public Sprite Sprite { get { return _sprite; } }
-        public RenderTarget2D renderTarget = null;
+        public RenderCanvas renderTarget = null;
 		public Vector2 Position = new Vector2();
 		public bool IsExpired = false;
         public bool IsPersistent = false;
@@ -26,7 +26,7 @@ namespace Engine
 
 		public void SetRenderCanvas (RenderCanvas renderCanvas) 
 		{
-			this.renderTarget = renderCanvas.othersRenderTarget;
+			renderTarget = renderCanvas;
 		}
 
 		public void Destroy()

@@ -8,8 +8,8 @@ namespace Engine
 {
 	public class RenderCanvas : Entity
 	{
-		public readonly RenderTarget2D othersRenderTarget;
-        public readonly Vector2 Size;
+        public RenderTarget2D othersRenderTarget { get; protected set; }
+        public Vector2 Size { get; protected set; }
         public Color BackgroundColor = Color.Transparent;
 
 		public RenderCanvas(int width, int height) {

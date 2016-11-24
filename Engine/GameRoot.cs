@@ -80,6 +80,8 @@ namespace Engine
             r.Initialize();
             r = new Room_Editor();
             r.Initialize();
+            r = new Room_PublishLevel();
+            r.Initialize();
             new Selector();
             RoomManager.ChangeRoom<Room_Main>();
 		}

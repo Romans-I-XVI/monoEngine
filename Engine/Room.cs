@@ -15,7 +15,6 @@ namespace Engine
         public bool Persistent = true;
         public List<Entity> Entities = new List<Entity>();
         public Type PreviousRoom;
-        protected readonly List<Entity> _saved_entities = new List<Entity>();
 		protected Room(){
 			RoomManager.Add(this);
 		}

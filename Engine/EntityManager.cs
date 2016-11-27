@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.InputListeners;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace Engine
 {
@@ -97,6 +98,7 @@ namespace Engine
                     }
                     spriteBatch.End ();
     				GameRoot.graphicsDevice.SetRenderTarget (null);
+                    GameRoot.BoxingViewport.Reset();
                 }
 
 			}
@@ -105,7 +107,7 @@ namespace Engine
 
 		public static void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: GameRoot.BoxingViewport.GetScaleMatrix());
 			foreach (var entity in _entities) 
             {
                 if (entity.renderTarget == null && entity.ShouldDraw) 

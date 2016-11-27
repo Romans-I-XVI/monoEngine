@@ -20,21 +20,26 @@ namespace Engine
 		static SpriteBatch spriteBatch;
 
 		public static GameRoot Instance { get; private set; }
-		public static Viewport Viewport { get { return GameRoot.graphicsDevice.Viewport; } }
-		public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
+        public static Vector2 VirtualSize { get { return new Vector2(1280, 720); } }
 		public static GraphicsDevice graphicsDevice { get { return graphics.GraphicsDevice; } }
+        public static BoxingViewportAdapter BoxingViewport;
 
 		public GameRoot ()
 		{
 			Instance = this;
 			graphics = new GraphicsDeviceManager (this);
             graphics.IsFullScreen = false;
+            graphics.HardwareModeSwitch = false;
+            Window.AllowAltF4 = true;
+            Window.AllowUserResizing = true;
+
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
 			Content.RootDirectory = "Content";
 		}
 		protected override void Initialize ()
 		{
+            GameRoot.BoxingViewport = new BoxingViewportAdapter(Window, GraphicsDevice, (int)VirtualSize.X, (int)VirtualSize.Y, 0, 0);
 			var mouseListener = new MouseListener(new MouseListenerSettings());
 			var keyboardListener = new KeyboardListener(new KeyboardListenerSettings());
 			var gamepadListenerOne = new GamePadListener(new GamePadListenerSettings(PlayerIndex.One));

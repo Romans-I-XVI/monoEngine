@@ -41,6 +41,7 @@ namespace Engine
 
         public static bool ChangeRoom(Type room_type, params object[] args)
         {
+            Console.WriteLine(GameRoot.BoxingViewport.GetScaleMatrix());
             Type _previous = _current;
             if (_rooms.ContainsKey(room_type))
             {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGameTiles;
 
 using MonoGame.Extended;
@@ -23,12 +24,13 @@ namespace Engine
         public static Vector2 VirtualSize { get { return new Vector2(1280, 720); } }
 		public static GraphicsDevice graphicsDevice { get { return graphics.GraphicsDevice; } }
         public static BoxingViewportAdapter BoxingViewport;
+        public static bool ExitGame = false;
 
 		public GameRoot ()
 		{
 			Instance = this;
 			graphics = new GraphicsDeviceManager (this);
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.HardwareModeSwitch = false;
             Window.AllowAltF4 = true;
             Window.AllowUserResizing = true;
@@ -88,12 +90,16 @@ namespace Engine
             r = new Room_PublishLevel();
             r.Initialize();
             new Selector();
+            MediaPlayer.Play(ContentHolder.Get(AvailableMusic.chill));
+            MediaPlayer.IsRepeating = true;
             RoomManager.ChangeRoom<Room_Main>();
 		}
 		protected override void Update (GameTime gameTime)
 		{
             base.Update(gameTime);
 			EntityManager.Update(gameTime);
+            if (ExitGame)
+                Exit();
 		}
 
 		protected override void Draw (GameTime gameTime)

@@ -28,7 +28,6 @@ namespace Engine
                 EntityManager.Clear();
                 OnCreate();
                 Entities = EntityManager.Entities.Where(x => !(x.IsPersistent)).ToList();
-                Console.WriteLine(Entities.Count);
                 EntityManager.Clear();
                 foreach (var entity in temp_entities)
                 {

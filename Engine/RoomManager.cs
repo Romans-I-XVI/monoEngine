@@ -14,7 +14,7 @@ namespace Engine
         {
             get
             {
-                if (_rooms.ContainsKey(_current))
+                if (_current != null && _rooms.ContainsKey(_current))
                     return _rooms[_current];
                 return null;
             }
@@ -41,7 +41,6 @@ namespace Engine
 
         public static bool ChangeRoom(Type room_type, params object[] args)
         {
-            Console.WriteLine(GameRoot.BoxingViewport.GetScaleMatrix());
             Type _previous = _current;
             if (_rooms.ContainsKey(room_type))
             {

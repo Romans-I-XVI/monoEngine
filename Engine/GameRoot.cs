@@ -15,14 +15,15 @@ using Newtonsoft.Json;
 
 namespace Engine
 {
-	public class GameRoot : Game
-	{
-		static GraphicsDeviceManager graphics;
-		static SpriteBatch spriteBatch;
+    public class GameRoot : Game
+    {
+        static GraphicsDeviceManager graphics;
+        static SpriteBatch spriteBatch;
 
-		public static GameRoot Instance { get; private set; }
+        public static GameRoot Instance { get; private set; }
         public static Vector2 VirtualSize { get { return new Vector2(1280, 720); } }
-		public static GraphicsDevice graphicsDevice { get { return graphics.GraphicsDevice; } }
+        public static GraphicsDevice graphicsDevice { get { return graphics.GraphicsDevice; } }
+        public static GraphicsDeviceManager Graphics { get { return graphics; } }
         public static BoxingViewportAdapter BoxingViewport;
         public static bool ExitGame = false;
 
@@ -109,5 +110,12 @@ namespace Engine
 			EntityManager.DrawToRenderTargets (spriteBatch);
 			EntityManager.Draw (spriteBatch);
 		}
-	}
+
+        public static bool ToggleFullscreen()
+        { 
+            graphics.ToggleFullScreen(); 
+            return graphics.IsFullScreen; 
+        }
+
+    }
 }

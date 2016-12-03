@@ -20,6 +20,7 @@ namespace Engine
         static GraphicsDeviceManager graphics;
         static SpriteBatch spriteBatch;
 
+        public static Color BackgroundColor = Color.Black;
         public static GameRoot Instance { get; private set; }
         public static Vector2 VirtualSize { get { return new Vector2(1280, 720); } }
         public static GraphicsDevice graphicsDevice { get { return graphics.GraphicsDevice; } }
@@ -105,9 +106,9 @@ namespace Engine
 
 		protected override void Draw (GameTime gameTime)
 		{
-			graphics.GraphicsDevice.Clear (Color.Black);
 
 			EntityManager.DrawToRenderTargets (spriteBatch);
+            graphics.GraphicsDevice.Clear(BackgroundColor);
 			EntityManager.Draw (spriteBatch);
 		}
 

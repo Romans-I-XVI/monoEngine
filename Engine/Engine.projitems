@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IFocusable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Directions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Room.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SaveDataHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

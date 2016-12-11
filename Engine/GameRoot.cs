@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using MonoGameTiles;
 
@@ -75,6 +76,8 @@ namespace Engine
 		protected override void LoadContent ()
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
+            MediaPlayer.Volume = 0.5f;
+            SoundEffect.MasterVolume = 0.5f;
             ContentHolder.Init(this);
             Room r;
             r = new Room_Main();
@@ -92,8 +95,8 @@ namespace Engine
             r = new Room_PublishLevel();
             r.Initialize();
             new Selector();
-            MediaPlayer.Play(ContentHolder.Get(AvailableMusic.chill));
             MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(ContentHolder.Get(AvailableMusic.chill));
             RoomManager.ChangeRoom<Room_Main>();
 		}
 		protected override void Update (GameTime gameTime)

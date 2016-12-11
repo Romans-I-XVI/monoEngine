@@ -11,7 +11,6 @@ namespace Engine
         {
             Mark();
         }
-
         public void Mark(float mark_to = 0)
         {
             _timestamp = DateTime.Now;

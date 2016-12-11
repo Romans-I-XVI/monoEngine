@@ -31,6 +31,7 @@ namespace Engine
             {
                 foreach (var entity in next_room.Entities)
                     _entities.Add(entity);
+                next_room.Entities.Clear();
             }
         }
 

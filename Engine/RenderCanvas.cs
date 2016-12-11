@@ -18,6 +18,12 @@ namespace Engine
 			this._sprite = new Sprite(this.othersRenderTarget);
 		}
 
+        public override void onDestroy()
+        {
+            othersRenderTarget.Dispose();
+            base.onDestroy();
+        }
+
 	}
 }
 

@@ -8,13 +8,16 @@ namespace Engine
         GameTimeSpan _timer = new GameTimeSpan();
         public Color Color;
         public Vector2 Size;
-        public int Rate;
+        public float Rate;
         public float Depth;
         public float FadeSpeed;
         public float ParticleSpeed;
+        public float SpawnOffset;
+        public RenderCanvas RenderCanvas;
         readonly Random _random_number_generator = new Random((int)DateTime.Now.Ticks);
-        public ParticleEmitter(Vector2 position, Color particle_color, Vector2 particle_size, float particle_speed, int spawn_rate, int fade_speed, float depth)
+        public ParticleEmitter(Vector2 position, Color particle_color, Vector2 particle_size, float particle_speed, float spawn_rate, float fade_speed, float depth, float spawn_offset = 0, RenderCanvas render_canvas = null)
         {
+            SpawnOffset = spawn_offset;
             Position = position;
             Color = particle_color;
             Size = particle_size;
@@ -22,18 +25,28 @@ namespace Engine
             FadeSpeed = fade_speed;
             Depth = depth;
             ParticleSpeed = particle_speed;
+            if (render_canvas != null)
+                RenderCanvas = render_canvas;
         }
 
         public override void onUpdate(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (_timer.TotalMilliseconds >= Rate)
+            float passed_ms = _timer.TotalMilliseconds;
+            if (passed_ms >= Rate)
             {
-                float random_direction = _random_number_generator.Next(0, 57297) / 1000f;
-                float x_speed = (float)Math.Cos(random_direction) * ParticleSpeed;
-                float y_speed = (float)Math.Sin(random_direction) * ParticleSpeed;
-                new Particle(Position, Size, new Vector2(x_speed, y_speed), Color, FadeSpeed, Depth);
+
+                for (int i = 0; i < (int)(passed_ms / Rate); i++)
+                {
+                    float random_direction = _random_number_generator.Next(0, 57297) / 1000f;
+                    float x_speed = (float)Math.Cos(random_direction) * ParticleSpeed;
+                    float y_speed = (float)Math.Sin(random_direction) * ParticleSpeed;
+                    float x_offset = (float)Math.Cos(random_direction) * SpawnOffset;
+                    float y_offset = (float)Math.Sin(random_direction) * SpawnOffset;
+                    var particle = new Particle(new Vector2(Position.X + x_offset, Position.Y + y_offset), Size, new Vector2(x_speed, y_speed), Color, FadeSpeed * (float)(0.5 + _random_number_generator.NextDouble()), Depth);
+                    if (RenderCanvas != null)
+                        particle.SetRenderCanvas(RenderCanvas);
+                }
                 _timer.Mark();
             }
 
@@ -62,8 +75,8 @@ namespace Engine
         public override void onUpdate(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            Position.X += _velocity.X * dt;
-            Position.Y += _velocity.Y * dt;
+            Position.X += _velocity.X * dt / 60;
+            Position.Y += _velocity.Y * dt / 60;
             base.onUpdate(gameTime);
         }
 

@@ -36,7 +36,7 @@ namespace Engine
             graphics.IsFullScreen = true;
             graphics.HardwareModeSwitch = false;
             Window.AllowAltF4 = true;
-            Window.AllowUserResizing = true;
+            //Window.AllowUserResizing = true;
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
@@ -82,7 +82,11 @@ namespace Engine
             Room r;
             r = new Room_Main();
             r.Initialize();
+            r = new Room_Intro();
+            r.Initialize();
             r = new Room_Play();
+            r.Initialize();
+            r = new Room_GameCompleted();
             r.Initialize();
             r = new Room_OnlineLevels();
             r.Initialize();
@@ -95,9 +99,9 @@ namespace Engine
             r = new Room_PublishLevel();
             r.Initialize();
             new Selector();
+            Selector.IsVisible = false;
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(ContentHolder.Get(AvailableMusic.chill));
-            RoomManager.ChangeRoom<Room_Main>();
+            RoomManager.ChangeRoom<Room_Intro>();
 		}
 		protected override void Update (GameTime gameTime)
 		{

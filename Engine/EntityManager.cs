@@ -23,9 +23,11 @@ namespace Engine
             {
                 if (previous_room.Persistent)
                     previous_room.Entities = _entities.Where(x => !(x.IsPersistent)).ToList();
-                foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+                foreach (var entity in entity_list)
                     entity.onChangeRoom(previous_room, next_room);
             }
+
             Clear();
             if (next_room.Persistent)
             {
@@ -63,7 +65,8 @@ namespace Engine
 				{PlayerIndex.Three, GamePad.GetState(PlayerIndex.Three)},
 				{PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
 			};
-			foreach (var entity in _entities.ToList()) 
+            var entity_list = _entities.ToList();
+            foreach (var entity in entity_list) 
             {
                 if (ShouldProcessInput(entity))
                 {
@@ -81,14 +84,16 @@ namespace Engine
 
 		public static void DrawToRenderTargets (SpriteBatch spriteBatch)
         {
-			foreach (var renderCanvas in _entities.OfType<RenderCanvas>()) 
+            var entity_list = _entities.ToList();
+            foreach (var renderCanvas in entity_list.OfType<RenderCanvas>()) 
             {
                 if (renderCanvas.ShouldDraw)
                 {
                     GameRoot.graphicsDevice.SetRenderTarget(renderCanvas.othersRenderTarget);
                     GameRoot.graphicsDevice.Clear(renderCanvas.BackgroundColor);
                     spriteBatch.Begin(SpriteSortMode.BackToFront);
-                    foreach (var entity in _entities)
+                    var second_entity_list = _entities.ToList();
+                    foreach (var entity in second_entity_list)
                     {
                         if (entity.renderTarget == renderCanvas)
                         {
@@ -109,7 +114,8 @@ namespace Engine
 		public static void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: GameRoot.BoxingViewport.GetScaleMatrix());
-			foreach (var entity in _entities) 
+            var entity_list = _entities.ToList();
+            foreach (var entity in entity_list) 
             {
                 if (entity.renderTarget == null && entity.ShouldDraw) 
                 {
@@ -125,21 +131,24 @@ namespace Engine
 		{
 			public static void onMouseDown(object sender, MouseEventArgs e)
 			{
-                foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+                foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onMouseDown(e);
 			}
 
 			public static void onMouseUp(object sender, MouseEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onMouseUp(e);
 			}
 
 			public static void onMouseWheel(object sender, MouseEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onMouseWheel(e);
 			}
@@ -151,14 +160,16 @@ namespace Engine
 
 			public static void onKeyPressed(object sender, KeyboardEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onKeyDown(e);
 			}
 
 			public static void onKeyReleased(object sender, KeyboardEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onKeyUp(e);
 			}
@@ -169,14 +180,16 @@ namespace Engine
 		{
 			public static void onButtonDown(object sender, GamePadEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onButtonDown(e);
 			}
 
 			public static void onButtonUp(object sender, GamePadEventArgs e)
 			{
-				foreach (var entity in _entities.ToList())
+                var entity_list = _entities.ToList();
+				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
 					    entity.onButtonUp(e);
 			}

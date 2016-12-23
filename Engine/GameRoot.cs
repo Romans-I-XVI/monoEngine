@@ -28,6 +28,7 @@ namespace Engine
         public static GraphicsDeviceManager Graphics { get { return graphics; } }
         public static BoxingViewportAdapter BoxingViewport;
         public static bool ExitGame = false;
+        public static Marketplace CurrentMarketplace;
 
 		public GameRoot ()
 		{

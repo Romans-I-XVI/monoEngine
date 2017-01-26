@@ -12,6 +12,7 @@ namespace Engine
 {
 	static class EntityManager
 	{
+        public static bool EnableGamepadSupport = true;
         public static List<Entity> Entities { get { return _entities; } }
 		static List<Entity> _entities = new List<Entity>();
         private static bool _processed_focusable_input;
@@ -53,6 +54,11 @@ namespace Engine
         {
 			return _entities.OfType<T>().Count();
 		}
+
+        public static T GetFirst<T>() where T : Entity
+        {
+            return _entities.OfType<T>().First();
+        }
 
 		public static void Update(GameTime gameTime)
         {
@@ -180,6 +186,8 @@ namespace Engine
 		{
 			public static void onButtonDown(object sender, GamePadEventArgs e)
 			{
+                if (!EnableGamepadSupport)
+                    return;
                 var entity_list = _entities.ToList();
 				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))
@@ -188,6 +196,8 @@ namespace Engine
 
 			public static void onButtonUp(object sender, GamePadEventArgs e)
 			{
+                if (!EnableGamepadSupport)
+                    return;
                 var entity_list = _entities.ToList();
 				foreach (var entity in entity_list)
                     if (ShouldProcessInput(entity))

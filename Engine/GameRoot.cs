@@ -109,7 +109,11 @@ namespace Engine
             base.Update(gameTime);
 			EntityManager.Update(gameTime);
             if (ExitGame)
+            {
+                if (CurrentMarketplace == Marketplace.Steam)
+                    Steamworks.SteamAPI.Shutdown();
                 Exit();
+            }
 		}
 
 		protected override void Draw (GameTime gameTime)

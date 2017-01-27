@@ -60,6 +60,15 @@ namespace Engine
             return _entities.OfType<T>().First();
         }
 
+        public static IFocusable GetFocused()
+        {
+            var entity_list = _entities.ToList();
+            foreach (var entity in entity_list)
+                if (entity is IFocusable && ((IFocusable)entity).IsFocused)
+                    return (IFocusable)entity;
+            return null;
+        }
+
 		public static void Update(GameTime gameTime)
         {
 			MouseState mouseState = Mouse.GetState();

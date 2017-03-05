@@ -13,6 +13,8 @@ using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.InputListeners;
 using MonoGame.Extended.ViewportAdapters;
 using Newtonsoft.Json;
+using System.Globalization;
+using System.Threading;
 
 namespace Engine
 {
@@ -32,6 +34,7 @@ namespace Engine
 
 		public GameRoot ()
 		{
+            ForceCultureSettings();
 			Instance = this;
 			graphics = new GraphicsDeviceManager (this);
             graphics.IsFullScreen = true;
@@ -43,6 +46,20 @@ namespace Engine
             graphics.PreferredBackBufferHeight = 720;
 			Content.RootDirectory = "Content";
 		}
+
+        public void ForceCultureSettings()
+        {
+            string CultureName = Thread.CurrentThread.CurrentCulture.Name;
+            CultureInfo ci = new CultureInfo(CultureName);
+            if (ci.NumberFormat.NegativeSign != "-" || ci.NumberFormat.NumberGroupSeparator != "," || ci.NumberFormat.NumberDecimalSeparator != "." || ci.NumberFormat.NumberDecimalDigits != 2)
+            {
+                ci.NumberFormat.NegativeSign = "-";
+                ci.NumberFormat.NumberGroupSeparator = ",";
+                ci.NumberFormat.NumberDecimalSeparator = ".";
+                ci.NumberFormat.NumberDecimalDigits = 2;
+                Thread.CurrentThread.CurrentCulture = ci;
+            }
+        }
 		protected override void Initialize ()
 		{
             GameRoot.BoxingViewport = new BoxingViewportAdapter(Window, GraphicsDevice, (int)VirtualSize.X, (int)VirtualSize.Y, 0, 0);

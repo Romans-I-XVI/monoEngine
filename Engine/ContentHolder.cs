@@ -84,12 +84,12 @@ namespace Engine
                 foreach (AvailableMusic available_song in Enum.GetValues(typeof(AvailableMusic)))
                 {
                     string enum_string = available_song.ToString();
-                    _songs.Add(available_song, game.Content.Load<Song>("music/" + enum_string));
+                    Utilities.Try(() => _songs.Add(available_song, game.Content.Load<Song>("music/" + enum_string)));
                 }
                 foreach (AvailableSounds available_sound in Enum.GetValues(typeof(AvailableSounds)))
                 {
                     string enum_string = available_sound.ToString();
-                    _sounds.Add(available_sound, game.Content.Load<SoundEffect>("sounds/" + enum_string));
+                    Utilities.Try(() => _sounds.Add(available_sound, game.Content.Load<SoundEffect>("sounds/" + enum_string)));
                 }
                 IsInitialized = true;
             }

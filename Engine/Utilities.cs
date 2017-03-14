@@ -18,5 +18,20 @@ namespace Engine
         {
             return FitAreaToArea(source_area.X, source_area.Y, dest_area.X, dest_area.Y);
         }
+
+        public static void Try(Action action)
+        {
+            if (action != null)
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred: '{0}'", ex);
+                }
+            }
+        }
     }
 }

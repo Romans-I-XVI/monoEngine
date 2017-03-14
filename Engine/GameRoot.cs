@@ -88,13 +88,12 @@ namespace Engine
             RectangleDrawer.Initialize();
 			base.Initialize ();
 		}
-			
 
 		protected override void LoadContent ()
 		{
 			spriteBatch = new SpriteBatch (GraphicsDevice);
-            MediaPlayer.Volume = 0.5f;
-            SoundEffect.MasterVolume = 0.5f;
+            Utilities.Try(() => MediaPlayer.Volume = 0.5f);
+            Utilities.Try(() => SoundEffect.MasterVolume = 0.5f);
             ContentHolder.Init(this);
             Room r;
             r = new Room_Main();
@@ -117,7 +116,7 @@ namespace Engine
             r.Initialize();
             new Selector();
             Selector.IsVisible = false;
-            MediaPlayer.IsRepeating = true;
+            Utilities.Try(() => MediaPlayer.IsRepeating = true);
             RoomManager.ChangeRoom<Room_Intro>();
 		}
 		protected override void Update (GameTime gameTime)

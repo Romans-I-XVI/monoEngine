@@ -57,7 +57,7 @@ namespace Engine
 
         public static T GetFirst<T>() where T : Entity
         {
-            return _entities.OfType<T>().First();
+            return _entities.OfType<T>().FirstOrDefault();
         }
 
         public static IFocusable GetFocused()

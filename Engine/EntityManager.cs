@@ -113,7 +113,7 @@ namespace Engine
                     var second_entity_list = _entities.ToList();
                     foreach (var entity in second_entity_list)
                     {
-                        if (entity.renderTarget == renderCanvas)
+                        if (entity.renderTarget == renderCanvas && entity.ShouldDraw)
                         {
                             entity.onDrawBegin(spriteBatch);
                             entity.onDraw(spriteBatch);

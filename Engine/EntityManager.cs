@@ -108,7 +108,8 @@ namespace Engine
                 if (renderCanvas.ShouldDraw)
                 {
                     GameRoot.graphicsDevice.SetRenderTarget(renderCanvas.othersRenderTarget);
-                    GameRoot.graphicsDevice.Clear(renderCanvas.BackgroundColor);
+                    if (renderCanvas.ShouldClear)
+                        GameRoot.graphicsDevice.Clear(renderCanvas.BackgroundColor);
                     spriteBatch.Begin(SpriteSortMode.BackToFront);
                     var second_entity_list = _entities.ToList();
                     foreach (var entity in second_entity_list)

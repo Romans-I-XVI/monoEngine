@@ -12,10 +12,13 @@ namespace Engine
 {
     static class EntityManager
     {
+        public static float TimeSinceLastButtonPress { get { return _last_button_press_timer.TotalMilliseconds; } }
+        public static bool ButtonHasBeenPressed { get; private set; }
         public static bool EnableGamepadSupport = true;
         public static List<Entity> Entities { get { return _entities; } }
         static List<Entity> _entities = new List<Entity>();
         private static bool _processed_focusable_input;
+        private readonly static GameTimeSpan _last_button_press_timer = new GameTimeSpan();
         public static bool ProcessedFocusableInput { get { return _processed_focusable_input; } }
 
 
@@ -204,6 +207,8 @@ namespace Engine
         {
             public static void onButtonDown(object sender, GamePadEventArgs e)
             {
+                ButtonHasBeenPressed = true;
+                _last_button_press_timer.Mark();
                 if (!EnableGamepadSupport)
                     return;
                 var entity_list = _entities.ToList();

@@ -31,6 +31,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\EngineInputState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\WindowViewportAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\ViewportAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\ScalingViewportAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\DefaultViewportAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\BoxingViewportAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
@@ -38,5 +43,6 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)BitmapFonts\" />
     <Folder Include="$(MSBuildThisFileDirectory)Input\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewportAdapters\" />
   </ItemGroup>
 </Project>

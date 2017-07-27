@@ -43,12 +43,6 @@ namespace Engine
 
 		public virtual void onMouse(MouseState state) {}
 
-		public virtual void onMouseDown(MouseEventArgs e) {}
-
-		public virtual void onMouseUp(MouseEventArgs e) {}
-
-		public virtual void onMouseWheel(MouseEventArgs e) {}
-
 		public virtual void onKey(KeyboardState state) {}
 
 		public virtual void onKeyDown(KeyboardEventArgs e) {}

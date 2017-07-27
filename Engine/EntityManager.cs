@@ -5,8 +5,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Input.InputListeners;
-using MonoGame.Extended.ViewportAdapters;
 
 namespace Engine
 {
@@ -14,7 +12,6 @@ namespace Engine
     {
         public static float TimeSinceLastButtonPress { get { return _last_button_press_timer.TotalMilliseconds; } }
         public static bool ButtonHasBeenPressed { get; private set; }
-        public static bool EnableGamepadSupport = true;
         public static List<Entity> Entities { get { return _entities; } }
         static List<Entity> _entities = new List<Entity>();
         private static bool _processed_focusable_input;
@@ -75,15 +72,8 @@ namespace Engine
 
         public static void Update(GameTime gameTime)
         {
-            MouseState mouseState = Mouse.GetState();
-            KeyboardState keyboardState = Keyboard.GetState();
-            Dictionary<PlayerIndex, GamePadState> gamepadStates = new Dictionary<PlayerIndex, GamePadState>()
-            {
-                {PlayerIndex.One, GamePad.GetState(PlayerIndex.One)},
-                {PlayerIndex.Two, GamePad.GetState(PlayerIndex.Two)},
-                {PlayerIndex.Three, GamePad.GetState(PlayerIndex.Three)},
-                {PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
-            };
+            EngineInputState inputState = GetEngineInputState();
+
             var entity_list = _entities.ToList();
 
             _processed_focusable_input = false;
@@ -91,9 +81,19 @@ namespace Engine
             {
                 if (ShouldProcessInput(entity))
                 {
-                    entity.onMouse(mouseState);
-                    entity.onKey(keyboardState);
-                    entity.onButton(gamepadStates);
+                    foreach (var key_press in inputState.KeyPresses)
+                        entity.onKeyDown(key_press);
+                    foreach (var button_press in inputState.GamepadPresses)
+                        entity.onButtonDown(button_press);
+                    
+                    entity.onKey(inputState.KeyboardState);
+                    entity.onButton(inputState.GamepadStates);
+                    entity.onMouse(inputState.MouseState);
+
+                    foreach (var key_release in inputState.KeyReleases)
+                        entity.onKeyUp(key_release);
+                    foreach (var button_release in inputState.GamepadReleases)
+                        entity.onButtonUp(button_release);
                 }
                 entity.onUpdate(gameTime);
                 if (entity.IsExpired)
@@ -149,87 +149,39 @@ namespace Engine
             spriteBatch.End();
         }
 
-        public static class MouseEvents
+        public static EngineInputState GetEngineInputState()
         {
-            public static void onMouseDown(object sender, MouseEventArgs e)
+            Input.Update();
+            
+            var keyboard_pressed_events = new List<KeyboardEventArgs>();
+            var keyboard_released_events = new List<KeyboardEventArgs>();
+            var gamepad_pressed_events = new List<GamePadEventArgs>();
+            var gamepad_released_events = new List<GamePadEventArgs>();
+
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
-                _processed_focusable_input = false;
-                var entity_list = _entities.ToList();
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onMouseDown(e);
+                if (Input.Keyboard.isPressed(key))
+                    keyboard_pressed_events.Add(new KeyboardEventArgs(key));
+                else if (Input.Keyboard.isReleased(key))
+                    keyboard_released_events.Add(new KeyboardEventArgs(key));
             }
 
-            public static void onMouseUp(object sender, MouseEventArgs e)
+            foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
             {
-                _processed_focusable_input = false;
-                var entity_list = _entities.ToList();
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onMouseUp(e);
+                foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
+                {
+                    if (Input.Gamepad.isPressed(button, player))
+                    {
+                        ButtonHasBeenPressed = true;
+                        _last_button_press_timer.Mark();
+                        gamepad_pressed_events.Add(new GamePadEventArgs(player, button));
+                    }
+                    else if (Input.Gamepad.isReleased(button, player))
+                        gamepad_released_events.Add(new GamePadEventArgs(player, button));
+                }
             }
 
-            public static void onMouseWheel(object sender, MouseEventArgs e)
-            {
-                _processed_focusable_input = false;
-                var entity_list = _entities.ToList();
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onMouseWheel(e);
-            }
-
-        }
-
-        public static class KeyboardEvents
-        {
-
-            public static void onKeyPressed(object sender, KeyboardEventArgs e)
-            {
-                _processed_focusable_input = false;
-                var entity_list = _entities.ToList();
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onKeyDown(e);
-            }
-
-            public static void onKeyReleased(object sender, KeyboardEventArgs e)
-            {
-                _processed_focusable_input = false;
-                var entity_list = _entities.ToList();
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onKeyUp(e);
-            }
-
-        }
-
-        public static class GamepadEvents
-        {
-            public static void onButtonDown(object sender, GamePadEventArgs e)
-            {
-                ButtonHasBeenPressed = true;
-                _last_button_press_timer.Mark();
-                if (!EnableGamepadSupport)
-                    return;
-                var entity_list = _entities.ToList();
-
-                _processed_focusable_input = false;
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onButtonDown(e);
-            }
-
-            public static void onButtonUp(object sender, GamePadEventArgs e)
-            {
-                if (!EnableGamepadSupport)
-                    return;
-                var entity_list = _entities.ToList();
-
-                _processed_focusable_input = false;
-                foreach (var entity in entity_list)
-                    if (ShouldProcessInput(entity))
-                        entity.onButtonUp(e);
-            }
+            return new EngineInputState(keyboard_pressed_events, keyboard_released_events, gamepad_pressed_events, gamepad_released_events);
         }
 
         private static bool ShouldProcessInput(Entity entity)

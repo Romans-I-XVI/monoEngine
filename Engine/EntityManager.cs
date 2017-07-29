@@ -108,11 +108,33 @@ namespace Engine
                         entity.onButtonUp(button_release);
                 }
                 entity.onUpdate(gameTime);
-                if (entity.IsExpired)
-                    entity.onDestroy();
+
             }
 
-            _entities = _entities.Where(x => !x.IsExpired).ToList();
+            // Destroying Expired Entities
+            int goto_count = 0;
+            destroy_expired_entities:
+            var expired_entities = _entities.Where(x => x.IsExpired).ToList();
+            foreach (var entity in expired_entities)
+            {
+                entity.onDestroy();
+                _entities.Remove(entity);
+            }
+            if (_entities.Where(x => x.IsExpired).Count() > 0)
+            {
+                goto_count++;
+                if (goto_count < 250)
+                {
+                    if (Engine.Settings.Debug)
+                        Console.WriteLine("Recursive Destruction Occured - Count: " + goto_count.ToString());
+                    goto destroy_expired_entities;
+                }
+                else
+                {
+                    throw new Exception("WARNING! You appear to have an endless loop of creating and destroying entities!");
+                }
+            }
+            
         }
 
         public static void DrawToRenderTargets(SpriteBatch spriteBatch)

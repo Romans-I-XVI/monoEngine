@@ -32,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\ScalingViewportAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\DefaultViewportAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\BoxingViewportAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

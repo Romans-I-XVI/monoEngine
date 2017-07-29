@@ -79,20 +79,32 @@ namespace Engine
             _processed_focusable_input = false;
             foreach (var entity in entity_list)
             {
-                if (ShouldProcessInput(entity))
+                foreach (var key_press in inputState.KeyPresses)
                 {
-                    foreach (var key_press in inputState.KeyPresses)
+                    if (ShouldProcessInput(entity))
                         entity.onKeyDown(key_press);
-                    foreach (var button_press in inputState.GamepadPresses)
+                }
+                foreach (var button_press in inputState.GamepadPresses)
+                {
+                    if (ShouldProcessInput(entity))
                         entity.onButtonDown(button_press);
-                    
+                }
+
+                if (ShouldProcessInput(entity))
                     entity.onKey(inputState.KeyboardState);
+                if (ShouldProcessInput(entity))
                     entity.onButton(inputState.GamepadStates);
+                if (ShouldProcessInput(entity))
                     entity.onMouse(inputState.MouseState);
 
-                    foreach (var key_release in inputState.KeyReleases)
+                foreach (var key_release in inputState.KeyReleases)
+                {
+                    if (ShouldProcessInput(entity))
                         entity.onKeyUp(key_release);
-                    foreach (var button_release in inputState.GamepadReleases)
+                }
+                foreach (var button_release in inputState.GamepadReleases)
+                {
+                    if (ShouldProcessInput(entity))
                         entity.onButtonUp(button_release);
                 }
                 entity.onUpdate(gameTime);

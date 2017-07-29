@@ -15,7 +15,7 @@ namespace Engine
         private static readonly Dictionary<AvailableTextures, Texture2D> _textures = new Dictionary<AvailableTextures, Texture2D>();
         private static readonly Dictionary<AvailableMusic, Song> _songs = new Dictionary<AvailableMusic, Song>();
         private static readonly Dictionary<AvailableSounds, SoundEffect> _sounds = new Dictionary<AvailableSounds, SoundEffect>();
-        private static readonly Dictionary<AvailableFonts, SpriteFont> _bitmap_fonts = new Dictionary<AvailableFonts, SpriteFont>();
+        private static readonly Dictionary<AvailableFonts, SpriteFont> _fonts = new Dictionary<AvailableFonts, SpriteFont>();
         private static bool IsInitialized = false;
 
         public static Texture2D Get(AvailableTextures texture)
@@ -34,7 +34,7 @@ namespace Engine
         {
             if (IsInitialized)
             {
-                return _bitmap_fonts[font];
+                return _fonts[font];
             }
             else
             {
@@ -78,7 +78,7 @@ namespace Engine
                 foreach (AvailableFonts available_font in Enum.GetValues(typeof(AvailableFonts)))
                 {
                     string enum_string = available_font.ToString();
-                    _bitmap_fonts.Add(available_font, game.Content.Load<SpriteFont>("fonts/" + enum_string));
+                    _fonts.Add(available_font, game.Content.Load<SpriteFont>("fonts/" + enum_string));
                 }
                 foreach (AvailableMusic available_song in Enum.GetValues(typeof(AvailableMusic)))
                 {

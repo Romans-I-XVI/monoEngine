@@ -23,10 +23,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Directions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Room.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParticleEmitter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BitmapFonts\BitmapFontRegion.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BitmapFonts\BitmapFontReader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BitmapFonts\BitmapFontExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BitmapFonts\BitmapFont.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\KeyboardEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Input.cs" />
@@ -41,7 +37,6 @@
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)BitmapFonts\" />
     <Folder Include="$(MSBuildThisFileDirectory)Input\" />
     <Folder Include="$(MSBuildThisFileDirectory)ViewportAdapters\" />
   </ItemGroup>

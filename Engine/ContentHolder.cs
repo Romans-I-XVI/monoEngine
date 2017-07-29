@@ -5,8 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-using MonoGame.Extended.BitmapFonts;
-
 //This should reference what the current project is.
 using MonoGameTiles;
 
@@ -17,7 +15,7 @@ namespace Engine
         private static readonly Dictionary<AvailableTextures, Texture2D> _textures = new Dictionary<AvailableTextures, Texture2D>();
         private static readonly Dictionary<AvailableMusic, Song> _songs = new Dictionary<AvailableMusic, Song>();
         private static readonly Dictionary<AvailableSounds, SoundEffect> _sounds = new Dictionary<AvailableSounds, SoundEffect>();
-        private static readonly Dictionary<AvailableFonts, BitmapFont> _bitmap_fonts = new Dictionary<AvailableFonts, BitmapFont>();
+        private static readonly Dictionary<AvailableFonts, SpriteFont> _bitmap_fonts = new Dictionary<AvailableFonts, SpriteFont>();
         private static bool IsInitialized = false;
 
         public static Texture2D Get(AvailableTextures texture)
@@ -32,7 +30,7 @@ namespace Engine
             }
         }
 
-        public static BitmapFont Get(AvailableFonts font)
+        public static SpriteFont Get(AvailableFonts font)
         {
             if (IsInitialized)
             {
@@ -80,7 +78,7 @@ namespace Engine
                 foreach (AvailableFonts available_font in Enum.GetValues(typeof(AvailableFonts)))
                 {
                     string enum_string = available_font.ToString();
-                    _bitmap_fonts.Add(available_font, game.Content.Load<BitmapFont>("fonts/" + enum_string));
+                    _bitmap_fonts.Add(available_font, game.Content.Load<SpriteFont>("fonts/" + enum_string));
                 }
                 foreach (AvailableMusic available_song in Enum.GetValues(typeof(AvailableMusic)))
                 {

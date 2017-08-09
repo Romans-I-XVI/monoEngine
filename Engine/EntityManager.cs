@@ -75,10 +75,14 @@ namespace Engine
             EngineInputState inputState = GetEngineInputState();
 
             var entity_list = _entities.ToList();
+            var starting_room = RoomManager.CurrentRoom;
 
             _processed_focusable_input = false;
             foreach (var entity in entity_list)
             {
+                if (RoomManager.CurrentRoom != starting_room)
+                    break;
+                
                 foreach (var key_press in inputState.KeyPresses)
                 {
                     if (ShouldProcessInput(entity))

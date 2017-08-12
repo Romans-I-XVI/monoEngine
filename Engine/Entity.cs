@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Input.InputListeners;
 
 namespace Engine
 {
@@ -42,12 +41,6 @@ namespace Engine
 		public virtual void onChangeRoom(Room previous_room, Room next_room) {}
 
 		public virtual void onMouse(MouseState state) {}
-
-		public virtual void onMouseDown(MouseEventArgs e) {}
-
-		public virtual void onMouseUp(MouseEventArgs e) {}
-
-		public virtual void onMouseWheel(MouseEventArgs e) {}
 
 		public virtual void onKey(KeyboardState state) {}
 

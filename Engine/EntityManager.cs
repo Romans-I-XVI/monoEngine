@@ -14,9 +14,8 @@ namespace Engine
         public static bool ButtonHasBeenPressed { get; private set; }
         public static List<Entity> Entities { get { return _entities; } }
         static List<Entity> _entities = new List<Entity>();
-        private static bool _processed_focusable_input;
+        private static Entity _current_focusable_entity = null;
         private readonly static GameTimeSpan _last_button_press_timer = new GameTimeSpan();
-        public static bool ProcessedFocusableInput { get { return _processed_focusable_input; } }
 
 
         public static void ChangeRoom(Room previous_room, Room next_room)
@@ -77,7 +76,7 @@ namespace Engine
             var entity_list = _entities.ToList();
             var starting_room = RoomManager.CurrentRoom;
 
-            _processed_focusable_input = false;
+            _current_focusable_entity = null;
             foreach (var entity in entity_list)
             {
                 if (RoomManager.CurrentRoom != starting_room)
@@ -228,10 +227,17 @@ namespace Engine
             {
                 return true;
             }
-            else if (entity is IFocusable && ((IFocusable)entity).IsFocused && !_processed_focusable_input)
+            else if (entity is IFocusable && ((IFocusable)entity).IsFocused)
             {
-                _processed_focusable_input = true;
-                return true;
+                if (_current_focusable_entity == null)
+                {
+                    _current_focusable_entity = entity;
+                    return true;
+                }
+                else if (_current_focusable_entity == entity)
+                {
+                    return true;
+                }
             }
             return false;
         }

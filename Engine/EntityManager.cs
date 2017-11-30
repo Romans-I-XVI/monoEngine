@@ -197,6 +197,9 @@ namespace Engine
 
             foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
+                if (key == Keys.ChatPadOrange || key == Keys.ChatPadGreen)
+                    continue;
+
                 if (Input.Keyboard.isPressed(key))
                     keyboard_pressed_events.Add(new KeyboardEventArgs(key));
                 else if (Input.Keyboard.isReleased(key))

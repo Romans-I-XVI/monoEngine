@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 namespace Engine
 {
@@ -32,6 +33,28 @@ namespace Engine
                     Console.WriteLine("An error occurred: '{0}'", ex);
                 }
             }
+        }
+
+        public static string GetSmallestInDictionary(Dictionary<string, int> dic)
+        {
+            string smallest_key = null;
+
+            foreach (string key in dic.Keys)
+            {
+                if (smallest_key != null)
+                {
+                    if (dic[key] < dic[smallest_key])
+                    {
+                        smallest_key = key;
+                    }
+                }
+                else
+                {
+                    smallest_key = key;
+                }
+            }
+
+            return smallest_key;
         }
     }
 }

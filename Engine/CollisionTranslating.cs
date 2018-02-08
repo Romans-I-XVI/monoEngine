@@ -26,7 +26,7 @@ namespace Engine
             distances["top"] = Math.Abs(rectangle1.Bottom - rectangle2.Top);
             distances["bottom"] = Math.Abs(rectangle1.Top - rectangle2.Bottom);
 
-            var smallest_distance = GameUtilities.GetSmallestInDictionary(distances);
+            var smallest_distance = Utilities.GetSmallestInDictionary(distances);
 
             if (smallest_distance == "left")
                 translation_amount.X = rectangle2.Left - rectangle1.Right;

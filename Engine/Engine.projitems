@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -9,6 +9,8 @@
     <Import_RootNamespace>Engine</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionChecking.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionTranslating.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite.cs" />
@@ -27,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\EngineInputState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VectorMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\WindowViewportAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\ViewportAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\ScalingViewportAdapter.cs" />

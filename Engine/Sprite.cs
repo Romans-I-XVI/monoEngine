@@ -23,6 +23,7 @@ namespace Engine
 		public Texture2D Texture { get; private set; }
 		public float Orientation = 0f;
 		public Vector2 Origin = new Vector2();
+        public Vector2 Offset = new Vector2();
 		public Vector2 Scale = new Vector2(1.0f, 1.0f);
 		public float Depth = 0.5f;
         public float Alpha = 255f;
@@ -35,7 +36,7 @@ namespace Engine
 
 		public void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
-            spriteBatch.Draw (Texture, position: position, origin: Origin, rotation: Orientation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
+            spriteBatch.Draw (Texture, position: position + Offset, origin: Origin, rotation: Orientation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}
 
         public void AutoOrigin(DrawFrom draw_from)

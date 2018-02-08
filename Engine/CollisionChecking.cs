@@ -9,6 +9,7 @@ namespace Engine
 {
     public static class CollisionChecking
     {
+        // Rectangle to Rectangle
         public static bool RectRect(Rectangle rect1, Rectangle rec2)
         {
             return RectRect(rect1.X, rect1.Y, rect1.Width, rect1.Height, rec2.X, rec2.Y, rec2.Width, rec2.Height);
@@ -22,18 +23,32 @@ namespace Engine
             y2 < y1 + h1);
         }
 
-        public static bool CircleCircle(int x1, int y1, int r1, int x2, int y2, int r2)
+        // Circle to Circle
+        public static bool CircleCircle(Circle circle1, Circle circle2)
         {
-            var dist = Math.Sqrt((x1 - x2) ^ 2 + (y1 - y2) ^ 2);
+            return CircleCircle(circle1.X, circle1.Y, circle1.Radius, circle2.X, circle2.Y, circle2.Radius);
+        }
+
+        public static bool CircleCircle(int x1, int y1, float r1, int x2, int y2, float r2)
+        {
+            int distance_x = x1 - x2;
+            int distance_y = y1 - y2;
+            var dist = Math.Sqrt(distance_x * distance_x + distance_y * distance_y);
             return (dist <= r1 + r2);
         }
 
-        public static bool CircleRect(int circle_x, int circle_y, int circle_r, Rectangle rectangle)
+        // Circle to Rectangle
+        public static bool CircleRect(Circle circle, Rectangle rectangle)
+        {
+            return CircleRect(circle.X, circle.Y, circle.Radius, rectangle);
+        }
+
+        public static bool CircleRect(int circle_x, int circle_y, float circle_r, Rectangle rectangle)
         {
             return CircleRect(circle_x, circle_y, circle_r, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
         }
 
-        public static bool CircleRect(int cx, int cy, int cr, int rx, int ry, int rw, int rh )
+        public static bool CircleRect(int cx, int cy, float cr, int rx, int ry, int rw, int rh )
         {
             var circle_distance_x = Math.Abs(cx - rx - rw / 2);
             var circle_distance_y = Math.Abs(cy - ry - rh / 2);
@@ -46,6 +61,7 @@ namespace Engine
             return (Math.Pow(circle_distance_x - rw / 2, 2) + Math.Pow(circle_distance_y - rh / 2, 2)) <= Math.Pow(cr, 2);
         }
 
+        // Point to Rectangle
         public static bool PointRect(Point point, Rectangle rectangle)
         {
             return PointRect(point.X, point.Y, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
@@ -59,6 +75,26 @@ namespace Engine
         public static bool PointRect(int px, int py, int rx, int ry, int rw, int rh)
         {
             return (px >= rx && px < (rx + rw) && py >= ry && py < (ry + rh));
+        }
+
+        // Point to Circle
+        public static bool PointCircle(Point point, Circle circle)
+        {
+            return PointCircle(point.X, point.Y, circle.X, circle.Y, circle.Radius);
+        }
+        
+        public static bool PointCircle(Vector2 point, Circle circle)
+        {
+            return PointCircle((int)point.X, (int)point.Y, circle.X, circle.Y, circle.Radius);
+        }
+
+        public static bool PointCircle(int px, int py, int cx, int cy, float cr)
+        {
+
+            int distance_x = px - cx;
+            int distance_y = py - cy;
+            var dist = Math.Sqrt(distance_x * distance_x + distance_y * distance_y);
+            return (dist <= cr);
         }
     }
 }

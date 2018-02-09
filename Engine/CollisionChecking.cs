@@ -9,10 +9,46 @@ namespace Engine
 {
     public static class CollisionChecking
     {
-        // Rectangle to Rectangle
-        public static bool RectRect(Rectangle rect1, Rectangle rec2)
+        // A method with overrides for checking anything against anything without specifying the type of collision
+        public static bool Check(Rectangle rect1, Rectangle rect2)
         {
-            return RectRect(rect1.X, rect1.Y, rect1.Width, rect1.Height, rec2.X, rec2.Y, rec2.Width, rec2.Height);
+            return RectRect(rect1, rect2);
+        }
+
+        public static bool Check(Circle circle1, Circle circle2)
+        {
+            return CircleCircle(circle1, circle2);
+        }
+
+        public static bool Check(Circle circle, Rectangle rect)
+        {
+            return CircleRect(circle, rect);
+        }
+
+        public static bool Check(Point point, Rectangle rect)
+        {
+            return PointRect(point, rect);
+        }
+
+        public static bool Check(Vector2 point, Rectangle rect)
+        {
+            return PointRect(point, rect);
+        }
+
+        public static bool Check(Point point, Circle circle)
+        {
+            return PointCircle(point, circle);
+        }
+
+        public static bool Check(Vector2 point, Circle circle)
+        {
+            return PointCircle(point, circle);
+        }
+
+        // Rectangle to Rectangle
+        public static bool RectRect(Rectangle rect1, Rectangle rect2)
+        {
+            return RectRect(rect1.X, rect1.Y, rect1.Width, rect1.Height, rect2.X, rect2.Y, rect2.Width, rect2.Height);
         }
 
         public static bool RectRect(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2)

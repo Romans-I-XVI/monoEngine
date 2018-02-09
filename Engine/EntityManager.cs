@@ -82,6 +82,14 @@ namespace Engine
                 if (RoomManager.CurrentRoom != starting_room)
                     break;
                 
+                foreach (var touch_press in inputState.TouchPresses)
+                {
+                    if (entity is ITouchable && ShouldProcessInput(entity))
+                    {
+                        ((ITouchable)entity).onTouchPressed(touch_press);
+                    }
+                }
+
                 foreach (var key_press in inputState.KeyPresses)
                 {
                     if (ShouldProcessInput(entity))
@@ -93,12 +101,22 @@ namespace Engine
                         entity.onButtonDown(button_press);
                 }
 
+                if (entity is ITouchable && ShouldProcessInput(entity))
+                    ((ITouchable)entity).onTouch(inputState.TouchState);
                 if (ShouldProcessInput(entity))
                     entity.onKey(inputState.KeyboardState);
                 if (ShouldProcessInput(entity))
                     entity.onButton(inputState.GamepadStates);
                 if (ShouldProcessInput(entity))
                     entity.onMouse(inputState.MouseState);
+
+                foreach (var touch_release in inputState.TouchReleases)
+                {
+                    if (entity is ITouchable && ShouldProcessInput(entity))
+                    {
+                        ((ITouchable)entity).onTouchReleased(touch_release);
+                    }
+                }
 
                 foreach (var key_release in inputState.KeyReleases)
                 {
@@ -221,7 +239,7 @@ namespace Engine
                 }
             }
 
-            return new EngineInputState(keyboard_pressed_events, keyboard_released_events, gamepad_pressed_events, gamepad_released_events);
+            return new EngineInputState(keyboard_pressed_events, keyboard_released_events, gamepad_pressed_events, gamepad_released_events, Input.Touch.PressedTouches, Input.Touch.ReleasedTouches);
         }
 
         private static bool ShouldProcessInput(Entity entity)

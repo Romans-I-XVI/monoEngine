@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Engine
 {
@@ -12,6 +12,7 @@ namespace Engine
 		public static void Update() {
 			Input.Keyboard.Update ();
 			Input.Gamepad.Update ();
+            Input.Touch.Update();
 		}
 
 		static public class Keyboard {
@@ -22,7 +23,6 @@ namespace Engine
 				previousKeyboardState = currentKeyboardState;
 				currentKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState ();
 			}
-
 
 			public static bool isPressed(Keys key){
 				return (!previousKeyboardState.IsKeyDown (key) && currentKeyboardState.IsKeyDown (key));
@@ -115,6 +115,37 @@ namespace Engine
 				return currentGamepadState [player_index].ThumbSticks.Right;
 			}
 		}
-	}
+
+        public static class Touch
+        {
+            public static TouchCollection PressedTouches = new TouchCollection();
+            public static TouchCollection ReleasedTouches = new TouchCollection();
+
+            private static TouchCollection currentTouchState = TouchPanel.GetState();
+            private static TouchCollection previousTouchState = TouchPanel.GetState();
+
+            public static void Update()
+            {
+                previousTouchState = currentTouchState;
+                currentTouchState = TouchPanel.GetState();
+
+                PressedTouches = new TouchCollection();
+                ReleasedTouches = new TouchCollection();
+
+                foreach (var touch in previousTouchState)
+                {
+                    if (!currentTouchState.Contains(touch))
+                        ReleasedTouches.Add(touch);
+                }
+
+                foreach (var touch in currentTouchState)
+                {
+                    var previousLocation = new TouchLocation();
+                    if (!touch.TryGetPreviousLocation(out previousLocation))
+                        PressedTouches.Add(touch);
+                }
+            }
+        }
+    }
 }
 

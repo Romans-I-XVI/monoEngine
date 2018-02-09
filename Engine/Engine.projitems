@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Circle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITouchable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RectangleDrawer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderCanvas.cs" />

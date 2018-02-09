@@ -17,10 +17,10 @@ namespace Engine
         public List<KeyboardEventArgs> KeyReleases { get; private set; }
         public List<GamePadEventArgs> GamepadPresses { get; private set; }
         public List<GamePadEventArgs> GamepadReleases { get; private set; }
-        public TouchCollection TouchPresses { get; private set; }
-        public TouchCollection TouchReleases { get; private set; }
+        public List<TouchLocation> TouchPresses { get; private set; }
+        public List<TouchLocation> TouchReleases { get; private set; }
 
-        public EngineInputState(List<KeyboardEventArgs> key_presses, List<KeyboardEventArgs> key_releases, List<GamePadEventArgs> gamepad_presses, List<GamePadEventArgs> gamepad_releases, TouchCollection touch_presses, TouchCollection touch_releases)
+        public EngineInputState(List<KeyboardEventArgs> key_presses, List<KeyboardEventArgs> key_releases, List<GamePadEventArgs> gamepad_presses, List<GamePadEventArgs> gamepad_releases, List<TouchLocation> touch_presses, List<TouchLocation> touch_releases)
         {
             MouseState = Mouse.GetState();
             KeyboardState = Keyboard.GetState();

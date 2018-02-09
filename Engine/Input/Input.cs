@@ -118,31 +118,26 @@ namespace Engine
 
         public static class Touch
         {
-            public static TouchCollection PressedTouches = new TouchCollection();
-            public static TouchCollection ReleasedTouches = new TouchCollection();
+            public static List<TouchLocation> PressedTouches = new List<TouchLocation>();
+            public static List<TouchLocation> ReleasedTouches = new List<TouchLocation>();
 
             private static TouchCollection currentTouchState = TouchPanel.GetState();
-            private static TouchCollection previousTouchState = TouchPanel.GetState();
 
             public static void Update()
             {
-                previousTouchState = currentTouchState;
                 currentTouchState = TouchPanel.GetState();
 
-                PressedTouches = new TouchCollection();
-                ReleasedTouches = new TouchCollection();
-
-                foreach (var touch in previousTouchState)
-                {
-                    if (!currentTouchState.Contains(touch))
-                        ReleasedTouches.Add(touch);
-                }
+                PressedTouches.Clear();
+                ReleasedTouches.Clear();
 
                 foreach (var touch in currentTouchState)
                 {
-                    var previousLocation = new TouchLocation();
-                    if (!touch.TryGetPreviousLocation(out previousLocation))
-                        PressedTouches.Add(touch);
+                    var translated_point = GameRoot.BoxingViewport.PointToScreen((int)touch.Position.X, (int)touch.Position.Y);
+                    var translated_touch = new TouchLocation(touch.Id, touch.State, new Vector2(translated_point.X, translated_point.Y));
+                    if (touch.State == TouchLocationState.Pressed)
+                        PressedTouches.Add(translated_touch);
+                    else if (touch.State == TouchLocationState.Released)
+                        ReleasedTouches.Add(translated_touch);
                 }
             }
         }

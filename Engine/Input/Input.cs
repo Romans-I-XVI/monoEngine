@@ -120,24 +120,30 @@ namespace Engine
         {
             public static List<TouchLocation> PressedTouches = new List<TouchLocation>();
             public static List<TouchLocation> ReleasedTouches = new List<TouchLocation>();
-
-            private static TouchCollection currentTouchState = TouchPanel.GetState();
+            public static TouchCollection CurrentTouches = new TouchCollection();
 
             public static void Update()
             {
-                currentTouchState = TouchPanel.GetState();
+                var touch_state = TouchPanel.GetState();
+                TouchLocation[] translated_touch_array = new TouchLocation[touch_state.Count];
+                for (int i = 0; i < touch_state.Count; i++)
+                {
+                    TouchLocation touch = touch_state[i];
+                    var translated_point = GameRoot.BoxingViewport.PointToScreen((int)touch.Position.X, (int)touch.Position.Y);
+                    var translated_touch = new TouchLocation(touch.Id, touch.State, new Vector2(translated_point.X, translated_point.Y));
+                    translated_touch_array[i] = translated_touch;
+                }
 
+                CurrentTouches = new TouchCollection(translated_touch_array);
                 PressedTouches.Clear();
                 ReleasedTouches.Clear();
 
-                foreach (var touch in currentTouchState)
+                foreach (var touch in CurrentTouches)
                 {
-                    var translated_point = GameRoot.BoxingViewport.PointToScreen((int)touch.Position.X, (int)touch.Position.Y);
-                    var translated_touch = new TouchLocation(touch.Id, touch.State, new Vector2(translated_point.X, translated_point.Y));
                     if (touch.State == TouchLocationState.Pressed)
-                        PressedTouches.Add(translated_touch);
+                        PressedTouches.Add(touch);
                     else if (touch.State == TouchLocationState.Released)
-                        ReleasedTouches.Add(translated_touch);
+                        ReleasedTouches.Add(touch);
                 }
             }
         }

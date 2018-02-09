@@ -31,7 +31,7 @@ namespace Engine
                 {PlayerIndex.Three, GamePad.GetState(PlayerIndex.Three)},
                 {PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
             };
-            TouchState = TouchPanel.GetState();
+            TouchState = Input.Touch.CurrentTouches;
             KeyPresses = key_presses;
             KeyReleases = key_releases;
             GamepadPresses = gamepad_presses;

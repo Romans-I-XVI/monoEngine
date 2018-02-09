@@ -34,7 +34,7 @@ namespace Engine
 			Texture = texture;
 		}
 
-		public void Draw (SpriteBatch spriteBatch, Vector2 position)
+		public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
             spriteBatch.Draw (Texture, position: position + Offset, origin: Origin, rotation: Orientation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}

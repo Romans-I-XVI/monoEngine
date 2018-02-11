@@ -13,7 +13,7 @@ namespace Engine
         public void Mark(float mark_to = 0)
         {
             _timestamp = DateTime.Now;
-            _timestamp.AddMilliseconds(mark_to);
+            _timestamp = _timestamp.AddMilliseconds(mark_to * -1);
         }
 
         public float TotalMilliseconds

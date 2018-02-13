@@ -16,6 +16,7 @@ namespace Engine
 		public Vector2 Position = new Vector2();
 		public bool IsExpired = false;
         public bool IsPersistent = false;
+        public bool IsPauseable = true;
         public bool ShouldDraw = true;
         
 		protected Entity ()

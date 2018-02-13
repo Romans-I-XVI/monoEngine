@@ -16,6 +16,11 @@ namespace Engine
         static List<Entity> _entities = new List<Entity>();
         private static Entity _current_focusable_entity = null;
         private readonly static GameTimeSpan _last_button_press_timer = new GameTimeSpan();
+        private static bool _paused = false;
+
+        public static void Pause() { _paused = true; }
+        public static void Resume() { _paused = false; }
+        public static bool IsPaused() { return _paused; }
 
 
         public static void ChangeRoom(Room previous_room, Room next_room)
@@ -75,13 +80,17 @@ namespace Engine
 
             var entity_list = _entities.ToList();
             var starting_room = RoomManager.CurrentRoom;
+            bool started_paused = _paused;
 
             _current_focusable_entity = null;
             foreach (var entity in entity_list)
             {
                 if (RoomManager.CurrentRoom != starting_room)
                     break;
-                
+
+                if (started_paused && entity.IsPauseable)
+                    continue;
+
                 foreach (var touch_press in inputState.TouchPresses)
                 {
                     if (entity is ITouchable && ShouldProcessInput(entity))

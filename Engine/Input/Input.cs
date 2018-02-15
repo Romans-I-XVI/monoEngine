@@ -10,10 +10,10 @@ namespace Engine
 	static public class Input
 	{
 		public static void Update() {
-			Input.Keyboard.Update ();
-			Input.Gamepad.Update ();
+            Input.Keyboard.Update();
+            Input.Gamepad.Update();
             Input.Touch.Update();
-		}
+        }
 
 		static public class Keyboard {
 			private static KeyboardState currentKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
@@ -38,8 +38,15 @@ namespace Engine
 		}
 
 		static public class Gamepad
-		{
-			public static Dictionary<PlayerIndex, GamePadState> currentGamepadState = new Dictionary<PlayerIndex, GamePadState>() {
+        {
+            private static List<PlayerIndex> player_index_enum = new List<PlayerIndex>()
+            {
+                PlayerIndex.One,
+                PlayerIndex.Two,
+                PlayerIndex.Three,
+                PlayerIndex.Four
+            };
+            public static Dictionary<PlayerIndex, GamePadState> currentGamepadState = new Dictionary<PlayerIndex, GamePadState>() {
 				{PlayerIndex.One, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One)},
 				{PlayerIndex.Two, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Two)},
 				{PlayerIndex.Three, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Three)},
@@ -53,12 +60,14 @@ namespace Engine
 			};
 
 			public static void Update() {
-				foreach (KeyValuePair<PlayerIndex, GamePadState> entry in currentGamepadState) {
-					previousGamepadState [entry.Key] = entry.Value;
-				}
-				foreach (PlayerIndex key in Enum.GetValues(typeof(PlayerIndex))) {
-					currentGamepadState [key] = Microsoft.Xna.Framework.Input.GamePad.GetState (key);
-				}
+                foreach (var key in player_index_enum)
+                {
+                    previousGamepadState[key] = currentGamepadState[key];
+                }
+                foreach (var key in player_index_enum)
+                {
+                    currentGamepadState[key] = Microsoft.Xna.Framework.Input.GamePad.GetState(key);
+                }
 			}
 
 

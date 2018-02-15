@@ -11,12 +11,13 @@ namespace Engine
     static class EntityManager
     {
         public static float TimeSinceLastButtonPress { get { return _last_button_press_timer.TotalMilliseconds; } }
-        public static bool ButtonHasBeenPressed { get; private set; }
+        public static bool ButtonHasBeenPressed { get { return _input_state.ButtonHasBeenPressed; } }
         public static List<Entity> Entities { get { return _entities; } }
         static List<Entity> _entities = new List<Entity>();
         private static Entity _current_focusable_entity = null;
-        private readonly static GameTimeSpan _last_button_press_timer = new GameTimeSpan();
+        private static GameTimeSpan _last_button_press_timer { get { return _input_state._last_button_press_timer; } }
         private static bool _paused = false;
+        private static EngineInputState _input_state = new EngineInputState();
 
         public static void Pause() { _paused = true; }
         public static void Resume() { _paused = false; }
@@ -76,7 +77,7 @@ namespace Engine
 
         public static void Update(GameTime gameTime)
         {
-            EngineInputState inputState = GetEngineInputState();
+            _input_state.Update();
 
             var entity_list = _entities.ToList();
             var starting_room = RoomManager.CurrentRoom;
@@ -91,7 +92,7 @@ namespace Engine
                 if (started_paused && entity.IsPauseable)
                     continue;
 
-                foreach (var touch_press in inputState.TouchPresses)
+                foreach (var touch_press in _input_state.TouchPresses)
                 {
                     if (entity is ITouchable && ShouldProcessInput(entity))
                     {
@@ -99,27 +100,27 @@ namespace Engine
                     }
                 }
 
-                foreach (var key_press in inputState.KeyPresses)
+                foreach (var key_press in _input_state.KeyPresses)
                 {
                     if (ShouldProcessInput(entity))
                         entity.onKeyDown(key_press);
                 }
-                foreach (var button_press in inputState.GamepadPresses)
+                foreach (var button_press in _input_state.GamepadPresses)
                 {
                     if (ShouldProcessInput(entity))
                         entity.onButtonDown(button_press);
                 }
 
                 if (entity is ITouchable && ShouldProcessInput(entity))
-                    ((ITouchable)entity).onTouch(inputState.TouchState);
+                    ((ITouchable)entity).onTouch(_input_state.TouchState);
                 if (ShouldProcessInput(entity))
-                    entity.onKey(inputState.KeyboardState);
+                    entity.onKey(_input_state.KeyboardState);
                 if (ShouldProcessInput(entity))
-                    entity.onButton(inputState.GamepadStates);
+                    entity.onButton(_input_state.GamepadStates);
                 if (ShouldProcessInput(entity))
-                    entity.onMouse(inputState.MouseState);
+                    entity.onMouse(_input_state.MouseState);
 
-                foreach (var touch_release in inputState.TouchReleases)
+                foreach (var touch_release in _input_state.TouchReleases)
                 {
                     if (entity is ITouchable && ShouldProcessInput(entity))
                     {
@@ -127,12 +128,12 @@ namespace Engine
                     }
                 }
 
-                foreach (var key_release in inputState.KeyReleases)
+                foreach (var key_release in _input_state.KeyReleases)
                 {
                     if (ShouldProcessInput(entity))
                         entity.onKeyUp(key_release);
                 }
-                foreach (var button_release in inputState.GamepadReleases)
+                foreach (var button_release in _input_state.GamepadReleases)
                 {
                     if (ShouldProcessInput(entity))
                         entity.onButtonUp(button_release);
@@ -143,14 +144,19 @@ namespace Engine
 
             // Destroying Expired Entities
             int goto_count = 0;
+
             destroy_expired_entities:
-            var expired_entities = _entities.Where(x => x.IsExpired).ToList();
-            foreach (var entity in expired_entities)
+            int destroyed_entity_count = 0;
+            foreach (var entity in entity_list)
             {
-                entity.onDestroy();
-                _entities.Remove(entity);
+                if (entity.IsExpired && _entities.Contains(entity))
+                {
+                    destroyed_entity_count++;
+                    entity.onDestroy();
+                    _entities.Remove(entity);
+                }
             }
-            if (_entities.Where(x => x.IsExpired).Count() > 0)
+            if (destroyed_entity_count > 0)
             {
                 goto_count++;
                 if (goto_count < 250)
@@ -164,7 +170,6 @@ namespace Engine
                     throw new Exception("WARNING! You appear to have an endless loop of creating and destroying entities!");
                 }
             }
-            
         }
 
         public static void DrawToRenderTargets(SpriteBatch spriteBatch)
@@ -211,44 +216,6 @@ namespace Engine
                 }
             }
             spriteBatch.End();
-        }
-
-        public static EngineInputState GetEngineInputState()
-        {
-            Input.Update();
-            
-            var keyboard_pressed_events = new List<KeyboardEventArgs>();
-            var keyboard_released_events = new List<KeyboardEventArgs>();
-            var gamepad_pressed_events = new List<GamePadEventArgs>();
-            var gamepad_released_events = new List<GamePadEventArgs>();
-
-            foreach (Keys key in Enum.GetValues(typeof(Keys)))
-            {
-                if (key == Keys.ChatPadOrange || key == Keys.ChatPadGreen)
-                    continue;
-
-                if (Input.Keyboard.isPressed(key))
-                    keyboard_pressed_events.Add(new KeyboardEventArgs(key));
-                else if (Input.Keyboard.isReleased(key))
-                    keyboard_released_events.Add(new KeyboardEventArgs(key));
-            }
-
-            foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
-            {
-                foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
-                {
-                    if (Input.Gamepad.isPressed(button, player))
-                    {
-                        ButtonHasBeenPressed = true;
-                        _last_button_press_timer.Mark();
-                        gamepad_pressed_events.Add(new GamePadEventArgs(player, button));
-                    }
-                    else if (Input.Gamepad.isReleased(button, player))
-                        gamepad_released_events.Add(new GamePadEventArgs(player, button));
-                }
-            }
-
-            return new EngineInputState(keyboard_pressed_events, keyboard_released_events, gamepad_pressed_events, gamepad_released_events, Input.Touch.PressedTouches, Input.Touch.ReleasedTouches);
         }
 
         private static bool ShouldProcessInput(Entity entity)

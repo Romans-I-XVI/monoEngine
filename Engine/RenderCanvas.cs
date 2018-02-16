@@ -19,9 +19,17 @@ namespace Engine
 			this._sprite = new Sprite(this.othersRenderTarget);
 		}
 
+        ~RenderCanvas()
+        {
+            System.Diagnostics.Debug.WriteLine("Destroying render target canvas");
+            if (othersRenderTarget != null)
+                othersRenderTarget.Dispose();
+        }
+
         public override void onDestroy()
         {
-            othersRenderTarget.Dispose();
+            if (othersRenderTarget != null)
+                othersRenderTarget.Dispose();
             base.onDestroy();
         }
 

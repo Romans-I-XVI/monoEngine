@@ -21,7 +21,6 @@ namespace Engine
 
         ~RenderCanvas()
         {
-            System.Diagnostics.Debug.WriteLine("Destroying render target canvas");
             if (othersRenderTarget != null)
                 othersRenderTarget.Dispose();
         }

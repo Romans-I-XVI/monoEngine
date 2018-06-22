@@ -92,6 +92,11 @@ namespace Engine
                 if (started_paused && entity.IsPauseable)
                     continue;
 
+                foreach (var mouse_press in _input_state.MousePresses)
+                {
+                    if (ShouldProcessInput(entity))
+                        entity.onMouseDown(mouse_press);
+                }
                 foreach (var touch_press in _input_state.TouchPresses)
                 {
                     if (entity is ITouchable && ShouldProcessInput(entity))
@@ -99,7 +104,6 @@ namespace Engine
                         ((ITouchable)entity).onTouchPressed(touch_press);
                     }
                 }
-
                 foreach (var key_press in _input_state.KeyPresses)
                 {
                     if (ShouldProcessInput(entity))
@@ -111,15 +115,20 @@ namespace Engine
                         entity.onButtonDown(button_press);
                 }
 
+                if (ShouldProcessInput(entity))
+                    entity.onMouse(_input_state.MouseState);
                 if (entity is ITouchable && ShouldProcessInput(entity))
                     ((ITouchable)entity).onTouch(_input_state.TouchState);
                 if (ShouldProcessInput(entity))
                     entity.onKey(_input_state.KeyboardState);
                 if (ShouldProcessInput(entity))
                     entity.onButton(_input_state.GamepadStates);
-                if (ShouldProcessInput(entity))
-                    entity.onMouse(_input_state.MouseState);
 
+                foreach (var mouse_release in _input_state.MouseReleases)
+                {
+                    if (ShouldProcessInput(entity))
+                        entity.onMouseUp(mouse_release);
+                }
                 foreach (var touch_release in _input_state.TouchReleases)
                 {
                     if (entity is ITouchable && ShouldProcessInput(entity))
@@ -127,7 +136,6 @@ namespace Engine
                         ((ITouchable)entity).onTouchReleased(touch_release);
                     }
                 }
-
                 foreach (var key_release in _input_state.KeyReleases)
                 {
                     if (ShouldProcessInput(entity))

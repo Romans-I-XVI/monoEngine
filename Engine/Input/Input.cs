@@ -10,6 +10,7 @@ namespace Engine
 	static public class Input
 	{
 		public static void Update() {
+            Input.Mouse.Update();
             Input.Keyboard.Update();
             Input.Gamepad.Update();
             Input.Touch.Update();
@@ -124,6 +125,60 @@ namespace Engine
 				return currentGamepadState [player_index].ThumbSticks.Right;
 			}
 		}
+
+        public static class Mouse
+        {
+            public static Point CurrentPosition { get; private set; }
+            public static int CurrentScroll { get { return currentMouseState.ScrollWheelValue; } }
+            private static MouseState currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            private static MouseState previousMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+
+            public static void Update()
+            {
+                previousMouseState = currentMouseState;
+                currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+                CurrentPosition = GameRoot.BoxingViewport.PointToScreen(currentMouseState.Position.X, currentMouseState.Position.Y);
+            }
+
+            public static MouseState GetNewTranslatedState()
+            {
+                return new MouseState(CurrentPosition.X, CurrentPosition.Y, currentMouseState.ScrollWheelValue, currentMouseState.LeftButton, currentMouseState.MiddleButton, currentMouseState.RightButton, currentMouseState.XButton1, currentMouseState.XButton2);
+            }
+
+            public static bool isPressed(MouseButtons button)
+            {
+                return (!isMouseButtonDown(previousMouseState, button) && isMouseButtonDown(currentMouseState, button));
+            }
+
+            public static bool isReleased(MouseButtons button)
+            {
+                return (isMouseButtonDown(previousMouseState, button) && !isMouseButtonDown(currentMouseState, button));
+            }
+
+            public static bool isHeld(MouseButtons button)
+            {
+                return isMouseButtonDown(currentMouseState, button);
+            }
+
+            private static bool isMouseButtonDown(MouseState state, MouseButtons button)
+            {
+                switch (button)
+                {
+                    case MouseButtons.LeftButton:
+                        return state.LeftButton == ButtonState.Pressed;
+                    case MouseButtons.RightButton:
+                        return state.RightButton == ButtonState.Pressed;
+                    case MouseButtons.MiddleButton:
+                        return state.MiddleButton == ButtonState.Pressed;
+                    case MouseButtons.XButton1:
+                        return state.XButton1 == ButtonState.Pressed;
+                    case MouseButtons.XButton2:
+                        return state.XButton2 == ButtonState.Pressed;
+                    default:
+                        return state.LeftButton == ButtonState.Pressed;
+                }
+            }
+        }
 
         public static class Touch
         {

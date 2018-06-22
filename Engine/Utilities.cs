@@ -30,7 +30,7 @@ namespace Engine
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("An error occurred: '{0}'", ex);
+                    System.Diagnostics.Debug.WriteLine("An error occurred: '{0}'", ex);
                 }
             }
         }

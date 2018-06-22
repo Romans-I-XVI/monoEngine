@@ -9,10 +9,13 @@ namespace Engine
 {
     public class EngineInputState
     {
+        private readonly List<MouseEventArgs> mouse_pressed_events = new List<MouseEventArgs>();
+        private readonly List<MouseEventArgs> mouse_released_events = new List<MouseEventArgs>();
         private readonly List<KeyboardEventArgs> keyboard_pressed_events = new List<KeyboardEventArgs>();
         private readonly List<KeyboardEventArgs> keyboard_released_events = new List<KeyboardEventArgs>();
         private readonly List<GamePadEventArgs> gamepad_pressed_events = new List<GamePadEventArgs>();
         private readonly List<GamePadEventArgs> gamepad_released_events = new List<GamePadEventArgs>();
+        private List<MouseButtons> mouse_enum = Enum.GetValues(typeof(MouseButtons)).Cast<MouseButtons>().ToList();
         private List<Keys> keys_enum = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
         private List<PlayerIndex> player_index_enum = Enum.GetValues(typeof(PlayerIndex)).Cast<PlayerIndex>().ToList();
         private List<Buttons> buttons_enum = Enum.GetValues(typeof(Buttons)).Cast<Buttons>().ToList();
@@ -23,6 +26,8 @@ namespace Engine
         public KeyboardState KeyboardState { get; private set; }
         public Dictionary<PlayerIndex, GamePadState> GamepadStates { get; private set; }
         public TouchCollection TouchState { get; private set; }
+        public List<MouseEventArgs> MousePresses { get; private set; }
+        public List<MouseEventArgs> MouseReleases { get; private set; }
         public List<KeyboardEventArgs> KeyPresses { get; private set; }
         public List<KeyboardEventArgs> KeyReleases { get; private set; }
         public List<GamePadEventArgs> GamepadPresses { get; private set; }
@@ -47,10 +52,20 @@ namespace Engine
         {
             Input.Update();
 
+            mouse_pressed_events.Clear();
+            mouse_released_events.Clear();
             keyboard_pressed_events.Clear();
             keyboard_released_events.Clear();
             gamepad_pressed_events.Clear();
             gamepad_released_events.Clear();
+
+            foreach (MouseButtons button in mouse_enum)
+            {
+                if (Input.Mouse.isPressed(button))
+                    mouse_pressed_events.Add(new MouseEventArgs(button, Input.Mouse.CurrentPosition, Input.Mouse.CurrentScroll));
+                else if (Input.Mouse.isReleased(button))
+                    mouse_released_events.Add(new MouseEventArgs(button, Input.Mouse.CurrentPosition, Input.Mouse.CurrentScroll));
+            }
 
             foreach (Keys key in keys_enum)
             {
@@ -78,13 +93,15 @@ namespace Engine
                 }
             }
 
-            MouseState = Mouse.GetState();
+            MouseState = Input.Mouse.GetNewTranslatedState();
             KeyboardState = Keyboard.GetState();
             GamepadStates[PlayerIndex.One] = GamePad.GetState(PlayerIndex.One);
             GamepadStates[PlayerIndex.Two] = GamePad.GetState(PlayerIndex.Two);
             GamepadStates[PlayerIndex.Three] = GamePad.GetState(PlayerIndex.Three);
             GamepadStates[PlayerIndex.Four] = GamePad.GetState(PlayerIndex.Four);
             TouchState = Input.Touch.CurrentTouches;
+            MousePresses = mouse_pressed_events;
+            MouseReleases = mouse_released_events;
             KeyPresses = keyboard_pressed_events;
             KeyReleases = keyboard_released_events;
             GamepadPresses = gamepad_pressed_events;

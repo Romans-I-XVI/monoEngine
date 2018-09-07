@@ -193,9 +193,13 @@ namespace Engine
                 for (int i = 0; i < touch_state.Count; i++)
                 {
                     TouchLocation touch = touch_state[i];
+#if IOS
+                    translated_touch_array[i] = touch;
+#else
                     var translated_point = GameRoot.BoxingViewport.PointToScreen((int)touch.Position.X, (int)touch.Position.Y);
                     var translated_touch = new TouchLocation(touch.Id, touch.State, new Vector2(translated_point.X, translated_point.Y));
                     translated_touch_array[i] = translated_touch;
+#endif
                 }
 
                 CurrentTouches = new TouchCollection(translated_touch_array);

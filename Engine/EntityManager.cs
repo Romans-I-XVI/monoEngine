@@ -17,10 +17,29 @@ namespace Engine
         private static Entity _current_focusable_entity = null;
         private static GameTimeSpan _last_button_press_timer { get { return _input_state._last_button_press_timer; } }
         private static bool _paused = false;
+        private static GameTimeSpan _pause_timer = new GameTimeSpan();
         private static EngineInputState _input_state = new EngineInputState();
 
-        public static void Pause() { _paused = true; }
-        public static void Resume() { _paused = false; }
+        public static void Pause()
+        {
+            var entity_list = _entities.ToList();
+            foreach (var entity in entity_list)
+            {
+                entity.onPause();
+            }
+            _paused = true;
+            _pause_timer.Mark();
+        }
+        public static void Resume()
+        {
+            int pause_time = (int)_pause_timer.TotalMilliseconds;
+            var entity_list = _entities.ToList();
+            foreach (var entity in entity_list)
+            {
+                entity.onResume(pause_time);
+            }
+            _paused = false;
+        }
         public static bool IsPaused() { return _paused; }
 
 
@@ -148,6 +167,28 @@ namespace Engine
                 }
                 entity.onUpdate(gameTime);
 
+                entity.onPreCollision();
+                if (entity.Colliders.Count > 0)
+                {
+                    foreach (var other_entity in entity_list)
+                    {
+                        if (entity != other_entity && other_entity.Colliders.Count > 0)
+                        {
+                            foreach (var collider in entity.Colliders)
+                            {
+                                foreach (var other_collider in other_entity.Colliders)
+                                {
+                                    if (collider.CheckCollision(other_collider))
+                                    {
+                                        entity.onCollision(collider, other_collider, other_entity);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                entity.onPostCollision();
+
             }
 
             // Destroying Expired Entities
@@ -196,9 +237,7 @@ namespace Engine
                     {
                         if (entity.renderTarget == renderCanvas && entity.ShouldDraw)
                         {
-                            entity.onDrawBegin(spriteBatch);
                             entity.onDraw(spriteBatch);
-                            entity.onDrawEnd(spriteBatch);
                         }
                     }
                     spriteBatch.End();
@@ -218,9 +257,7 @@ namespace Engine
             {
                 if (entity.renderTarget == null && entity.ShouldDraw)
                 {
-                    entity.onDrawBegin(spriteBatch);
                     entity.onDraw(spriteBatch);
-                    entity.onDrawEnd(spriteBatch);
                 }
             }
             spriteBatch.End();

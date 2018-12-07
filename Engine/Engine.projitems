@@ -9,6 +9,7 @@
     <Import_RootNamespace>Engine</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Collider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollisionChecking.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollisionTranslating.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />

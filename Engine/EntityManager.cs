@@ -166,29 +166,69 @@ namespace Engine
                         entity.onButtonUp(button_release);
                 }
                 entity.onUpdate(gameTime);
+            }
 
-                entity.onPreCollision();
-                if (entity.Colliders.Count > 0)
+            
+            // Do all collision checking
+            var collider_list = new List<Collider>();
+            foreach (var entity in entity_list)
+            {
+                if (!entity.IsExpired)
                 {
-                    foreach (var other_entity in entity_list)
+                    foreach (var collider in entity.Colliders)
                     {
-                        if (entity != other_entity && other_entity.Colliders.Count > 0)
+                        if (collider.Enabled)
                         {
-                            foreach (var collider in entity.Colliders)
-                            {
-                                foreach (var other_collider in other_entity.Colliders)
-                                {
-                                    if (collider.CheckCollision(other_collider))
-                                    {
-                                        entity.onCollision(collider, other_collider, other_entity);
-                                    }
-                                }
-                            }
+                            collider.UpdateColliderPosition();
+                            collider_list.Add(collider);
                         }
                     }
                 }
-                entity.onPostCollision();
+            }
 
+            for (int i = collider_list.Count - 1; i >= 0; i--)
+            {
+                var collider = collider_list[i];
+                for (int j = collider_list.Count - 2; j >= 0; j--)
+                {
+                    var other_collider = collider_list[j];
+                    var collision_occured = false;
+                    if (collider is ColliderCircle)
+                    {
+                        var c1 = (ColliderCircle)collider;
+                        if (other_collider is ColliderCircle)
+                        {
+                            var c2 = (ColliderCircle)other_collider;
+                            collision_occured = CollisionChecking.CircleCircle(c1.Position.X, c1.Position.Y, c1.Radius, c2.Position.X, c2.Position.Y, c2.Radius);
+                        }
+                        else
+                        {
+                            var c2 = (ColliderRectangle)other_collider;
+                            collision_occured = CollisionChecking.CircleRect(c1.Position.X, c1.Position.Y, c1.Radius, c2.Position.X, c2.Position.Y, c2.Width, c2.Height);
+                        }
+                    }
+                    else
+                    {
+                        var c1 = (ColliderRectangle)collider;
+                        if (other_collider is ColliderCircle)
+                        {
+                            var c2 = (ColliderCircle)other_collider;
+                            collision_occured = CollisionChecking.CircleRect(c2.Position.X, c2.Position.Y, c2.Radius, c1.Position.X, c1.Position.Y, c1.Width, c1.Height);
+                        }
+                        else
+                        {
+                            var c2 = (ColliderRectangle)other_collider;
+                            collision_occured = CollisionChecking.RectRect(c1.Position.X, c1.Position.Y, c1.Width, c1.Height, c2.Position.X, c2.Position.Y, c2.Width, c2.Height);
+                        }
+
+                    }
+                    if (collision_occured)
+                    {
+                        collider.Owner.onCollision(collider, other_collider, other_collider.Owner);
+                        other_collider.Owner.onCollision(other_collider, collider, collider.Owner);
+                    }
+                }
+                collider_list.RemoveAt(i);
             }
 
             // Destroying Expired Entities

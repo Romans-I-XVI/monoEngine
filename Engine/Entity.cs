@@ -121,11 +121,7 @@ public virtual void onCreate() {}
 
 		public virtual void onUpdate (GameTime gameTime) {}
 
-        public virtual void onPreCollision() {}
-
         public virtual void onCollision(Collider collider, Collider other_collider, Entity other_instance) {}
-
-        public virtual void onPostCollision() {}
 
         public virtual void onDraw(SpriteBatch spriteBatch)
 		{

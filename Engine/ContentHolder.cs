@@ -5,9 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-//This should reference what the current project is.
-using MonoGameTiles;
-
 namespace Engine
 {
     public static class ContentHolder

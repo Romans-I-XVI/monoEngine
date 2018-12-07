@@ -17,10 +17,6 @@ namespace Engine
         }
 
         public abstract bool CheckCollision(Collider other_collider);
-        protected bool isCollisionValid(Collider other_collider)
-        {
-            return (Enabled && other_collider.Enabled && !Owner.IsExpired && !other_collider.Owner.IsExpired);
-        }
     }
 
     public class ColliderCircle : Collider
@@ -44,20 +40,30 @@ namespace Engine
 
         public override bool CheckCollision(Collider other_collider)
         {
-            if (isCollisionValid(other_collider))
+            if (other_collider is ColliderCircle)
             {
-                if (other_collider is ColliderCircle)
-                {
-                    return CollisionChecking.CircleCircle(this.Circle, ((ColliderCircle)other_collider).Circle);
-                }
-                else if (other_collider is ColliderRectangle)
-                {
-                    return CollisionChecking.CircleRect(this.Circle, ((ColliderRectangle)other_collider).Rectangle);
-                }
-                else
-                {
-                    return false;
-                }
+                ColliderCircle subc = (ColliderCircle)other_collider;
+                var x1 = (int)Owner.Position.X + Offset.X;
+                var y1 = (int)Owner.Position.Y + Offset.Y;
+                var r1 = Radius;
+                var x2 = (int)subc.Owner.Position.X + subc.Offset.X;
+                var y2 = (int)subc.Owner.Position.Y + subc.Offset.Y;
+                var r2 = subc.Radius;
+
+                return CollisionChecking.CircleCircle(x1, y1, r1, x2, y2, r2);
+            }
+            else if (other_collider is ColliderRectangle)
+            {
+                ColliderRectangle subc = (ColliderRectangle)other_collider;
+                var cx = (int)Owner.Position.X + Offset.X;
+                var cy = (int)Owner.Position.Y + Offset.Y;
+                var cr = Radius;
+                var rx = (int)subc.Owner.Position.X + subc.Offset.X;
+                var ry = (int)subc.Owner.Position.Y + subc.Offset.Y;
+                var rw = subc.Width;
+                var rh = subc.Height;
+
+                return CollisionChecking.CircleRect(cx, cy, cr, rx, ry, rw, rh);
             }
             else
             {
@@ -89,20 +95,32 @@ namespace Engine
 
         public override bool CheckCollision(Collider other_collider)
         {
-            if (isCollisionValid(other_collider))
+            if (other_collider is ColliderCircle)
             {
-                if (other_collider is ColliderCircle)
-                {
-                    return CollisionChecking.CircleRect(((ColliderCircle)other_collider).Circle, this.Rectangle);
-                }
-                else if (other_collider is ColliderRectangle)
-                {
-                    return CollisionChecking.RectRect(this.Rectangle, ((ColliderRectangle)other_collider).Rectangle);
-                }
-                else
-                {
-                    return false;
-                }
+                ColliderCircle subc = (ColliderCircle)other_collider;
+                var cx = (int)subc.Owner.Position.X + subc.Offset.X;
+                var cy = (int)subc.Owner.Position.Y + subc.Offset.Y;
+                var cr = subc.Radius;
+                var rx = (int)Owner.Position.X + Offset.X;
+                var ry = (int)Owner.Position.Y + Offset.Y;
+                var rw = Width;
+                var rh = Height;
+
+                return CollisionChecking.CircleRect(cx, cy, cr, rx, ry, rw, rh);
+            }
+            else if (other_collider is ColliderRectangle)
+            {
+                ColliderRectangle subc = (ColliderRectangle)other_collider;
+                var x1 = (int)Owner.Position.X + Offset.X;
+                var y1 = (int)Owner.Position.Y + Offset.Y;
+                var w1 = Width;
+                var h1 = Height;
+                var x2 = (int)subc.Owner.Position.X + subc.Offset.X;
+                var y2 = (int)subc.Owner.Position.Y + subc.Offset.Y;
+                var w2 = subc.Width;
+                var h2 = subc.Height;
+
+                return CollisionChecking.RectRect(x1, y1, w1, h1, x2, y2, w2, h2);
             }
             else
             {

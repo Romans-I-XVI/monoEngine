@@ -21,13 +21,14 @@ namespace Engine
 	public class Sprite
 	{
 		public Texture2D Texture { get; private set; }
-		public float Orientation = 0f;
+		public float Rotation = 0f;
 		public Vector2 Origin = new Vector2();
         public Vector2 Offset = new Vector2();
 		public Vector2 Scale = new Vector2(1.0f, 1.0f);
 		public float Depth = 0.5f;
         public float Alpha = 255f;
 		public Color Color = Color.White;
+        public bool Enabled = true;
 
 		public Sprite (Texture2D texture)
 		{
@@ -36,7 +37,8 @@ namespace Engine
 
 		public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
-            spriteBatch.Draw (Texture, position: position + Offset, origin: Origin, rotation: Orientation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
+            if (Enabled)
+                spriteBatch.Draw (Texture, position: position + Offset, origin: Origin, rotation: Rotation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}
 
         public void AutoOrigin(DrawFrom draw_from)

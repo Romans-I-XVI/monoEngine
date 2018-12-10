@@ -44,35 +44,48 @@ namespace Engine
 
         public void AutoOrigin(DrawFrom draw_from)
         {
+            int width;
+            int height;
+            if (SourceRectangle.HasValue)
+            {
+                width = SourceRectangle.Value.Width;
+                height = SourceRectangle.Value.Height;
+            }
+            else
+            {
+                width = Texture.Width;
+                height = Texture.Height;
+            }
+
             switch (draw_from)
             {
                 case DrawFrom.TopCenter:
-                    Origin.X = Texture.Width / 2;
+                    Origin.X = width / 2;
                     break;
                 case DrawFrom.TopRight:
-                    Origin.X = Texture.Width;
+                    Origin.X = width;
                     break;
                 case DrawFrom.BottomLeft:
-                    Origin.Y = Texture.Height;
+                    Origin.Y = height;
                     break;
                 case DrawFrom.BottomCenter:
-                    Origin.X = Texture.Width / 2;
-                    Origin.Y = Texture.Height;
+                    Origin.X = width / 2;
+                    Origin.Y = height;
                     break;
                 case DrawFrom.BottomRight:
-                    Origin.X = Texture.Width;
-                    Origin.Y = Texture.Height;
+                    Origin.X = width;
+                    Origin.Y = height;
                     break;
                 case DrawFrom.Center:
-                    Origin.X = Texture.Width / 2;
-                    Origin.Y = Texture.Height / 2;
+                    Origin.X = width / 2;
+                    Origin.Y = height / 2;
                     break;
                 case DrawFrom.RightCenter:
-                    Origin.X = Texture.Width;
-                    Origin.Y = Texture.Height / 2;
+                    Origin.X = width;
+                    Origin.Y = height / 2;
                     break;
                 case DrawFrom.LeftCenter:
-                    Origin.Y = Texture.Height / 2;
+                    Origin.Y = height / 2;
                     break;
             }
         }

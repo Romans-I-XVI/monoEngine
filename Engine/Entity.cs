@@ -15,6 +15,7 @@ namespace Engine
         public List<Collider> Colliders { get { return _colliders; } }
         public RenderCanvas renderTarget = null;
 		public Vector2 Position = new Vector2();
+        public Vector2 Speed = new Vector2();
 		public bool IsExpired = false;
         public bool IsPersistent = false;
         public bool IsPauseable = true;
@@ -119,7 +120,11 @@ public virtual void onCreate() {}
 
 		public virtual void onButtonUp(GamePadEventArgs e) {}
 
-		public virtual void onUpdate (GameTime gameTime) {}
+		public virtual void onUpdate (GameTime gameTime)
+        {
+            Position.X += Speed.X * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position.Y += Speed.Y * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
 
         public virtual void onCollision(Collider collider, Collider other_collider, Entity other_instance) {}
 

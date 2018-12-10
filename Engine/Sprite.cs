@@ -21,6 +21,7 @@ namespace Engine
 	public class Sprite
 	{
 		public Texture2D Texture { get; private set; }
+        public Rectangle? SourceRectangle = null;
 		public float Rotation = 0f;
 		public Vector2 Origin = new Vector2();
         public Vector2 Offset = new Vector2();
@@ -38,7 +39,7 @@ namespace Engine
 		public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
             if (Enabled)
-                spriteBatch.Draw (Texture, position: position + Offset, origin: Origin, rotation: Rotation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
+                spriteBatch.Draw (Texture, sourceRectangle: SourceRectangle, position: position + Offset, origin: Origin, rotation: Rotation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}
 
         public void AutoOrigin(DrawFrom draw_from)
@@ -76,5 +77,63 @@ namespace Engine
             }
         }
 	}
+
+    public class AnimatedSprite : Sprite
+    {
+        public int RegionCount { get; private set; }
+        public int RegionWidth { get; private set; }
+        public int RegionHeight { get; private set; }
+        public int AnimationSpeed;
+        public int AnimationPosition;
+        public bool ReverseAnimationDirection;
+        private GameTimeSpan _timer = new GameTimeSpan();
+        private int _previous_animation_position;
+
+        public AnimatedSprite(Texture2D texture, int region_count, int region_width, int region_height, int animation_speed = 0, int animation_position = 0, bool reverse_animation_direction = false) : base(texture)
+        {
+            RegionCount = region_count;
+            RegionWidth = region_width;
+            RegionHeight = region_height;
+            SourceRectangle = new Rectangle(0, 0, RegionWidth, RegionHeight);
+
+            AnimationSpeed = animation_speed;
+            AnimationPosition = animation_position;
+            ReverseAnimationDirection = reverse_animation_direction;
+            _previous_animation_position = AnimationPosition;
+        }
+
+        public void Process()
+        {
+            if (RegionCount > 1 && AnimationSpeed > 0)
+            {
+                if (!ReverseAnimationDirection)
+                    AnimationPosition = (int)Tweens.LinearTween(0, RegionCount, _timer.TotalMilliseconds, AnimationSpeed);
+                else
+                    AnimationPosition = (int)Tweens.LinearTween(RegionCount, 0, _timer.TotalMilliseconds, AnimationSpeed);
+
+                if (AnimationPosition > RegionCount - 1)
+                    AnimationPosition = RegionCount - 1;
+
+                if (_timer.TotalMilliseconds >= AnimationSpeed)
+                {
+                    if (!ReverseAnimationDirection)
+                        AnimationPosition = 0;
+                    else
+                        AnimationPosition = RegionCount - 1;
+                    _timer.Mark();
+                }
+            }
+
+            if (AnimationPosition != _previous_animation_position)
+            {
+                int y_row_offset = (AnimationPosition * RegionWidth / Texture.Width);
+                int x_offset = (AnimationPosition * RegionWidth - Texture.Width * y_row_offset);
+                int y_offset = RegionHeight * y_row_offset;
+
+                SourceRectangle = new Rectangle(x_offset, y_offset, RegionWidth, RegionHeight);
+                _previous_animation_position = AnimationPosition;
+            }
+        }
+    }
 }
 

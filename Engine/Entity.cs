@@ -127,6 +127,8 @@ public virtual void onCreate() {}
 		{
             foreach (var sprite in _sprites.Values)
             {
+                if (sprite is AnimatedSprite)
+                    ((AnimatedSprite)sprite).Process();
                 sprite.Draw(spriteBatch, Position);
             }
         }

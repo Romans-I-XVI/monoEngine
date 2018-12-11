@@ -6,8 +6,10 @@ namespace Engine
     {
         private DateTime _timestamp;
 
-        public GameTimeSpan()
+        public GameTimeSpan(bool is_pauseable = true)
         {
+            if (is_pauseable)
+                EntityManager.OnResume += (pause_time) => RemoveTime(pause_time);
             Mark();
         }
         public void Mark(float mark_to = 0)
@@ -30,6 +32,16 @@ namespace Engine
             {
                 return (float)DateTime.Now.Subtract(_timestamp).TotalSeconds;
             }
+        }
+
+        public void AddTime(float milliseconds)
+        {
+            _timestamp = _timestamp.AddMilliseconds(milliseconds * -1);
+        }
+
+        public void RemoveTime(float milliseconds)
+        {
+            _timestamp = _timestamp.AddMilliseconds(milliseconds);
         }
 
     }

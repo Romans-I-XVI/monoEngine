@@ -5,7 +5,7 @@ namespace Engine
 {
     public class ParticleEmitter : Entity
     {
-        GameTimeSpan _timer = new GameTimeSpan();
+        GameTimeSpan _timer;
         public Color Color;
         public Vector2 Size;
         public float Rate;
@@ -15,8 +15,9 @@ namespace Engine
         public float SpawnOffset;
         public RenderCanvas RenderCanvas;
         readonly Random _random_number_generator = new Random((int)DateTime.Now.Ticks);
-        public ParticleEmitter(Vector2 position, Color particle_color, Vector2 particle_size, float particle_speed, float spawn_rate, float fade_speed, float depth, float spawn_offset = 0, RenderCanvas render_canvas = null)
+        public ParticleEmitter(Vector2 position, Color particle_color, Vector2 particle_size, float particle_speed, float spawn_rate, float fade_speed, float depth, float spawn_offset = 0, RenderCanvas render_canvas = null, bool is_pauseable = true)
         {
+            _timer = new GameTimeSpan(is_pauseable);
             SpawnOffset = spawn_offset;
             Position = position;
             Color = particle_color;
@@ -61,9 +62,10 @@ namespace Engine
         Color _color;
         float _depth;
         float _fade_speed;
-        GameTimeSpan _timer = new GameTimeSpan();
-        public Particle(Vector2 position, Vector2 size, Vector2 velocity, Color color, float fade_speed, float depth)
+        GameTimeSpan _timer;
+        public Particle(Vector2 position, Vector2 size, Vector2 velocity, Color color, float fade_speed, float depth, bool is_pauseable = true)
         {
+            _timer = new GameTimeSpan(is_pauseable);
             Position = position;
             _size = size;
             _velocity = velocity;

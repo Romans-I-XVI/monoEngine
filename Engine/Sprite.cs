@@ -99,10 +99,10 @@ namespace Engine
         public int AnimationSpeed;
         public int AnimationPosition;
         public bool ReverseAnimationDirection;
-        private GameTimeSpan _timer = new GameTimeSpan();
+        private GameTimeSpan _timer;
         private int _previous_animation_position;
 
-        public AnimatedSprite(Texture2D texture, int region_count, int region_width, int region_height, int animation_speed = 0, int animation_position = 0, bool reverse_animation_direction = false) : base(texture)
+        public AnimatedSprite(Texture2D texture, int region_count, int region_width, int region_height, int animation_speed = 0, int animation_position = 0, bool reverse_animation_direction = false, bool is_pauseable = true) : base(texture)
         {
             RegionCount = region_count;
             RegionWidth = region_width;
@@ -113,6 +113,7 @@ namespace Engine
             AnimationPosition = animation_position;
             ReverseAnimationDirection = reverse_animation_direction;
             _previous_animation_position = AnimationPosition;
+            _timer = new GameTimeSpan(is_pauseable);
         }
 
         public void Process()

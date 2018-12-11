@@ -17,8 +17,13 @@ namespace Engine
         private static Entity _current_focusable_entity = null;
         private static GameTimeSpan _last_button_press_timer { get { return _input_state._last_button_press_timer; } }
         private static bool _paused = false;
-        private static GameTimeSpan _pause_timer = new GameTimeSpan();
+        private static GameTimeSpan _pause_timer = new GameTimeSpan(false);
         private static EngineInputState _input_state = new EngineInputState();
+
+        public delegate void dgOnResume(float paused_time);
+        public static event dgOnResume OnResume;
+        public delegate void dgOnPause();
+        public static event dgOnPause OnPause;
 
         public static void Pause()
         {
@@ -27,6 +32,8 @@ namespace Engine
             {
                 entity.onPause();
             }
+            if (OnPause != null)
+                OnPause();
             _paused = true;
             _pause_timer.Mark();
         }
@@ -38,6 +45,8 @@ namespace Engine
             {
                 entity.onResume(pause_time);
             }
+            if (OnResume != null)
+                OnResume(pause_time);
             _paused = false;
         }
         public static bool IsPaused() { return _paused; }

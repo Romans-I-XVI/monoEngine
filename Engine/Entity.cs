@@ -122,6 +122,11 @@ public virtual void onCreate() {}
 
 		public virtual void onUpdate (GameTime gameTime)
         {
+            foreach (var sprite in _sprites.Values)
+            {
+                if (sprite is AnimatedSprite)
+                    ((AnimatedSprite)sprite).Process();
+            }
             Position.X += Speed.X * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             Position.Y += Speed.Y * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
@@ -132,8 +137,6 @@ public virtual void onCreate() {}
 		{
             foreach (var sprite in _sprites.Values)
             {
-                if (sprite is AnimatedSprite)
-                    ((AnimatedSprite)sprite).Process();
                 sprite.Draw(spriteBatch, Position);
             }
         }

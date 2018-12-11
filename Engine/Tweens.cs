@@ -16,11 +16,12 @@ namespace Engine
         public float Dest;
         public float Current { get { return Tweens.SwitchTween(Tween, Start, Dest, Timer.TotalMilliseconds, Duration); } }
         public float Duration;
-        public readonly GameTimeSpan Timer = new GameTimeSpan();
+        public readonly GameTimeSpan Timer;
         public bool Done { get { return Timer.TotalMilliseconds >= Duration; } }
 
-        public Tweener(float start, float dest, float duration, Tween tween)
+        public Tweener(float start, float dest, float duration, Tween tween, bool is_pauseable = true)
         {
+            Timer = new GameTimeSpan(is_pauseable);
             Start = start;
             Dest = dest;
             Duration = duration;

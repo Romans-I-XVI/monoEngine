@@ -79,6 +79,7 @@ namespace Engine
             Start = start;
             Dest = dest;
             Duration = duration;
+            Tween = tween;
         }
 
         public void ChangeDest(float dest)

@@ -39,5 +39,12 @@ namespace Engine
             var total_distance = Math.Sqrt(x_distance * x_distance + y_distance * y_distance);
             return (float)total_distance;
         }
+
+        public static float GetAngle(Vector2 vector1, Vector2 vector2)
+        {
+            var x_distance = vector1.X - vector2.X;
+            var y_distance = vector1.Y - vector2.Y;
+            return (float)(Math.Atan2(y_distance, x_distance) + Math.PI);
+        }
     }
 }

@@ -6,10 +6,8 @@ namespace Engine
     {
         private DateTime _timestamp;
 
-        public GameTimeSpan(bool is_pauseable = true)
+        public GameTimeSpan()
         {
-            if (is_pauseable)
-                EntityManager.OnResume += (pause_time) => RemoveTime(pause_time);
             Mark();
         }
         public void Mark(float mark_to = 0)

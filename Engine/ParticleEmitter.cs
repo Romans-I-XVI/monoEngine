@@ -15,9 +15,9 @@ namespace Engine
         public float SpawnOffset;
         public RenderCanvas RenderCanvas;
         readonly Random _random_number_generator = new Random((int)DateTime.Now.Ticks);
-        public ParticleEmitter(Vector2 position, Color particle_color, Vector2 particle_size, float particle_speed, float spawn_rate, float fade_speed, float depth, float spawn_offset = 0, RenderCanvas render_canvas = null, bool is_pauseable = true)
+        public ParticleEmitter(Vector2 position, Color particle_color, Vector2 particle_size, float particle_speed, float spawn_rate, float fade_speed, float depth, float spawn_offset = 0, RenderCanvas render_canvas = null)
         {
-            _timer = new GameTimeSpan(is_pauseable);
+            _timer = new GameTimeSpan();
             SpawnOffset = spawn_offset;
             Position = position;
             Color = particle_color;
@@ -63,9 +63,9 @@ namespace Engine
         float _depth;
         float _fade_speed;
         GameTimeSpan _timer;
-        public Particle(Vector2 position, Vector2 size, Vector2 velocity, Color color, float fade_speed, float depth, bool is_pauseable = true)
+        public Particle(Vector2 position, Vector2 size, Vector2 velocity, Color color, float fade_speed, float depth)
         {
-            _timer = new GameTimeSpan(is_pauseable);
+            _timer = new GameTimeSpan();
             Position = position;
             _size = size;
             _velocity = velocity;

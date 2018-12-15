@@ -73,9 +73,9 @@ namespace Engine
         public readonly GameTimeSpan Timer;
         public bool Done { get { return Timer.TotalMilliseconds >= Duration; } }
 
-        public Tweener(float start, float dest, float duration, Tween tween, bool is_pauseable = true)
+        public Tweener(float start, float dest, float duration, Tween tween)
         {
-            Timer = new GameTimeSpan(is_pauseable);
+            Timer = new GameTimeSpan();
             Start = start;
             Dest = dest;
             Duration = duration;

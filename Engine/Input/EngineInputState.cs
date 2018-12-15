@@ -37,7 +37,7 @@ namespace Engine
 
         public EngineInputState()
         {
-            _last_button_press_timer = new GameTimeSpan(false);
+            _last_button_press_timer = new GameTimeSpan();
             GamepadStates = new Dictionary<PlayerIndex, GamePadState>()
             {
                 {PlayerIndex.One, GamePad.GetState(PlayerIndex.One)},

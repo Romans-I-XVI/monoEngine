@@ -99,7 +99,7 @@ namespace Engine
         public int AnimationSpeed;
         public int AnimationPosition;
         public bool ReverseAnimationDirection;
-        private GameTimeSpan _timer;
+        public GameTimeSpan Timer { get; private set; }
         private int _previous_animation_position;
 
         public AnimatedSprite(Texture2D texture, int region_count, int region_width, int region_height, int animation_speed = 0, int animation_position = 0, bool reverse_animation_direction = false) : base(texture)
@@ -113,7 +113,7 @@ namespace Engine
             AnimationPosition = animation_position;
             ReverseAnimationDirection = reverse_animation_direction;
             _previous_animation_position = AnimationPosition;
-            _timer = new GameTimeSpan();
+            Timer = new GameTimeSpan();
         }
 
         public void Process()
@@ -121,20 +121,20 @@ namespace Engine
             if (RegionCount > 1 && AnimationSpeed > 0)
             {
                 if (!ReverseAnimationDirection)
-                    AnimationPosition = (int)Tweens.LinearTween(0, RegionCount, _timer.TotalMilliseconds, AnimationSpeed);
+                    AnimationPosition = (int)Tweens.LinearTween(0, RegionCount, Timer.TotalMilliseconds, AnimationSpeed);
                 else
-                    AnimationPosition = (int)Tweens.LinearTween(RegionCount, 0, _timer.TotalMilliseconds, AnimationSpeed);
+                    AnimationPosition = (int)Tweens.LinearTween(RegionCount, 0, Timer.TotalMilliseconds, AnimationSpeed);
 
                 if (AnimationPosition > RegionCount - 1)
                     AnimationPosition = RegionCount - 1;
 
-                if (_timer.TotalMilliseconds >= AnimationSpeed)
+                if (Timer.TotalMilliseconds >= AnimationSpeed)
                 {
                     if (!ReverseAnimationDirection)
                         AnimationPosition = 0;
                     else
                         AnimationPosition = RegionCount - 1;
-                    _timer.Mark();
+                    Timer.Mark();
                 }
             }
 

@@ -92,7 +92,7 @@ namespace Engine
 
     public class Oscillator
     {
-        private Tweener _tweener;
+        public Tweener Tweener { get; private set; }
         private bool _forward = true;
         private float _start;
         private float _dest;
@@ -101,23 +101,23 @@ namespace Engine
         {
             _start = start;
             _dest = dest;
-            _tweener = new Tweener(start, dest, duration, tween);
+            Tweener = new Tweener(start, dest, duration, tween);
         }
 
         public float Update()
         {
-            float current = _tweener.Current;
+            float current = Tweener.Current;
 
-            if (_tweener.Done)
+            if (Tweener.Done)
             {
                 if (_forward)
                 {
-                    _tweener.ChangeDest(_start);
+                    Tweener.ChangeDest(_start);
                     _forward = false;
                 }
                 else
                 {
-                    _tweener.ChangeDest(_dest);
+                    Tweener.ChangeDest(_dest);
                     _forward = true;
                 }
             }

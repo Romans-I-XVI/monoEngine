@@ -98,7 +98,19 @@ public virtual void onCreate() {}
 
         public virtual void onPause() {}
 
-        public virtual void onResume(int pause_time) {}
+        public virtual void onResume(int pause_time)
+        {
+            if (IsPauseable)
+            {
+                foreach (Sprite sprite in _sprites.Values)
+                {
+                    if (sprite is AnimatedSprite && this.IsPauseable)
+                    {
+                        ((AnimatedSprite)sprite).Timer.RemoveTime(pause_time);
+                    }
+                }
+            }
+        }
 
 		public virtual void onChangeRoom(Room previous_room, Room next_room) {}
 

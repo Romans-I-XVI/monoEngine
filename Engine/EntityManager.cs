@@ -20,11 +20,6 @@ namespace Engine
         private static GameTimeSpan _pause_timer = new GameTimeSpan();
         private static EngineInputState _input_state = new EngineInputState();
 
-        public delegate void dgOnResume(float paused_time);
-        public static event dgOnResume OnResume;
-        public delegate void dgOnPause();
-        public static event dgOnPause OnPause;
-
         public static void Pause()
         {
             var entity_list = _entities.ToList();
@@ -32,8 +27,6 @@ namespace Engine
             {
                 entity.onPause();
             }
-            if (OnPause != null)
-                OnPause();
             _paused = true;
             _pause_timer.Mark();
         }
@@ -45,8 +38,6 @@ namespace Engine
             {
                 entity.onResume(pause_time);
             }
-            if (OnResume != null)
-                OnResume(pause_time);
             _paused = false;
         }
         public static bool IsPaused() { return _paused; }

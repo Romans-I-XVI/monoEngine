@@ -201,6 +201,16 @@ namespace Engine
                 for (int j = collider_list.Count - 2; j >= 0; j--)
                 {
                     var other_collider = collider_list[j];
+
+                    if (collider.Owner.IsExpired)
+                    {
+                        break;
+                    }
+                    if (other_collider.Owner.IsExpired)
+                    {
+                        continue;
+                    }
+
                     var collision_occured = false;
                     if (collider is ColliderCircle)
                     {

@@ -42,6 +42,15 @@ namespace Engine
         }
         public static bool IsPaused() { return _paused; }
 
+        public static void PostGameEvent(GameEvent game_event)
+        {
+            var entity_list = _entities.ToList();
+            foreach (var entity in entity_list)
+            {
+                entity.onGameEvent(game_event);
+            }
+        }
+
 
         public static void ChangeRoom(Room previous_room, Room next_room)
         {

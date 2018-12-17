@@ -152,6 +152,8 @@ public virtual void onCreate() {}
                 sprite.Draw(spriteBatch, Position);
             }
         }
+
+        public virtual void onGameEvent(GameEvent game_event) {}
 	}
 }
 

@@ -63,29 +63,43 @@ namespace Engine
             }
         }
 
-        public static void Init(Game game)
+        public static void Init(
+            Game game,
+            Dictionary<AvailableTextures, string> custom_texture_locations = null,
+            Dictionary<AvailableFonts, string> custom_font_locations = null,
+            Dictionary<AvailableMusic, string> custom_music_locations = null,
+            Dictionary<AvailableSounds, string> custom_sound_locations = null
+            )
         {
             if (!IsInitialized)
             {
                 foreach (AvailableTextures available_texture in Enum.GetValues(typeof(AvailableTextures)))
                 {
-                    string enum_string = available_texture.ToString();
-                    _textures.Add(available_texture, game.Content.Load<Texture2D>("textures/"+enum_string));
+                    string texture_location = "textures/" + available_texture.ToString();
+                    if (custom_texture_locations != null && custom_texture_locations.ContainsKey(available_texture))
+                        texture_location = custom_texture_locations[available_texture];
+                    _textures.Add(available_texture, game.Content.Load<Texture2D>(texture_location));
                 }
                 foreach (AvailableFonts available_font in Enum.GetValues(typeof(AvailableFonts)))
                 {
-                    string enum_string = available_font.ToString();
-                    _fonts.Add(available_font, game.Content.Load<SpriteFont>("fonts/" + enum_string));
+                    string font_location = "fonts/" + available_font.ToString();
+                    if (custom_font_locations != null && custom_font_locations.ContainsKey(available_font))
+                        font_location = custom_font_locations[available_font];
+                    _fonts.Add(available_font, game.Content.Load<SpriteFont>(font_location));
                 }
                 foreach (AvailableMusic available_song in Enum.GetValues(typeof(AvailableMusic)))
                 {
-                    string enum_string = available_song.ToString();
-                    Utilities.Try(() => _songs.Add(available_song, game.Content.Load<Song>("music/" + enum_string)));
+                    string song_location = "music/" + available_song.ToString();
+                    if (custom_music_locations != null && custom_music_locations.ContainsKey(available_song))
+                        song_location = custom_music_locations[available_song];
+                    Utilities.Try(() => _songs.Add(available_song, game.Content.Load<Song>(song_location)));
                 }
                 foreach (AvailableSounds available_sound in Enum.GetValues(typeof(AvailableSounds)))
                 {
-                    string enum_string = available_sound.ToString();
-                    Utilities.Try(() => _sounds.Add(available_sound, game.Content.Load<SoundEffect>("sounds/" + enum_string)));
+                    string sound_location = "sounds/" + available_sound.ToString();
+                    if (custom_sound_locations != null && custom_sound_locations.ContainsKey(available_sound))
+                        sound_location = custom_sound_locations[available_sound];
+                    Utilities.Try(() => _sounds.Add(available_sound, game.Content.Load<SoundEffect>(sound_location)));
                 }
                 IsInitialized = true;
             }

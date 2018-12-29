@@ -46,5 +46,15 @@ namespace Engine
             var y_distance = vector1.Y - vector2.Y;
             return (float)(Math.Atan2(y_distance, x_distance) + Math.PI);
         }
+
+        public static float DegreesToRadians(float degrees)
+        {
+            return (float)((degrees / 180f) * Math.PI);
+        }
+
+        public static float RadiansToDegrees(float radians)
+        {
+            return (float)((180f / Math.PI) * radians);
+        }
     }
 }

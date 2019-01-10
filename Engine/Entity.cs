@@ -49,7 +49,10 @@ namespace Engine
 
         public Sprite GetSprite(string name = "main")
         {
-            return _sprites[name];
+            if (_sprites.ContainsKey(name))
+                return _sprites[name];
+            else
+                return null;
         }
 
         public ColliderCircle AddColliderCircle(string collider_name, float radius, int offset_x = 0, int offset_y = 0, bool enabled = true)

@@ -114,6 +114,8 @@ namespace Engine
             ReverseAnimationDirection = reverse_animation_direction;
             _previous_animation_position = AnimationPosition;
             Timer = new GameTimeSpan();
+
+            updateSourceRectangle();
         }
 
         public void Process()
@@ -140,13 +142,18 @@ namespace Engine
 
             if (AnimationPosition != _previous_animation_position)
             {
-                int y_row_offset = (AnimationPosition * RegionWidth / Texture.Width);
-                int x_offset = (AnimationPosition * RegionWidth - Texture.Width * y_row_offset);
-                int y_offset = RegionHeight * y_row_offset;
-
-                SourceRectangle = new Rectangle(x_offset, y_offset, RegionWidth, RegionHeight);
-                _previous_animation_position = AnimationPosition;
+                updateSourceRectangle();
             }
+        }
+
+        protected void updateSourceRectangle()
+        {
+            int y_row_offset = (AnimationPosition * RegionWidth / Texture.Width);
+            int x_offset = (AnimationPosition * RegionWidth - Texture.Width * y_row_offset);
+            int y_offset = RegionHeight * y_row_offset;
+
+            SourceRectangle = new Rectangle(x_offset, y_offset, RegionWidth, RegionHeight);
+            _previous_animation_position = AnimationPosition;
         }
     }
 }

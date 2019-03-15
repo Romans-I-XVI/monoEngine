@@ -110,7 +110,7 @@ namespace Engine
 
         public static bool PointRect(int px, int py, int rx, int ry, int rw, int rh)
         {
-            return (px >= rx && px < (rx + rw) && py >= ry && py < (ry + rh));
+            return (px >= rx && px <= (rx + rw) && py >= ry && py <= (ry + rh));
         }
 
         // Point to Circle

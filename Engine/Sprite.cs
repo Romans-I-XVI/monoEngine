@@ -18,12 +18,11 @@ namespace Engine
         RightCenter,
         LeftCenter,
     }
+
 	public class Sprite
 	{
-		public Texture2D Texture { get; private set; }
-        public Rectangle? SourceRectangle = null;
+        public Region Region { get; protected set; }
 		public float Rotation = 0f;
-		public Vector2 Origin = new Vector2();
         public Vector2 Offset = new Vector2();
 		public Vector2 Scale = new Vector2(1.0f, 1.0f);
 		public float Depth = 0.5f;
@@ -31,129 +30,79 @@ namespace Engine
 		public Color Color = Color.White;
         public bool Enabled = true;
 
-		public Sprite (Texture2D texture)
+		public Sprite(Region region)
 		{
-			Texture = texture;
-		}
+            Region = region;
+        }
 
-		public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
+        public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
             if (Enabled)
-                spriteBatch.Draw (Texture, sourceRectangle: SourceRectangle, position: position + Offset, origin: Origin, rotation: Rotation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
+                spriteBatch.Draw (Region.Texture, sourceRectangle: Region.SourceRectangle, position: position + Offset, origin: Region.Origin, rotation: Rotation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}
-
-        public void AutoOrigin(DrawFrom draw_from)
-        {
-            int width;
-            int height;
-            if (SourceRectangle.HasValue)
-            {
-                width = SourceRectangle.Value.Width;
-                height = SourceRectangle.Value.Height;
-            }
-            else
-            {
-                width = Texture.Width;
-                height = Texture.Height;
-            }
-
-            switch (draw_from)
-            {
-                case DrawFrom.TopCenter:
-                    Origin.X = width / 2;
-                    break;
-                case DrawFrom.TopRight:
-                    Origin.X = width;
-                    break;
-                case DrawFrom.BottomLeft:
-                    Origin.Y = height;
-                    break;
-                case DrawFrom.BottomCenter:
-                    Origin.X = width / 2;
-                    Origin.Y = height;
-                    break;
-                case DrawFrom.BottomRight:
-                    Origin.X = width;
-                    Origin.Y = height;
-                    break;
-                case DrawFrom.Center:
-                    Origin.X = width / 2;
-                    Origin.Y = height / 2;
-                    break;
-                case DrawFrom.RightCenter:
-                    Origin.X = width;
-                    Origin.Y = height / 2;
-                    break;
-                case DrawFrom.LeftCenter:
-                    Origin.Y = height / 2;
-                    break;
-            }
-        }
 	}
 
     public class AnimatedSprite : Sprite
     {
-        public int RegionCount { get; private set; }
-        public int RegionWidth { get; private set; }
-        public int RegionHeight { get; private set; }
+        public Region[] Regions { get; protected set; }
+        public int Index = 0;
+        public Tween AnimationTween = Tween.LinearTween;
         public int AnimationSpeed;
-        public int AnimationPosition;
         public bool ReverseAnimationDirection;
-        public GameTimeSpan Timer { get; private set; }
-        private int _previous_animation_position;
+        public GameTimeSpan Timer { get; protected set; }
 
-        public AnimatedSprite(Texture2D texture, int region_count, int region_width, int region_height, int animation_speed = 0, int animation_position = 0, bool reverse_animation_direction = false) : base(texture)
+        public AnimatedSprite(Region[] regions, int animation_speed = 0, bool reverse_animation_direction = false) : base(regions[0])
         {
-            RegionCount = region_count;
-            RegionWidth = region_width;
-            RegionHeight = region_height;
-            SourceRectangle = new Rectangle(0, 0, RegionWidth, RegionHeight);
-
+            Regions = regions;
             AnimationSpeed = animation_speed;
-            AnimationPosition = animation_position;
             ReverseAnimationDirection = reverse_animation_direction;
-            _previous_animation_position = AnimationPosition;
             Timer = new GameTimeSpan();
-
-            updateSourceRectangle();
         }
 
-        public void Process()
+        public void Animate()
         {
-            if (RegionCount > 1 && AnimationSpeed > 0)
+            var frame_count = Regions.Length;
+            var current_time = Timer.TotalMilliseconds;
+            int start_frame;
+            int dest_frame;
+            if (!ReverseAnimationDirection)
             {
-                if (!ReverseAnimationDirection)
-                    AnimationPosition = (int)Tweens.LinearTween(0, RegionCount, Timer.TotalMilliseconds, AnimationSpeed);
-                else
-                    AnimationPosition = (int)Tweens.LinearTween(RegionCount, 0, Timer.TotalMilliseconds, AnimationSpeed);
+                start_frame = 0;
+                dest_frame = frame_count;
+            }
+            else
+            {
+                start_frame = frame_count - 1;
+                dest_frame = -1;
+            }
 
-                if (AnimationPosition > RegionCount - 1)
-                    AnimationPosition = RegionCount - 1;
+            if (current_time > AnimationSpeed)
+            {
+                current_time -= AnimationSpeed;
+                Timer.RemoveTime(AnimationSpeed);
+            }
+            Index = (int)Tweens.SwitchTween(AnimationTween, start_frame, dest_frame, current_time, AnimationSpeed);
+            if (Index > frame_count - 1)
+            {
+                Index = frame_count - 1;
+            }
+            else if (Index < 0)
+            {
+                Index = 0;
+            }
+        }
 
-                if (Timer.TotalMilliseconds >= AnimationSpeed)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        {
+            if (Enabled)
+            {
+                if (AnimationSpeed > 0 && !EntityManager.IsPaused())
                 {
-                    if (!ReverseAnimationDirection)
-                        AnimationPosition = 0;
-                    else
-                        AnimationPosition = RegionCount - 1;
-                    Timer.Mark();
+                    Animate();
                 }
+                Region = Regions[Index];
+                base.Draw(spriteBatch, position);
             }
-
-            if (AnimationPosition != _previous_animation_position)
-            {
-                updateSourceRectangle();
-            }
-        }
-
-        protected void updateSourceRectangle()
-        {
-            int y_row_offset = (AnimationPosition * RegionWidth / Texture.Width);
-            int x_offset = (AnimationPosition * RegionWidth - Texture.Width * y_row_offset);
-            int y_offset = RegionHeight * y_row_offset;
-
-            SourceRectangle = new Rectangle(x_offset, y_offset, RegionWidth, RegionHeight);
-            _previous_animation_position = AnimationPosition;
         }
     }
 }

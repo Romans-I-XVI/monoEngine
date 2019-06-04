@@ -70,5 +70,10 @@ namespace Engine
         {
             return this.SourceRectangle.Height;
         }
+
+        public Region Copy()
+        {
+            return new Region(Texture, SourceRectangle, Origin);
+        }
     }
 }

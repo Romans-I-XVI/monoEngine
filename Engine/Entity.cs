@@ -36,18 +36,18 @@ namespace Engine
 			this.IsExpired = true;
 		}
 
-        public Sprite AddSprite(Sprite sprite, string name = "main")
+        public Sprite AddSprite(string name, Sprite sprite)
         {
             _sprites.Add(name, sprite);
             return sprite;
         }
 
-        public void RemoveSprite(string name = "main")
+        public void RemoveSprite(string name)
         {
             _sprites.Remove(name);
         }
 
-        public Sprite GetSprite(string name = "main")
+        public Sprite GetSprite(string name)
         {
             if (_sprites.ContainsKey(name))
                 return _sprites[name];

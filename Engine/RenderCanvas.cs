@@ -17,7 +17,7 @@ namespace Engine
             Size = new Vector2(width, height);
             othersRenderTarget = new RenderTarget2D(GameRoot.graphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
 			var sprite = new Sprite(new Region(othersRenderTarget, 0, 0, othersRenderTarget.Width, othersRenderTarget.Height, 0, 0));
-            AddSprite(sprite);
+            AddSprite("main", sprite);
 		}
 
         ~RenderCanvas()

@@ -38,7 +38,7 @@ namespace Engine
         public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
             if (Enabled)
-                spriteBatch.Draw (Region.Texture, sourceRectangle: Region.SourceRectangle, position: position + Offset, origin: Region.Origin, rotation: Rotation, scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
+                spriteBatch.Draw (Region.Texture, sourceRectangle: Region.SourceRectangle, position: position + Offset, origin: Region.Origin, rotation: VectorMath.DegreesToRadians(Rotation), scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
 		}
 	}
 

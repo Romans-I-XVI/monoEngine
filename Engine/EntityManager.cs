@@ -188,7 +188,6 @@ namespace Engine
                     {
                         if (collider.Enabled)
                         {
-                            collider.UpdateColliderPosition();
                             collider_list.Add(collider);
                         }
                     }

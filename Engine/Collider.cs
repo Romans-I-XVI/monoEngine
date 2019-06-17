@@ -7,21 +7,20 @@ namespace Engine
 {
     public abstract class Collider
     {
-        public Entity Owner { get; private set; }
-        public string Name { get; private set; }
+        public Entity Owner { get; }
+        public string Name { get; }
         public bool Enabled = true;
         protected Collider(Entity owner, string name)
         {
             Owner = owner;
             Name = name;
         }
-
-        public abstract void UpdateColliderPosition();
     }
 
     public class ColliderCircle : Collider
     {
-        public Point Position = new Point();
+        public Point Position => new Point((int)Owner.Position.X + Offset.X, (int)Owner.Position.Y + Offset.Y);
+        public Circle Circle => new Circle(Position.X, Position.Y, Radius);
         public float Radius;
         public Point Offset;
 
@@ -30,19 +29,13 @@ namespace Engine
             Radius = radius;
             Offset = new Point(offset_x, offset_y);
             Enabled = enabled;
-            UpdateColliderPosition();
-        }
-
-        public override void UpdateColliderPosition()
-        {
-            Position.X = (int)Owner.Position.X + Offset.X;
-            Position.Y = (int)Owner.Position.Y + Offset.Y;
         }
     }
 
     public class ColliderRectangle : Collider
     {
-        public Point Position = new Point();
+        public Point Position => new Point((int)Owner.Position.X + Offset.X, (int)Owner.Position.Y + Offset.Y);
+        public Rectangle Rectangle => new Rectangle(Position.X, Position.Y, Width, Height);
         public Point Offset;
         public int Width;
         public int Height;
@@ -53,13 +46,6 @@ namespace Engine
             Width = width;
             Height = height;
             Enabled = enabled;
-            UpdateColliderPosition();
-        }
-
-        public override void UpdateColliderPosition()
-        {
-            Position.X = (int)Owner.Position.X + Offset.X;
-            Position.Y = (int)Owner.Position.Y + Offset.Y;
         }
     }
 }

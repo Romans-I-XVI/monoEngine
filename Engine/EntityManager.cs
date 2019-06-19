@@ -268,8 +268,6 @@ namespace Engine
                 goto_count++;
                 if (goto_count < 250)
                 {
-                    if (Engine.Settings.Debug)
-                        System.Diagnostics.Debug.WriteLine("Recursive Destruction Occured - Count: " + goto_count.ToString());
                     goto destroy_expired_entities;
                 }
                 else

@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollisionChecking.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollisionTranslating.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Debugger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntityManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameEvent.cs" />
@@ -19,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButtons.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITouchable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KeyMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Region.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RectangleDrawer.cs" />
@@ -43,9 +45,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\DefaultViewportAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewportAdapters\BoxingViewportAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VirtualButton.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)ViewportAdapters\" />

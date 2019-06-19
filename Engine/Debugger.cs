@@ -18,8 +18,8 @@ namespace Engine
         
         public Debugger()
         {
-            this.IsPersistent = true;
-            this.IsPauseable = false;
+            IsPersistent = true;
+            IsPauseable = false;
         }
 
         public override void onDraw(SpriteBatch spriteBatch)
@@ -27,6 +27,11 @@ namespace Engine
             if (Variables["draw_colliders"] == "1")
             {
                 DrawColliders(spriteBatch);
+            }
+
+            if (Variables["draw_safe_zones"] == "1")
+            {
+                DrawSafeZones(spriteBatch);
             }
             base.onDraw(spriteBatch);
         }
@@ -73,6 +78,22 @@ namespace Engine
                     }
                 }
             }
+        }
+
+        public static void DrawSafeZones(SpriteBatch spriteBatch)
+        {
+            var screenWidth = GameRoot.BoxingViewport.VirtualWidth;
+            var screenHeight = GameRoot.BoxingViewport.VirtualHeight;
+
+            var actionSafeZone = new Rectangle(0, 0, (int)(screenWidth * 0.93f), (int)(screenHeight * 0.93f));
+            actionSafeZone.X = (screenWidth - actionSafeZone.Width) / 2;
+            actionSafeZone.Y = (screenHeight - actionSafeZone.Height) / 2;
+            RectangleDrawer.Draw(spriteBatch, actionSafeZone, Color.Red * (60f / 255f), layerDepth: 0.000002f);
+
+            var titleSafeZone = new Rectangle(0, 0, (int)(screenWidth * 0.90f), (int)(screenHeight * 0.90f));
+            titleSafeZone.X = (screenWidth - titleSafeZone.Width) / 2;
+            titleSafeZone.Y = (screenHeight - titleSafeZone.Height) / 2;
+            RectangleDrawer.Draw(spriteBatch, titleSafeZone, Color.Blue * (60f / 255f), layerDepth: 0.000001f);
         }
     }
 
@@ -141,8 +162,8 @@ namespace Engine
             if (_consoleOpen)
             {
                 int border = 1;
-                RectangleDrawer.Draw(spriteBatch, 0, 0, spriteBatch.GraphicsDevice.Viewport.Width, 20, Color.White, layerDepth: 0.000000003f);
-                RectangleDrawer.Draw(spriteBatch, border, border, spriteBatch.GraphicsDevice.Viewport.Width - border * 2, 20 - border * 2, Color.Black, layerDepth: 0.000000002f);
+                RectangleDrawer.Draw(spriteBatch, 0, 0, GameRoot.BoxingViewport.VirtualWidth, 20, Color.White, layerDepth: 0.000000003f);
+                RectangleDrawer.Draw(spriteBatch, border, border, GameRoot.BoxingViewport.VirtualWidth - border * 2, 20 - border * 2, Color.Black, layerDepth: 0.000000002f);
                 float scale = 16 / _spriteFont.MeasureString("|").Y; 
                 spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(2, 2), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
 

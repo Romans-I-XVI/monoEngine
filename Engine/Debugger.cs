@@ -12,9 +12,7 @@ namespace Engine
         {
             {"draw_colliders", "0"},
             {"draw_safe_zones", "0"},
-            {"limit_frame_rate", "0"}
         };
-
         
         public Debugger()
         {
@@ -46,11 +44,6 @@ namespace Engine
             Variables["draw_safe_zones"] = shouldDraw ? "1" : "0";
         }
         
-        public void SetLimitFrameRate(int frameRateLimit)
-        {
-            Variables["limit_frame_rate"] = frameRateLimit.ToString();
-        }
-
         public static void DrawColliders(SpriteBatch spriteBatch)
         {
             var entities = EntityManager.Entities;
@@ -161,11 +154,25 @@ namespace Engine
         {
             if (_consoleOpen)
             {
-                int border = 1;
-                RectangleDrawer.Draw(spriteBatch, 0, 0, GameRoot.BoxingViewport.VirtualWidth, 20, Color.White, layerDepth: 0.000000003f);
-                RectangleDrawer.Draw(spriteBatch, border, border, GameRoot.BoxingViewport.VirtualWidth - border * 2, 20 - border * 2, Color.Black, layerDepth: 0.000000002f);
+                int border = 2;
+                float viewportScale = (float)GameRoot.BoxingViewport.ViewportWidth / (float)GameRoot.BoxingViewport.VirtualWidth;
+                int startX = 0;
+                int startY = 0;
+
+                if (spriteBatch.GraphicsDevice.Viewport.X < 0)
+                {
+                    startX = (int)(-spriteBatch.GraphicsDevice.Viewport.X / viewportScale);
+                }
+
+                if (spriteBatch.GraphicsDevice.Viewport.Y < 0)
+                {
+                    startY = (int)(-spriteBatch.GraphicsDevice.Viewport.Y / viewportScale);
+                }
+
+                RectangleDrawer.Draw(spriteBatch, startX, startY, GameRoot.BoxingViewport.VirtualWidth - startX * 2, 20, Color.White, layerDepth: 0.000000003f);
+                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, GameRoot.BoxingViewport.VirtualWidth - border * 2 - startX * 2, 20 - border * 2, Color.Black, layerDepth: 0.000000002f);
                 float scale = 16 / _spriteFont.MeasureString("|").Y; 
-                spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(2, 2), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
+                spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(startX + border + 1, startY + border + 1), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
 
                 if (_cursorBlinkState)
                 {
@@ -175,6 +182,7 @@ namespace Engine
                         inputForCursorPosition = _consoleInput;
                     }
                     Vector2 cursorPosition = (_spriteFont.MeasureString(inputForCursorPosition) * scale);
+                    cursorPosition += new Vector2(startX, startY);
                     RectangleDrawer.Draw(spriteBatch, cursorPosition.X, cursorPosition.Y, 10, 2, Color.White);
                 }
             }

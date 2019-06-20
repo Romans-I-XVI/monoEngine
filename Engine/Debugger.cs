@@ -96,6 +96,8 @@ namespace Engine
         private bool _consoleOpen = false;
         private string _consoleInput = "";
         private readonly GameTimeSpan _cursorBlinkTimer = new GameTimeSpan();
+        private readonly GameTimeSpan _keyRepeatTimer = new GameTimeSpan();
+        private Keys _mostRecentKeyPressed;
         private bool _cursorBlinkState = false;
         
         public DebuggerWithTerminal(SpriteFont spriteFont)
@@ -114,7 +116,67 @@ namespace Engine
             base.onUpdate(gameTime);
         }
 
+        public override void onKey(KeyboardState state)
+        {
+            if (_keyRepeatTimer.TotalMilliseconds >= 25 && state.IsKeyDown(_mostRecentKeyPressed) && _mostRecentKeyPressed != Keys.OemTilde && _mostRecentKeyPressed != Keys.Enter)
+            {
+                onKeyInput(new KeyboardEventArgs(_mostRecentKeyPressed));
+                _keyRepeatTimer.Mark();
+            }
+            
+            base.onKey(state);
+        }
+
         public override void onKeyDown(KeyboardEventArgs e)
+        {
+            _keyRepeatTimer.Mark(-475);
+            _mostRecentKeyPressed = e.Key;
+            onKeyInput(e);
+
+            base.onKeyDown(e);
+        }
+
+        public override void onDraw(SpriteBatch spriteBatch)
+        {
+            if (_consoleOpen)
+            {
+                int height = 28;
+                int border = 2;
+                float viewportScale = (float)GameRoot.BoxingViewport.ViewportWidth / (float)GameRoot.BoxingViewport.VirtualWidth;
+                int startX = 0;
+                int startY = 0;
+
+                if (spriteBatch.GraphicsDevice.Viewport.X < 0)
+                {
+                    startX = (int)(-spriteBatch.GraphicsDevice.Viewport.X / viewportScale);
+                }
+
+                if (spriteBatch.GraphicsDevice.Viewport.Y < 0)
+                {
+                    startY = (int)(-spriteBatch.GraphicsDevice.Viewport.Y / viewportScale);
+                }
+
+                RectangleDrawer.Draw(spriteBatch, startX, startY, GameRoot.BoxingViewport.VirtualWidth - startX * 2, height, Color.White, layerDepth: 0.000000003f);
+                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, GameRoot.BoxingViewport.VirtualWidth - border * 2 - startX * 2, height - border * 2, Color.Black, layerDepth: 0.000000002f);
+                float scale = 18 / _spriteFont.MeasureString("|").Y;
+                spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(startX + border + 5, startY + border + 3), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
+
+                if (_cursorBlinkState)
+                {
+                    Vector2 cursorPosition = new Vector2(0, _spriteFont.MeasureString("a").Y * scale);
+                    if (_consoleInput.Length > 0)
+                    {
+                        cursorPosition = (_spriteFont.MeasureString(_consoleInput) * scale);
+                    }
+                    cursorPosition += new Vector2(startX + border + 5, startY + border + 1);
+                    RectangleDrawer.Draw(spriteBatch, cursorPosition.X, cursorPosition.Y, 10, 2, Color.White);
+                }
+            }
+            
+            base.onDraw(spriteBatch);
+        }
+
+        private void onKeyInput(KeyboardEventArgs e)
         {
             if (e.Key == Keys.OemTilde)
             {
@@ -146,48 +208,6 @@ namespace Engine
                     _cursorBlinkTimer.Mark();
                 }
             }
-            
-            base.onKeyDown(e);
-        }
-
-        public override void onDraw(SpriteBatch spriteBatch)
-        {
-            if (_consoleOpen)
-            {
-                int border = 2;
-                float viewportScale = (float)GameRoot.BoxingViewport.ViewportWidth / (float)GameRoot.BoxingViewport.VirtualWidth;
-                int startX = 0;
-                int startY = 0;
-
-                if (spriteBatch.GraphicsDevice.Viewport.X < 0)
-                {
-                    startX = (int)(-spriteBatch.GraphicsDevice.Viewport.X / viewportScale);
-                }
-
-                if (spriteBatch.GraphicsDevice.Viewport.Y < 0)
-                {
-                    startY = (int)(-spriteBatch.GraphicsDevice.Viewport.Y / viewportScale);
-                }
-
-                RectangleDrawer.Draw(spriteBatch, startX, startY, GameRoot.BoxingViewport.VirtualWidth - startX * 2, 20, Color.White, layerDepth: 0.000000003f);
-                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, GameRoot.BoxingViewport.VirtualWidth - border * 2 - startX * 2, 20 - border * 2, Color.Black, layerDepth: 0.000000002f);
-                float scale = 16 / _spriteFont.MeasureString("|").Y; 
-                spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(startX + border + 1, startY + border + 1), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
-
-                if (_cursorBlinkState)
-                {
-                    string inputForCursorPosition = "|";
-                    if (_consoleInput.Length > 0)
-                    {
-                        inputForCursorPosition = _consoleInput;
-                    }
-                    Vector2 cursorPosition = (_spriteFont.MeasureString(inputForCursorPosition) * scale);
-                    cursorPosition += new Vector2(startX, startY);
-                    RectangleDrawer.Draw(spriteBatch, cursorPosition.X, cursorPosition.Y, 10, 2, Color.White);
-                }
-            }
-            
-            base.onDraw(spriteBatch);
         }
 
         public void OpenCloseConsole()
@@ -196,11 +216,17 @@ namespace Engine
             _consoleInput = "";
             if (_consoleOpen)
             {
-                EntityManager.Pause();
+                if (!EntityManager.IsPaused())
+                {
+                    EntityManager.Pause();
+                }
             }
             else
             {
-                EntityManager.Resume();
+                if (EntityManager.IsPaused())
+                {
+                    EntityManager.Resume();
+                }
             }
         }
 

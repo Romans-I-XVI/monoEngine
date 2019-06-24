@@ -14,14 +14,16 @@ namespace Engine
         protected Room Room { get { return RoomManager.CurrentRoom;} }
         public List<Collider> Colliders { get { return _colliders; } }
         public RenderCanvas renderTarget = null;
-		public Vector2 Position = new Vector2();
+        public Vector2 Position = new Vector2();
+        public Vector2 WorldPosition => Position + CoordinateOrigin;
         public Vector2 Speed = new Vector2();
-		public bool IsExpired = false;
+        public bool IsExpired = false;
         public bool IsPersistent = false;
         public bool IsPauseable = true;
         public bool ShouldDraw = true;
-        
-		protected Entity ()
+        public virtual Vector2 CoordinateOrigin => Vector2.Zero;
+
+        protected Entity ()
 		{
 			EntityManager.Add (this);
 		}
@@ -147,7 +149,7 @@ public virtual void onCreate() {}
 		{
             foreach (var sprite in _sprites.Values)
             {
-                sprite.Draw(spriteBatch, Position);
+                sprite.Draw(spriteBatch, WorldPosition);
             }
         }
 

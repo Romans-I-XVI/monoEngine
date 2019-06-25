@@ -19,7 +19,7 @@ namespace Engine
 
     public class ColliderCircle : Collider
     {
-        public Point Position => new Point((int)Owner.WorldPosition.X + Offset.X, (int)Owner.WorldPosition.Y + Offset.Y);
+        public Point Position => new Point((int)Owner.Position.X + Offset.X, (int)Owner.Position.Y + Offset.Y);
         public Circle Circle => new Circle(Position.X, Position.Y, Radius);
         public float Radius;
         public Point Offset;
@@ -34,7 +34,7 @@ namespace Engine
 
     public class ColliderRectangle : Collider
     {
-        public Point Position => new Point((int)Owner.WorldPosition.X + Offset.X, (int)Owner.WorldPosition.Y + Offset.Y);
+        public Point Position => new Point((int)Owner.Position.X + Offset.X, (int)Owner.Position.Y + Offset.Y);
         public Rectangle Rectangle => new Rectangle(Position.X, Position.Y, Width, Height);
         public Point Offset;
         public int Width;

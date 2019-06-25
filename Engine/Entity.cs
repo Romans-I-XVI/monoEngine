@@ -15,13 +15,11 @@ namespace Engine
         public List<Collider> Colliders { get { return _colliders; } }
         public RenderCanvas renderTarget = null;
         public Vector2 Position = new Vector2();
-        public Vector2 WorldPosition => Position + CoordinateOrigin;
         public Vector2 Speed = new Vector2();
         public bool IsExpired = false;
         public bool IsPersistent = false;
         public bool IsPauseable = true;
         public bool ShouldDraw = true;
-        public virtual Vector2 CoordinateOrigin => Vector2.Zero;
 
         protected Entity ()
 		{
@@ -97,7 +95,7 @@ namespace Engine
 
         //Event override methods
 
-public virtual void onCreate() {}
+        public virtual void onCreate() {}
 
 		public virtual void onDestroy() {}
 
@@ -149,7 +147,7 @@ public virtual void onCreate() {}
 		{
             foreach (var sprite in _sprites.Values)
             {
-                sprite.Draw(spriteBatch, WorldPosition);
+                sprite.Draw(spriteBatch, Position);
             }
         }
 

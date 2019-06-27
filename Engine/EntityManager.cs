@@ -94,6 +94,11 @@ namespace Engine
             return _entities.OfType<T>().FirstOrDefault();
         }
 
+        public static Entity GetFirstByID(int id)
+        {
+            return _entities.FirstOrDefault(entity => entity.ID == id);
+        }
+
         public static IFocusable GetFocused()
         {
             var entity_list = _entities.ToList();

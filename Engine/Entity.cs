@@ -20,6 +20,7 @@ namespace Engine
         public bool IsPersistent = false;
         public bool IsPauseable = true;
         public bool ShouldDraw = true;
+        public int ID;
 
         protected Entity ()
 		{

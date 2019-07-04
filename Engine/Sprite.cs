@@ -28,6 +28,7 @@ namespace Engine
 		public float Depth = 0.5f;
         public float Alpha = 255f;
 		public Color Color = Color.White;
+        public SpriteEffects SpriteEffects = SpriteEffects.None;
         public bool Enabled = true;
 
 		public Sprite(Region region)
@@ -38,7 +39,9 @@ namespace Engine
         public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
             if (Enabled)
-                spriteBatch.Draw (Region.Texture, sourceRectangle: Region.SourceRectangle, position: position + Offset, origin: Region.Origin, rotation: VectorMath.DegreesToRadians(Rotation), scale: Scale, color: Color * (Alpha/255f), layerDepth: Depth);
+            {
+                spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), Region.Origin, Scale, SpriteEffects, Depth);
+            }
 		}
 	}
 

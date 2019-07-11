@@ -24,10 +24,9 @@ namespace Engine
 
         protected Entity ()
 		{
-			EntityManager.Add (this);
 		}
 
-		public void SetRenderCanvas (RenderCanvas renderCanvas) 
+		public void SetRenderCanvas (RenderCanvas renderCanvas)
 		{
 			renderTarget = renderCanvas;
 		}
@@ -96,7 +95,7 @@ namespace Engine
 
         //Event override methods
 
-        public virtual void onCreate() {}
+        public virtual void onSpawn() {}
 
 		public virtual void onDestroy() {}
 

@@ -5,7 +5,7 @@ using Retaliate;
 
 namespace MonoEngine
 {
-    public class MonoEngineGame : Game
+    public class EngineGame : Game
     {
         public Color BackgroundColor = Color.Black;
         public ViewportAdapter Viewport;
@@ -17,7 +17,7 @@ namespace MonoEngine
         public readonly int VerticalBleed;
         public bool ExitGame = false;
 
-        public MonoEngineGame(int canvasWidth, int canvasHeight, int horizontalBleed, int verticalBleed)
+        public EngineGame(int canvasWidth, int canvasHeight, int horizontalBleed, int verticalBleed)
         {
             CanvasWidth = canvasWidth;
             CanvasHeight = canvasHeight;
@@ -45,13 +45,13 @@ namespace MonoEngine
 
         protected override void Update(GameTime gameTime)
         {
-            MonoEngine.Update(gameTime);
+            Engine.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            MonoEngine.Draw(gameTime);
+            Engine.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

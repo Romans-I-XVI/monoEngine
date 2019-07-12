@@ -13,7 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CollisionChecking.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollisionTranslating.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Debugger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MonoEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Engine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Circle.cs" />
@@ -21,7 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITouchable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KeyMap.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MonoEngineGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EngineGame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Region.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RectangleDrawer.cs" />

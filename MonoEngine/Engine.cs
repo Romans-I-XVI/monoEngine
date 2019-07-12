@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoEngine
 {
-    public static class MonoEngine
+    public static class Engine
     {
-        public static MonoEngineGame Game { get; private set; }
+        public static EngineGame Game { get; private set; }
         public static float DT { get; private set; }
         public static SpriteSortMode SpriteSortMode = SpriteSortMode.Deferred;
         public static readonly Random Random = new Random();
@@ -20,7 +20,7 @@ namespace MonoEngine
         private static List<Entity> _entities = new List<Entity>();
 
 
-        public static void Start(MonoEngineGame game, Room room)
+        public static void Start(EngineGame game, Room room)
         {
             Game = game;
             _currentRoom = room;

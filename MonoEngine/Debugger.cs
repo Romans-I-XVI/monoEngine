@@ -16,6 +16,7 @@ namespace MonoEngine
 
         public Debugger()
         {
+            Depth = -int.MaxValue;
             IsPersistent = true;
             IsPauseable = false;
         }
@@ -54,7 +55,7 @@ namespace MonoEngine
                     if (collider is ColliderRectangle)
                     {
                         var rect = ((ColliderRectangle)collider).Rectangle;
-                        RectangleDrawer.DrawAround(spriteBatch, rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2, Color.Red, 1, 0.000001f);
+                        RectangleDrawer.DrawAround(spriteBatch, rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2, Color.Red, 1);
                     }
                     else if (collider is ColliderCircle)
                     {
@@ -66,7 +67,7 @@ namespace MonoEngine
                             float degrees = 360f * (i / (float)lineCount);
                             float currentX = (float)Math.Cos(VectorMath.DegreesToRadians(degrees)) * circle.Radius;
                             float currentY = (float)Math.Sin(VectorMath.DegreesToRadians(degrees)) * circle.Radius;
-                            RectangleDrawer.Draw(spriteBatch, circle.X + currentX, circle.Y + currentY, 1, 1, Color.Red, layerDepth: 0.000001f);
+                            RectangleDrawer.Draw(spriteBatch, circle.X + currentX, circle.Y + currentY, 1, 1, Color.Red);
                         }
                     }
                 }
@@ -81,12 +82,12 @@ namespace MonoEngine
             var actionSafeZone = new Rectangle(0, 0, (int)(screenWidth * 0.93f), (int)(screenHeight * 0.93f));
             actionSafeZone.X = (screenWidth - actionSafeZone.Width) / 2;
             actionSafeZone.Y = (screenHeight - actionSafeZone.Height) / 2;
-            RectangleDrawer.Draw(spriteBatch, actionSafeZone, Color.Red * (60f / 255f), layerDepth: 0.000002f);
+            RectangleDrawer.Draw(spriteBatch, actionSafeZone, Color.Red * (60f / 255f));
 
             var titleSafeZone = new Rectangle(0, 0, (int)(screenWidth * 0.90f), (int)(screenHeight * 0.90f));
             titleSafeZone.X = (screenWidth - titleSafeZone.Width) / 2;
             titleSafeZone.Y = (screenHeight - titleSafeZone.Height) / 2;
-            RectangleDrawer.Draw(spriteBatch, titleSafeZone, Color.Blue * (60f / 255f), layerDepth: 0.000001f);
+            RectangleDrawer.Draw(spriteBatch, titleSafeZone, Color.Blue * (60f / 255f));
         }
     }
 
@@ -156,8 +157,8 @@ namespace MonoEngine
                     startY = (int)(-spriteBatch.GraphicsDevice.Viewport.Y / viewportScale);
                 }
 
-                RectangleDrawer.Draw(spriteBatch, startX, startY, Engine.Game.Viewport.VirtualWidth - startX * 2, height, Color.White, layerDepth: 0.000000003f);
-                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, Engine.Game.Viewport.VirtualWidth - border * 2 - startX * 2, height - border * 2, Color.Black, layerDepth: 0.000000002f);
+                RectangleDrawer.Draw(spriteBatch, startX, startY, Engine.Game.Viewport.VirtualWidth - startX * 2, height, Color.White);
+                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, Engine.Game.Viewport.VirtualWidth - border * 2 - startX * 2, height - border * 2, Color.Black);
                 float scale = 18 / _spriteFont.MeasureString("|").Y;
                 spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(startX + border + 5, startY + border + 3), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
 

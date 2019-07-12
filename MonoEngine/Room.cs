@@ -10,9 +10,9 @@ namespace MonoEngine
 {
 	public abstract class Room
 	{
-		public virtual void OnSwitchTo(Room previousRoom) {}
+		public abstract void onSwitchTo(Room previousRoom, Dictionary<string, object> args);
 
-		public virtual void OnSwitchAway(Room nextRoom) {}
+		public abstract void onSwitchAway(Room nextRoom);
 	}
 }
 

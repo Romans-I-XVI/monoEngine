@@ -11,7 +11,6 @@ namespace MonoEngine
 	{
         protected readonly Dictionary<string, Sprite> _sprites = new Dictionary<string, Sprite>();
         protected readonly List<Collider> _colliders = new List<Collider>();
-        protected Room Room { get { return RoomManager.CurrentRoom;} }
         public List<Collider> Colliders { get { return _colliders; } }
         public RenderCanvas renderTarget = null;
         public Vector2 Position = new Vector2();
@@ -95,7 +94,7 @@ namespace MonoEngine
 
         //Event override methods
 
-        public virtual void onSpawn() {}
+        public abstract void onSpawn(Dictionary<string, object> args);
 
 		public virtual void onDestroy() {}
 

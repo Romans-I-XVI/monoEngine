@@ -9,21 +9,22 @@ namespace MonoEngine
     public static class Engine
     {
         public static EngineGame Game { get; private set; }
+        public static Room Room { get; private set; }
         public static float DT { get; private set; }
-        public static SpriteSortMode SpriteSortMode = SpriteSortMode.Deferred;
         public static readonly Random Random = new Random();
 
+        private static SpriteSortMode _spriteSortMode = SpriteSortMode.Deferred;
         private static bool _paused = false;
         private static GameTimeSpan _pauseTimer = new GameTimeSpan();
         private static EngineInputState _inputState = new EngineInputState();
-        private static Room _currentRoom = null;
+        private static Dictionary<string, object> _currentRoomArgs = null;
         private static List<Entity> _entities = new List<Entity>();
 
 
         public static void Start(EngineGame game, Room room)
         {
             Game = game;
-            _currentRoom = room;
+            Room = room;
         }
 
         public static void Update(GameTime gameTime)
@@ -31,12 +32,12 @@ namespace MonoEngine
             _inputState.Update();
 
             var entityList = _entities.ToList();
-            var startingRoom = _currentRoom;
+            var startingRoom = Room;
             bool startedPaused = _paused;
 
             foreach (var entity in entityList)
             {
-                if (_currentRoom != startingRoom)
+                if (Room != startingRoom)
                     break;
 
                 if (startedPaused && entity.IsPauseable)
@@ -57,9 +58,9 @@ namespace MonoEngine
                 {
                     entity.onKeyDown(keyPress);
                 }
-                foreach (var button_press in _inputState.GamepadPresses)
+                foreach (var buttonPress in _inputState.GamepadPresses)
                 {
-                    entity.onButtonDown(button_press);
+                    entity.onButtonDown(buttonPress);
                 }
 
                 entity.onMouse(_inputState.MouseState);
@@ -171,11 +172,10 @@ namespace MonoEngine
             int destroyedEntityCount = 0;
             foreach (var entity in entityList)
             {
-                if (entity.IsExpired && _entities.Contains(entity))
+                if (entity.IsExpired)
                 {
                     destroyedEntityCount++;
-                    entity.onDestroy();
-                    _entities.Remove(entity);
+                    DestroyInstance(entity);
                 }
             }
             if (destroyedEntityCount > 0)
@@ -207,7 +207,7 @@ namespace MonoEngine
                         Game.GraphicsDevice.Clear(renderCanvas.BackgroundColor);
                     }
 
-                    Game.SpriteBatch.Begin(SpriteSortMode);
+                    Game.SpriteBatch.Begin(_spriteSortMode);
                     var secondEntityList = _entities.ToList();
                     foreach (var entity in secondEntityList)
                     {
@@ -228,7 +228,7 @@ namespace MonoEngine
             Game.GraphicsDevice.Clear(Game.BackgroundColor);
 
             // Draw to the screen
-            Game.SpriteBatch.Begin(SpriteSortMode, transformMatrix: Game.Viewport.GetScaleMatrix());
+            Game.SpriteBatch.Begin(_spriteSortMode, transformMatrix: Game.Viewport.GetScaleMatrix());
             foreach (var entity in entityList)
             {
                 if (entity.renderTarget == null && entity.ShouldDraw)
@@ -239,31 +239,104 @@ namespace MonoEngine
             Game.SpriteBatch.End();
         }
 
-        public static Entity SpawnInstance(Entity entity)
+        public static void Pause()
         {
-            _entities.Add(entity);
-            entity.onSpawn();
-            return entity;
+            var entityList = _entities.ToList();
+            foreach (var entity in entityList)
+            {
+                entity.onPause();
+            }
+            _paused = true;
+            _pauseTimer.Mark();
         }
 
-        public static void ChangeRoom(Room room)
+        public static void Resume()
         {
-            Room previousRoom = _currentRoom;
-            _currentRoom = room;
+            int pauseTime = (int)_pauseTimer.TotalMilliseconds;
+            var entityList = _entities.ToList();
+            foreach (var entity in entityList)
+            {
+                entity.onResume(pauseTime);
+            }
+            _paused = false;
+        }
 
-            // Call onChangeRoom on all entities
+        public static bool IsPaused()
+        {
+            return _paused;
+        }
+
+        public static void ChangeRoom<T>(Dictionary<string, object> args = null) where T : Room, new()
+        {
+            ChangeRoom(new T(), args);
+        }
+
+        private static void ChangeRoom(Room room, Dictionary<string, object> args = null)
+        {
+            Room previousRoom = Room;
+            Room = room;
+            _currentRoomArgs = args;
+
             if (previousRoom != null)
             {
+                // Call onChangeRoom on all entities
                 var entityList = _entities.ToList();
                 foreach (var entity in entityList)
                 {
-                    entity.onChangeRoom(previousRoom, _currentRoom);
+                    entity.onChangeRoom(previousRoom, Room);
                 }
+
+                // Call onSwitchAway on previous room
+                previousRoom.onSwitchAway(Room);
             }
+
 
             // Clear entities and change the room
             _entities = _entities.Where(entity => entity.IsPersistent).ToList();
-            room.OnSwitchTo(_currentRoom);
+            Room.onSwitchTo(previousRoom, args);
+        }
+
+        public static void ResetRoom()
+        {
+            ChangeRoom(Room, _currentRoomArgs);
+        }
+
+        public static Entity SpawnInstance(Entity entity, Dictionary<string, object> args)
+        {
+            _entities.Add(entity);
+            entity.onSpawn(args);
+            return entity;
+        }
+
+        public static T SpawnInstance<T>(Dictionary<string, object> args = null) where T : Entity, new()
+        {
+            var instance = new T();
+            SpawnInstance(instance, args);
+            return instance;
+        }
+
+        public static void DestroyInstance(Entity entity)
+        {
+            if (entity == null)
+            {
+                return;
+            }
+
+            entity.IsExpired = true;
+            if (_entities.Contains(entity))
+            {
+                entity.onDestroy();
+                _entities.Remove(entity);
+            }
+        }
+
+        public static void DestroyAllInstances<T>() where T : Entity
+        {
+            var instances = GetAllInstances<T>();
+            for (int i = 0; i < instances.Count(); i++)
+            {
+                DestroyInstance(instances[i]);
+            }
         }
 
         public static T GetFirstInstanceByType<T>() where T : Entity

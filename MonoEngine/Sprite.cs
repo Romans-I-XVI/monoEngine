@@ -25,11 +25,11 @@ namespace MonoEngine
 		public float Rotation = 0f;
         public Vector2 Offset = new Vector2();
 		public Vector2 Scale = new Vector2(1.0f, 1.0f);
-		public float Depth = 0.5f;
         public float Alpha = 255f;
 		public Color Color = Color.White;
         public SpriteEffects SpriteEffects = SpriteEffects.None;
         public bool Enabled = true;
+        protected float LayerDepth = 0;
 
 		public Sprite(Region region)
 		{
@@ -40,7 +40,7 @@ namespace MonoEngine
 		{
             if (Enabled)
             {
-                spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), Region.Origin, Scale, SpriteEffects, Depth);
+                spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), Region.Origin, Scale, SpriteEffects, LayerDepth);
             }
 		}
 	}

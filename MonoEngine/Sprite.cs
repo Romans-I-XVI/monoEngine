@@ -99,7 +99,7 @@ namespace MonoEngine
         {
             if (Enabled)
             {
-                if (AnimationSpeed > 0 && !EntityManager.IsPaused())
+                if (AnimationSpeed > 0 && !Engine.IsPaused())
                 {
                     Animate();
                 }

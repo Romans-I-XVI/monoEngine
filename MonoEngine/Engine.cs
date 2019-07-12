@@ -301,17 +301,24 @@ namespace MonoEngine
             ChangeRoom(Room, _currentRoomArgs);
         }
 
-        public static Entity SpawnInstance(Entity entity, Dictionary<string, object> args)
+        public static void SpawnInstance(Entity entity)
         {
+            entity.IsExpired = false;
+
+            var entities = _entities.ToList();
+            if (entities.Contains(entity))
+            {
+                return;
+            }
+
             _entities.Add(entity);
-            entity.onSpawn(args);
-            return entity;
+            entity.onSpawn();
         }
 
-        public static T SpawnInstance<T>(Dictionary<string, object> args = null) where T : Entity, new()
+        public static T SpawnInstance<T>() where T : Entity, new()
         {
             var instance = new T();
-            SpawnInstance(instance, args);
+            SpawnInstance(instance);
             return instance;
         }
 

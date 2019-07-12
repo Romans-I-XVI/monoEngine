@@ -94,7 +94,7 @@ namespace MonoEngine
 
         //Event override methods
 
-        public abstract void onSpawn(Dictionary<string, object> args);
+        public virtual void onSpawn() {}
 
 		public virtual void onDestroy() {}
 

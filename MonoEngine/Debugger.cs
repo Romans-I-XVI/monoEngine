@@ -46,7 +46,7 @@ namespace MonoEngine
 
         public static void DrawColliders(SpriteBatch spriteBatch)
         {
-            var entities = EntityManager.Entities;
+            var entities = Engine.GetAllInstances<Entity>();
             foreach (Entity entity in entities)
             {
                 foreach (Collider collider in entity.Colliders)
@@ -75,8 +75,8 @@ namespace MonoEngine
 
         public static void DrawSafeZones(SpriteBatch spriteBatch)
         {
-            var screenWidth = GameRoot.BoxingViewport.VirtualWidth;
-            var screenHeight = GameRoot.BoxingViewport.VirtualHeight;
+            var screenWidth = Engine.Game.Viewport.VirtualWidth;
+            var screenHeight = Engine.Game.Viewport.VirtualHeight;
 
             var actionSafeZone = new Rectangle(0, 0, (int)(screenWidth * 0.93f), (int)(screenHeight * 0.93f));
             actionSafeZone.X = (screenWidth - actionSafeZone.Width) / 2;
@@ -142,7 +142,7 @@ namespace MonoEngine
             {
                 int height = 28;
                 int border = 2;
-                float viewportScale = (float)GameRoot.BoxingViewport.ViewportWidth / (float)GameRoot.BoxingViewport.VirtualWidth;
+                float viewportScale = (float)Engine.Game.Viewport.ViewportWidth / (float)Engine.Game.Viewport.VirtualWidth;
                 int startX = 0;
                 int startY = 0;
 
@@ -156,8 +156,8 @@ namespace MonoEngine
                     startY = (int)(-spriteBatch.GraphicsDevice.Viewport.Y / viewportScale);
                 }
 
-                RectangleDrawer.Draw(spriteBatch, startX, startY, GameRoot.BoxingViewport.VirtualWidth - startX * 2, height, Color.White, layerDepth: 0.000000003f);
-                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, GameRoot.BoxingViewport.VirtualWidth - border * 2 - startX * 2, height - border * 2, Color.Black, layerDepth: 0.000000002f);
+                RectangleDrawer.Draw(spriteBatch, startX, startY, Engine.Game.Viewport.VirtualWidth - startX * 2, height, Color.White, layerDepth: 0.000000003f);
+                RectangleDrawer.Draw(spriteBatch, startX + border, startY + border, Engine.Game.Viewport.VirtualWidth - border * 2 - startX * 2, height - border * 2, Color.Black, layerDepth: 0.000000002f);
                 float scale = 18 / _spriteFont.MeasureString("|").Y;
                 spriteBatch.DrawString(_spriteFont, _consoleInput, new Vector2(startX + border + 5, startY + border + 3), Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
 
@@ -216,16 +216,16 @@ namespace MonoEngine
             _consoleInput = "";
             if (_consoleOpen)
             {
-                if (!EntityManager.IsPaused())
+                if (!Engine.IsPaused())
                 {
-                    EntityManager.Pause();
+                    Engine.Pause();
                 }
             }
             else
             {
-                if (EntityManager.IsPaused())
+                if (Engine.IsPaused())
                 {
-                    EntityManager.Resume();
+                    Engine.Resume();
                 }
             }
         }

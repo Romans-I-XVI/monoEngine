@@ -30,7 +30,11 @@ namespace MonoEngine
         {
             _inputState.Update();
 
-            var entityList = _entities.ToList();
+            List<Entity> entityList;
+            lock (_entities)
+            {
+                entityList = _entities.OrderByDescending(entity => entity.Depth).ToList();
+            }
             var startingRoom = Room;
             bool startedPaused = _paused;
 
@@ -45,50 +49,81 @@ namespace MonoEngine
                 foreach (var mousePress in _inputState.MousePresses)
                 {
                     entity.onMouseDown(mousePress);
+                    if (entity.IsExpired) break;
                 }
+                if (entity.IsExpired) continue;
+
                 foreach (var touchPress in _inputState.TouchPresses)
                 {
                     if (entity is ITouchable)
                     {
                         ((ITouchable)entity).onTouchPressed(touchPress);
+                        if (entity.IsExpired) break;
                     }
                 }
+                if (entity.IsExpired) continue;
+
+
                 foreach (var keyPress in _inputState.KeyPresses)
                 {
                     entity.onKeyDown(keyPress);
+                    if (entity.IsExpired) break;
                 }
+                if (entity.IsExpired) continue;
+
                 foreach (var buttonPress in _inputState.GamepadPresses)
                 {
                     entity.onButtonDown(buttonPress);
+                    if (entity.IsExpired) break;
                 }
+                if (entity.IsExpired) continue;
 
                 entity.onMouse(_inputState.MouseState);
+                if (entity.IsExpired) continue;
+
                 if (entity is ITouchable)
                 {
                     ((ITouchable)entity).onTouch(_inputState.TouchState);
+                    if (entity.IsExpired) continue;
                 }
+
                 entity.onKey(_inputState.KeyboardState);
+                if (entity.IsExpired) continue;
+
                 entity.onButton(_inputState.GamepadStates);
+                if (entity.IsExpired) continue;
 
                 foreach (var mouseRelease in _inputState.MouseReleases)
                 {
                     entity.onMouseUp(mouseRelease);
+                    if (entity.IsExpired) break;
                 }
+                if (entity.IsExpired) continue;
+
                 foreach (var touchRelease in _inputState.TouchReleases)
                 {
                     if (entity is ITouchable)
                     {
                         ((ITouchable)entity).onTouchReleased(touchRelease);
+                        if (entity.IsExpired) break;
                     }
                 }
+                if (entity.IsExpired) continue;
+
                 foreach (var keyRelease in _inputState.KeyReleases)
                 {
                     entity.onKeyUp(keyRelease);
+                    if (entity.IsExpired) break;
                 }
+                if (entity.IsExpired) continue;
+
                 foreach (var buttonRelease in _inputState.GamepadReleases)
                 {
                     entity.onButtonUp(buttonRelease);
+                    if (entity.IsExpired) break;
                 }
+                if (entity.IsExpired) continue;
+
                 entity.onUpdate(gameTime);
             }
 
@@ -169,6 +204,10 @@ namespace MonoEngine
 
             destroy_expired_entities:
             int destroyedEntityCount = 0;
+            lock (_entities)
+            {
+                entityList = _entities.ToList();
+            }
             foreach (var entity in entityList)
             {
                 if (entity.IsExpired)
@@ -193,7 +232,11 @@ namespace MonoEngine
 
         public static void Draw(GameTime gameTime)
         {
-            var entityList = _entities.ToList();
+            List<Entity> entityList;
+            lock (_entities)
+            {
+                entityList = _entities.OrderByDescending(entity => entity.Depth).ToList();
+            }
 
             // Draw to render targets
             foreach (var renderCanvas in entityList.OfType<RenderCanvas>())
@@ -207,7 +250,11 @@ namespace MonoEngine
                     }
 
                     Game.SpriteBatch.Begin(_spriteSortMode);
-                    var secondEntityList = _entities.ToList();
+                    List<Entity> secondEntityList;
+                    lock (_entities)
+                    {
+                        secondEntityList = _entities.OrderByDescending(entity => entity.Depth).ToList();
+                    }
                     foreach (var entity in secondEntityList)
                     {
                         if (entity.renderTarget == renderCanvas && entity.ShouldDraw)
@@ -240,7 +287,11 @@ namespace MonoEngine
 
         public static void Pause()
         {
-            var entityList = _entities.ToList();
+            List<Entity> entityList;
+            lock (_entities)
+            {
+                entityList = _entities.ToList();
+            }
             foreach (var entity in entityList)
             {
                 entity.onPause();
@@ -252,7 +303,11 @@ namespace MonoEngine
         public static void Resume()
         {
             int pauseTime = (int)_pauseTimer.TotalMilliseconds;
-            var entityList = _entities.ToList();
+            List<Entity> entityList;
+            lock (_entities)
+            {
+                entityList = _entities.ToList();
+            }
             foreach (var entity in entityList)
             {
                 entity.onResume(pauseTime);
@@ -279,7 +334,11 @@ namespace MonoEngine
             if (previousRoom != null)
             {
                 // Call onChangeRoom on all entities
-                var entityList = _entities.ToList();
+                List<Entity> entityList;
+                lock (_entities)
+                {
+                    entityList = _entities.ToList();
+                }
                 foreach (var entity in entityList)
                 {
                     entity.onChangeRoom(previousRoom, Room);
@@ -291,7 +350,10 @@ namespace MonoEngine
 
 
             // Clear entities and change the room
-            _entities = _entities.Where(entity => entity.IsPersistent).ToList();
+            lock (_entities)
+            {
+                _entities = _entities.Where(entity => entity.IsPersistent).ToList();
+            }
             Room.onSwitchTo(previousRoom, args);
         }
 
@@ -303,15 +365,17 @@ namespace MonoEngine
         public static void SpawnInstance(Entity entity)
         {
             entity.IsExpired = false;
-
-            var entities = _entities.ToList();
-            if (entities.Contains(entity))
+            lock (_entities)
             {
-                return;
+                if (_entities.Contains(entity))
+                {
+                    return;
+                }
+
+                _entities.Add(entity);
+                entity.onSpawn();
             }
 
-            _entities.Add(entity);
-            entity.onSpawn();
         }
 
         public static T SpawnInstance<T>() where T : Entity, new()
@@ -329,10 +393,13 @@ namespace MonoEngine
             }
 
             entity.IsExpired = true;
-            if (_entities.Contains(entity))
+            lock (_entities)
             {
-                entity.onDestroy();
-                _entities.Remove(entity);
+                if (_entities.Contains(entity))
+                {
+                    entity.onDestroy();
+                    _entities.Remove(entity);
+                }
             }
         }
 
@@ -347,25 +414,34 @@ namespace MonoEngine
 
         public static T GetFirstInstanceByType<T>() where T : Entity
         {
-            var entities = _entities.ToList();
-            return entities.OfType<T>().FirstOrDefault();
+            lock (_entities)
+            {
+                return _entities.OfType<T>().FirstOrDefault();
+            }
         }
 
         public static Entity GetFirstInstanceByID(int id)
         {
-            var entities = _entities.ToList();
-            return entities.FirstOrDefault(entity => entity.ID == id);
+            lock (_entities)
+            {
+                return _entities.FirstOrDefault(entity => entity.ID == id);
+            }
         }
 
         public static List<T> GetAllInstances<T>() where T : Entity
         {
-            var entities = _entities.ToList();
-            return entities.OfType<T>().ToList();
+            lock (_entities)
+            {
+                return _entities.OfType<T>().ToList();
+            }
         }
 
         public static int InstanceCount<T>() where T : Entity
         {
-            return _entities.OfType<T>().Count();
+            lock (_entities)
+            {
+                return _entities.OfType<T>().Count();
+            }
         }
 
         public static bool ToggleFullscreen()
@@ -377,7 +453,11 @@ namespace MonoEngine
 
         public static void PostGameEvent(GameEvent gameEvent)
         {
-            var entityList = _entities.ToList();
+            List<Entity> entityList;
+            lock (_entities)
+            {
+                entityList = _entities.ToList();
+            }
             foreach (var entity in entityList)
             {
                 entity.onGameEvent(gameEvent);

@@ -20,6 +20,7 @@ namespace MonoEngine
         public bool IsPauseable = true;
         public bool ShouldDraw = true;
         public int ID;
+        public int Depth = 0;
 
         protected Entity ()
 		{

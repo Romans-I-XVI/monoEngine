@@ -32,7 +32,7 @@ namespace MonoEngine
 
         protected override void Initialize()
         {
-            RectangleDrawer.Initialize();
+            RectangleDrawer.Initialize(GraphicsDevice);
             Viewport = new BoxingViewportAdapter(Window, GraphicsDevice, CanvasWidth, CanvasHeight, HorizontalBleed, VerticalBleed);
             base.Initialize();
         }

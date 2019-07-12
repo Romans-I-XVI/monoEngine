@@ -45,7 +45,6 @@ namespace MonoEngine
                 {PlayerIndex.Three, GamePad.GetState(PlayerIndex.Three)},
                 {PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
             };
-            Update();
         }
 
         public void Update()

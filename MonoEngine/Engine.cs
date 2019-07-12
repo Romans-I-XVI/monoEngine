@@ -11,20 +11,19 @@ namespace MonoEngine
         public static EngineGame Game { get; private set; }
         public static Room Room { get; private set; }
         public static float DT { get; private set; }
-        public static readonly Random Random = new Random();
+        public static Random Random = new Random();
 
         private static SpriteSortMode _spriteSortMode = SpriteSortMode.Deferred;
-        private static bool _paused = false;
+        private static bool _paused;
         private static GameTimeSpan _pauseTimer = new GameTimeSpan();
         private static EngineInputState _inputState = new EngineInputState();
-        private static Dictionary<string, object> _currentRoomArgs = null;
+        private static Dictionary<string, object> _currentRoomArgs;
         private static List<Entity> _entities = new List<Entity>();
 
-
-        public static void Start(EngineGame game, Room room)
+        public static void Start<TEngineGame>() where TEngineGame : EngineGame, new()
         {
-            Game = game;
-            Room = room;
+            Game = new TEngineGame();
+            Game.Run();
         }
 
         public static void Update(GameTime gameTime)

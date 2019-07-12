@@ -11,9 +11,9 @@ namespace MonoEngine
 		static bool isValid = false;
 		static Texture2D RectangleTexture;
 
-		public static void Initialize(){
+		public static void Initialize(GraphicsDevice graphicsDevice){
 			isValid = true;
-			RectangleTexture = new Texture2D (GameRoot.graphicsDevice, 1, 1);
+			RectangleTexture = new Texture2D (graphicsDevice, 1, 1);
 			RectangleTexture.SetData (new Color[] { Color.White });
 		}
 

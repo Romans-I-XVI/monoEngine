@@ -23,6 +23,8 @@ namespace MonoEngine
 
         public override void onDraw(SpriteBatch spriteBatch)
         {
+            base.onDraw(spriteBatch);
+
             if (Variables["draw_colliders"] == "1")
             {
                 DrawColliders(spriteBatch);
@@ -32,7 +34,6 @@ namespace MonoEngine
             {
                 DrawSafeZones(spriteBatch);
             }
-            base.onDraw(spriteBatch);
         }
 
         public void SetDrawColliders(bool shouldDraw)
@@ -139,6 +140,8 @@ namespace MonoEngine
 
         public override void onDraw(SpriteBatch spriteBatch)
         {
+            base.onDraw(spriteBatch);
+
             if (_consoleOpen)
             {
                 int height = 28;
@@ -173,8 +176,6 @@ namespace MonoEngine
                     RectangleDrawer.Draw(spriteBatch, cursorPosition.X, cursorPosition.Y, 10, 2, Color.White);
                 }
             }
-
-            base.onDraw(spriteBatch);
         }
 
         private void onKeyInput(KeyboardEventArgs e)

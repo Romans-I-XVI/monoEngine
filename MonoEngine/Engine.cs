@@ -243,7 +243,6 @@ namespace MonoEngine
                 FPS = _currentFrameCount;
                 _currentFrameCount = 0;
                 _fpsTimer.Mark();
-                Console.WriteLine(FPS);
             }
 
             List<Entity> entityList;

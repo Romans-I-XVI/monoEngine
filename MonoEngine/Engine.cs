@@ -10,24 +10,28 @@ namespace MonoEngine
     {
         public static EngineGame Game { get; private set; }
         public static Room Room { get; private set; }
-        public static float DT { get; private set; }
+        public static float Dt { get; private set; }
+        public static int FPS { get; private set; }
         public static Random Random = new Random();
 
         private static SpriteSortMode _spriteSortMode = SpriteSortMode.Deferred;
         private static bool _paused;
         private static GameTimeSpan _pauseTimer = new GameTimeSpan();
+        private static GameTimeSpan _fpsTimer = new GameTimeSpan();
         private static EngineInputState _inputState = new EngineInputState();
         private static Dictionary<string, object> _currentRoomArgs;
         private static List<Entity> _entities = new List<Entity>();
+        private static int _currentFrameCount = 0;
 
-        public static void Start<TEngineGame>() where TEngineGame : EngineGame, new()
+        public static void Start(EngineGame game)
         {
-            Game = new TEngineGame();
+            Game = game;
             Game.Run();
         }
 
         public static void Update(GameTime gameTime)
         {
+            Dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _inputState.Update();
 
             List<Entity> entityList;
@@ -232,6 +236,16 @@ namespace MonoEngine
 
         public static void Draw(GameTime gameTime)
         {
+            // Update the current fps
+            _currentFrameCount++;
+            if (_fpsTimer.TotalMilliseconds >= 1000)
+            {
+                FPS = _currentFrameCount;
+                _currentFrameCount = 0;
+                _fpsTimer.Mark();
+                Console.WriteLine(FPS);
+            }
+
             List<Entity> entityList;
             lock (_entities)
             {

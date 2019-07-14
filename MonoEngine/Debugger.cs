@@ -12,6 +12,7 @@ namespace MonoEngine
         {
             {"draw_colliders", "0"},
             {"draw_safe_zones", "0"},
+            {"draw_fps", "0"}
         };
 
         public Debugger()
@@ -34,6 +35,11 @@ namespace MonoEngine
             {
                 DrawSafeZones(spriteBatch);
             }
+
+            if (Variables["draw_fps"] == "1")
+            {
+                DrawFPS(spriteBatch);
+            }
         }
 
         public void SetDrawColliders(bool shouldDraw)
@@ -44,6 +50,11 @@ namespace MonoEngine
         public void SetDrawSafeZones(bool shouldDraw)
         {
             Variables["draw_safe_zones"] = shouldDraw ? "1" : "0";
+        }
+
+        public void SetDrawFPS(bool shouldDraw)
+        {
+            Variables["draw_fps"] = shouldDraw ? "1" : "0";
         }
 
         public static void DrawColliders(SpriteBatch spriteBatch)
@@ -90,12 +101,38 @@ namespace MonoEngine
             titleSafeZone.Y = (screenHeight - titleSafeZone.Height) / 2;
             RectangleDrawer.Draw(spriteBatch, titleSafeZone, Color.Blue * (60f / 255f));
         }
+
+        public static void DrawFPS(SpriteBatch spriteBatch)
+        {
+            int x = 0;
+            int y = 0;
+            float viewportScale = (float)Engine.Game.Viewport.ViewportWidth / (float)Engine.Game.Viewport.VirtualWidth;
+
+            if (spriteBatch.GraphicsDevice.Viewport.X < 0)
+            {
+                x += (int)(-spriteBatch.GraphicsDevice.Viewport.X / viewportScale);
+            }
+
+            if (spriteBatch.GraphicsDevice.Viewport.Y < 0)
+            {
+                y += (int)(-spriteBatch.GraphicsDevice.Viewport.Y / viewportScale);
+            }
+
+            int fps = Engine.FPS;
+            int charCount = fps.ToString().Length;
+            int height = 20;
+            int buffer = height / 4;
+            int width = charCount * (height / 2) + charCount * buffer + buffer;
+
+            RectangleDrawer.Draw(spriteBatch, x, y - 2, width, height + 8, Color.Black);
+            NumberDrawer.Draw(spriteBatch, fps, x + buffer, y + 2, height, Color.White);
+        }
     }
 
     public class DebuggerWithTerminal : Debugger
     {
+        public bool ConsoleOpen { get; private set; }
         private SpriteFont _spriteFont;
-        private bool _consoleOpen = false;
         private string _consoleInput = "";
         private readonly GameTimeSpan _cursorBlinkTimer = new GameTimeSpan();
         private readonly GameTimeSpan _keyRepeatTimer = new GameTimeSpan();
@@ -109,7 +146,7 @@ namespace MonoEngine
 
         public override void onUpdate(GameTime gameTime)
         {
-            if (_consoleOpen && _cursorBlinkTimer.TotalMilliseconds > 400)
+            if (ConsoleOpen && _cursorBlinkTimer.TotalMilliseconds > 400)
             {
                 _cursorBlinkState = !_cursorBlinkState;
                 _cursorBlinkTimer.Mark();
@@ -142,7 +179,7 @@ namespace MonoEngine
         {
             base.onDraw(spriteBatch);
 
-            if (_consoleOpen)
+            if (ConsoleOpen)
             {
                 int height = 28;
                 int border = 2;
@@ -184,7 +221,7 @@ namespace MonoEngine
             {
                 OpenCloseConsole();
             }
-            else if (_consoleOpen)
+            else if (ConsoleOpen)
             {
                 if (e.Key == Keys.Back)
                 {
@@ -214,9 +251,9 @@ namespace MonoEngine
 
         public void OpenCloseConsole()
         {
-            _consoleOpen = !_consoleOpen;
+            ConsoleOpen = !ConsoleOpen;
             _consoleInput = "";
-            if (_consoleOpen)
+            if (ConsoleOpen)
             {
                 if (!Engine.IsPaused())
                 {

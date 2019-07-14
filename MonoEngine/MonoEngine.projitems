@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ITouchable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KeyMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EngineGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NumberDrawer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Region.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RectangleDrawer.cs" />

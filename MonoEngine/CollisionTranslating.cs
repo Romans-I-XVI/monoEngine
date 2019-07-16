@@ -11,7 +11,7 @@ namespace MonoEngine
     {
         public static Vector2 RectRect(Rectangle rectangle1, Rectangle rectangle2)
         {
-            Vector2 translation_amount = new Vector2(0, 0);
+            Vector2 translationAmount = new Vector2(0, 0);
 
             Dictionary<string, int> distances = new Dictionary<string, int>()
             {
@@ -26,18 +26,18 @@ namespace MonoEngine
             distances["top"] = Math.Abs(rectangle1.Bottom - rectangle2.Top);
             distances["bottom"] = Math.Abs(rectangle1.Top - rectangle2.Bottom);
 
-            var smallest_distance = Utilities.GetSmallestInDictionary(distances);
+            var smallestDistance = Utilities.GetSmallestInDictionary(distances);
 
-            if (smallest_distance == "left")
-                translation_amount.X = rectangle2.Left - rectangle1.Right;
-            else if (smallest_distance == "right")
-                translation_amount.X = rectangle2.Right - rectangle1.Left;
-            else if (smallest_distance == "top")
-                translation_amount.Y = rectangle2.Top - rectangle1.Bottom;
-            else if (smallest_distance == "bottom")
-                translation_amount.Y = rectangle2.Bottom - rectangle1.Top;
+            if (smallestDistance == "left")
+                translationAmount.X = rectangle2.Left - rectangle1.Right;
+            else if (smallestDistance == "right")
+                translationAmount.X = rectangle2.Right - rectangle1.Left;
+            else if (smallestDistance == "top")
+                translationAmount.Y = rectangle2.Top - rectangle1.Bottom;
+            else if (smallestDistance == "bottom")
+                translationAmount.Y = rectangle2.Bottom - rectangle1.Top;
 
-            return translation_amount;
+            return translationAmount;
         }
     }
 }

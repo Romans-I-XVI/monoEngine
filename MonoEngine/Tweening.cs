@@ -68,7 +68,7 @@ namespace MonoEngine
         public Tween Tween;
         public float Start;
         public float Dest;
-        public float Current { get { return Tweens.SwitchTween(Tween, Start, Dest, Timer.TotalMilliseconds, Duration); } }
+        public float Current { get { return Tweening.SwitchTween(Tween, Start, Dest, Timer.TotalMilliseconds, Duration); } }
         public float Duration;
         public readonly GameTimeSpan Timer;
         public bool Done { get { return Timer.TotalMilliseconds >= Duration; } }
@@ -127,7 +127,7 @@ namespace MonoEngine
 
     }
 
-    public static class Tweens
+    public static class Tweening
     {
         public static float SwitchTween(Tween tween, float start, float finish, float currentTime, float duration)
         {

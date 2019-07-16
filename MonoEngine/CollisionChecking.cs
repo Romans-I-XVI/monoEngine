@@ -67,9 +67,9 @@ namespace MonoEngine
 
         public static bool CircleCircle(int x1, int y1, float r1, int x2, int y2, float r2)
         {
-            int distance_x = x1 - x2;
-            int distance_y = y1 - y2;
-            var dist = Math.Sqrt(distance_x * distance_x + distance_y * distance_y);
+            int distanceX = x1 - x2;
+            int distanceY = y1 - y2;
+            var dist = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
             return (dist <= r1 + r2);
         }
 
@@ -79,22 +79,22 @@ namespace MonoEngine
             return CircleRect(circle.X, circle.Y, circle.Radius, rectangle);
         }
 
-        public static bool CircleRect(int circle_x, int circle_y, float circle_r, Rectangle rectangle)
+        public static bool CircleRect(int circleX, int circleY, float circleR, Rectangle rectangle)
         {
-            return CircleRect(circle_x, circle_y, circle_r, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+            return CircleRect(circleX, circleY, circleR, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
         }
 
         public static bool CircleRect(int cx, int cy, float cr, int rx, int ry, int rw, int rh )
         {
-            var circle_distance_x = Math.Abs(cx - rx - rw / 2);
-            var circle_distance_y = Math.Abs(cy - ry - rh / 2);
+            var circleDistanceX = Math.Abs(cx - rx - rw / 2);
+            var circleDistanceY = Math.Abs(cy - ry - rh / 2);
 
-            if (circle_distance_x > (rw / 2 + cr) || circle_distance_y > (rh / 2 + cr))
+            if (circleDistanceX > (rw / 2f + cr) || circleDistanceY > (rh / 2f + cr))
                 return false;
-            else if (circle_distance_x <= (rw / 2) || circle_distance_y <= (rh / 2))
+            else if (circleDistanceX <= (rw / 2) || circleDistanceY <= (rh / 2))
                 return true;
 
-            return (Math.Pow(circle_distance_x - rw / 2, 2) + Math.Pow(circle_distance_y - rh / 2, 2)) <= Math.Pow(cr, 2);
+            return (Math.Pow(circleDistanceX - rw / 2, 2) + Math.Pow(circleDistanceY - rh / 2, 2)) <= Math.Pow(cr, 2);
         }
 
         // Point to Rectangle
@@ -127,9 +127,9 @@ namespace MonoEngine
         public static bool PointCircle(int px, int py, int cx, int cy, float cr)
         {
 
-            int distance_x = px - cx;
-            int distance_y = py - cy;
-            var dist = Math.Sqrt(distance_x * distance_x + distance_y * distance_y);
+            int distanceX = px - cx;
+            int distanceY = py - cy;
+            var dist = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
             return (dist <= cr);
         }
     }

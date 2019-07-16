@@ -15,7 +15,6 @@ namespace MonoEngine
         public readonly int CanvasHeight;
         public readonly int HorizontalBleed;
         public readonly int VerticalBleed;
-        public bool ExitGame = false;
 
         public EngineGame(int canvasWidth, int canvasHeight, int horizontalBleed, int verticalBleed)
         {

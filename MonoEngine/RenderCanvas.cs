@@ -8,28 +8,28 @@ namespace MonoEngine
 {
 	public class RenderCanvas : Entity
 	{
-        public RenderTarget2D othersRenderTarget { get; protected set; }
+        public RenderTarget2D OthersRenderTarget { get; protected set; }
         public Vector2 Size { get; protected set; }
         public Color BackgroundColor = Color.Transparent;
         public bool ShouldClear = true;
 
-		public RenderCanvas(int width, int height) {
+		public RenderCanvas(int width, int height, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None, int preferredMultiSampleCount = 0, RenderTargetUsage renderTargetUsage = RenderTargetUsage.PreserveContents) {
             Size = new Vector2(width, height);
-            othersRenderTarget = new RenderTarget2D(Engine.Game.GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-			var sprite = new Sprite(new Region(othersRenderTarget, 0, 0, othersRenderTarget.Width, othersRenderTarget.Height, 0, 0));
+            OthersRenderTarget = new RenderTarget2D(Engine.Game.GraphicsDevice, width, height, false, surfaceFormat, depthFormat, preferredMultiSampleCount, renderTargetUsage);
+			var sprite = new Sprite(new Region(OthersRenderTarget, 0, 0, OthersRenderTarget.Width, OthersRenderTarget.Height, 0, 0));
             AddSprite("main", sprite);
 		}
 
         ~RenderCanvas()
         {
-            if (othersRenderTarget != null)
-                othersRenderTarget.Dispose();
+            if (OthersRenderTarget != null)
+                OthersRenderTarget.Dispose();
         }
 
         public override void onDestroy()
         {
-            if (othersRenderTarget != null)
-                othersRenderTarget.Dispose();
+            if (OthersRenderTarget != null)
+                OthersRenderTarget.Dispose();
             base.onDestroy();
         }
 

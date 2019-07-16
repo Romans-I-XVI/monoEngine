@@ -10,10 +10,10 @@ namespace MonoEngine
         {
             Mark();
         }
-        public void Mark(float mark_to = 0)
+        public void Mark(float markTo = 0)
         {
             _timestamp = DateTime.Now;
-            _timestamp = _timestamp.AddMilliseconds(mark_to * -1);
+            _timestamp = _timestamp.AddMilliseconds(markTo * -1);
         }
 
         public float TotalMilliseconds

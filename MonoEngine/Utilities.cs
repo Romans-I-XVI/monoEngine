@@ -5,19 +5,19 @@ namespace MonoEngine
 {
     public static class Utilities
     {
-        public static float FitAreaToArea(float source_width, float source_height, float dest_width, float dest_height)
+        public static float FitAreaToArea(float sourceWidth, float sourceHeight, float destWidth, float destHeight)
         {
-            if (dest_width / dest_height < source_width / source_height)
-                return dest_width / source_width;
-            else if (dest_width / dest_height > source_width / source_height)
-                return dest_height / source_height;
+            if (destWidth / destHeight < sourceWidth / sourceHeight)
+                return destWidth / sourceWidth;
+            else if (destWidth / destHeight > sourceWidth / sourceHeight)
+                return destHeight / sourceHeight;
             else
-                return dest_width / source_width;
+                return destWidth / sourceWidth;
         }
 
-        public static float FitAreaToArea(Vector2 source_area, Vector2 dest_area)
+        public static float FitAreaToArea(Vector2 sourceArea, Vector2 destArea)
         {
-            return FitAreaToArea(source_area.X, source_area.Y, dest_area.X, dest_area.Y);
+            return FitAreaToArea(sourceArea.X, sourceArea.Y, destArea.X, destArea.Y);
         }
 
         public static void Try(Action action)
@@ -37,24 +37,24 @@ namespace MonoEngine
 
         public static string GetSmallestInDictionary(Dictionary<string, int> dic)
         {
-            string smallest_key = null;
+            string smallestKey = null;
 
             foreach (string key in dic.Keys)
             {
-                if (smallest_key != null)
+                if (smallestKey != null)
                 {
-                    if (dic[key] < dic[smallest_key])
+                    if (dic[key] < dic[smallestKey])
                     {
-                        smallest_key = key;
+                        smallestKey = key;
                     }
                 }
                 else
                 {
-                    smallest_key = key;
+                    smallestKey = key;
                 }
             }
 
-            return smallest_key;
+            return smallestKey;
         }
     }
 }

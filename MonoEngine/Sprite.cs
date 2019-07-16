@@ -54,40 +54,40 @@ namespace MonoEngine
         public bool ReverseAnimationDirection;
         public GameTimeSpan Timer { get; protected set; }
 
-        public AnimatedSprite(Region[] regions, int animation_speed = 0, bool reverse_animation_direction = false) : base(regions[0])
+        public AnimatedSprite(Region[] regions, int animationSpeed = 0, bool reverseAnimationDirection = false) : base(regions[0])
         {
             Regions = regions;
-            AnimationSpeed = animation_speed;
-            ReverseAnimationDirection = reverse_animation_direction;
+            AnimationSpeed = animationSpeed;
+            ReverseAnimationDirection = reverseAnimationDirection;
             Timer = new GameTimeSpan();
         }
 
         public void Animate()
         {
-            var frame_count = Regions.Length;
-            var current_time = Timer.TotalMilliseconds;
-            int start_frame;
-            int dest_frame;
+            var frameCount = Regions.Length;
+            var currentTime = Timer.TotalMilliseconds;
+            int startFrame;
+            int destFrame;
             if (!ReverseAnimationDirection)
             {
-                start_frame = 0;
-                dest_frame = frame_count;
+                startFrame = 0;
+                destFrame = frameCount;
             }
             else
             {
-                start_frame = frame_count - 1;
-                dest_frame = -1;
+                startFrame = frameCount - 1;
+                destFrame = -1;
             }
 
-            if (current_time > AnimationSpeed)
+            if (currentTime > AnimationSpeed)
             {
-                current_time -= AnimationSpeed;
+                currentTime -= AnimationSpeed;
                 Timer.RemoveTime(AnimationSpeed);
             }
-            Index = (int)Tweens.SwitchTween(AnimationTween, start_frame, dest_frame, current_time, AnimationSpeed);
-            if (Index > frame_count - 1)
+            Index = (int)Tweening.SwitchTween(AnimationTween, startFrame, destFrame, currentTime, AnimationSpeed);
+            if (Index > frameCount - 1)
             {
-                Index = frame_count - 1;
+                Index = frameCount - 1;
             }
             else if (Index < 0)
             {

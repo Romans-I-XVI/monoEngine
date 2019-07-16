@@ -9,10 +9,9 @@ namespace MonoEngine
 {
 	public abstract class Entity
 	{
-        protected readonly Dictionary<string, Sprite> _sprites = new Dictionary<string, Sprite>();
-        protected readonly List<Collider> _colliders = new List<Collider>();
-        public List<Collider> Colliders { get { return _colliders; } }
-        public RenderCanvas renderTarget = null;
+        public readonly Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
+        public readonly List<Collider> Colliders = new List<Collider>();
+        public RenderCanvas RenderTarget = null;
         public Vector2 Position = new Vector2();
         public Vector2 Speed = new Vector2();
         public bool IsExpired = false;
@@ -28,7 +27,7 @@ namespace MonoEngine
 
 		public void SetRenderCanvas (RenderCanvas renderCanvas)
 		{
-			renderTarget = renderCanvas;
+			RenderTarget = renderCanvas;
 		}
 
 		public void Destroy()
@@ -38,57 +37,57 @@ namespace MonoEngine
 
         public Sprite AddSprite(string name, Sprite sprite)
         {
-            _sprites.Add(name, sprite);
+            Sprites.Add(name, sprite);
             return sprite;
         }
 
         public void RemoveSprite(string name)
         {
-            _sprites.Remove(name);
+            Sprites.Remove(name);
         }
 
         public Sprite GetSprite(string name)
         {
-            if (_sprites.ContainsKey(name))
-                return _sprites[name];
+            if (Sprites.ContainsKey(name))
+                return Sprites[name];
             else
                 return null;
         }
 
-        public ColliderCircle AddColliderCircle(string collider_name, float radius, int offset_x = 0, int offset_y = 0, bool enabled = true)
+        public ColliderCircle AddColliderCircle(string colliderName, float radius, int offsetX = 0, int offsetY = 0, bool enabled = true)
         {
-            RemoveCollider(collider_name);
-            var collider = new ColliderCircle(this, collider_name, radius, offset_x, offset_y, enabled);
-            _colliders.Add(collider);
+            RemoveCollider(colliderName);
+            var collider = new ColliderCircle(this, colliderName, radius, offsetX, offsetY, enabled);
+            Colliders.Add(collider);
             return collider;
         }
 
-        public ColliderRectangle AddColliderRectangle(string collider_name, int offset_x, int offset_y, int width, int height, bool enabled = true)
+        public ColliderRectangle AddColliderRectangle(string colliderName, int offsetX, int offsetY, int width, int height, bool enabled = true)
         {
-            RemoveCollider(collider_name);
-            var collider = new ColliderRectangle(this, collider_name, offset_x, offset_y, width, height, enabled);
-            _colliders.Add(collider);
+            RemoveCollider(colliderName);
+            var collider = new ColliderRectangle(this, colliderName, offsetX, offsetY, width, height, enabled);
+            Colliders.Add(collider);
             return collider;
         }
 
-        public Collider GetCollider(string collider_name)
+        public Collider GetCollider(string colliderName)
         {
-            foreach (var item in _colliders)
+            foreach (var item in Colliders)
             {
-                if (item.Name == collider_name)
+                if (item.Name == colliderName)
                     return item;
             }
             return null;
         }
 
-        public void RemoveCollider(string collider_name)
+        public void RemoveCollider(string colliderName)
         {
-            for (int i = _colliders.Count - 1; i >= 0; i--)
+            for (int i = Colliders.Count - 1; i >= 0; i--)
             {
-                if (_colliders[i].Name == collider_name)
+                if (Colliders[i].Name == colliderName)
                 {
-                    _colliders[i].Enabled = false;
-                    _colliders.RemoveAt(i);
+                    Colliders[i].Enabled = false;
+                    Colliders.RemoveAt(i);
                 }
             }
         }
@@ -101,21 +100,21 @@ namespace MonoEngine
 
         public virtual void onPause() {}
 
-        public virtual void onResume(int pause_time)
+        public virtual void onResume(int pauseTime)
         {
             if (IsPauseable)
             {
-                foreach (Sprite sprite in _sprites.Values)
+                foreach (Sprite sprite in Sprites.Values)
                 {
                     if (sprite is AnimatedSprite && this.IsPauseable)
                     {
-                        ((AnimatedSprite)sprite).Timer.RemoveTime(pause_time);
+                        ((AnimatedSprite)sprite).Timer.RemoveTime(pauseTime);
                     }
                 }
             }
         }
 
-		public virtual void onChangeRoom(Room previous_room, Room next_room) {}
+		public virtual void onChangeRoom(Room previousRoom, Room nextRoom) {}
 
 		public virtual void onMouse(MouseState state) {}
 
@@ -141,17 +140,17 @@ namespace MonoEngine
             Position.Y += Speed.Y * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public virtual void onCollision(Collider collider, Collider other_collider, Entity other_instance) {}
+        public virtual void onCollision(Collider collider, Collider otherCollider, Entity otherInstance) {}
 
         public virtual void onDraw(SpriteBatch spriteBatch)
 		{
-            foreach (var sprite in _sprites.Values)
+            foreach (var sprite in Sprites.Values)
             {
                 sprite.Draw(spriteBatch, Position);
             }
         }
 
-        public virtual void onGameEvent(GameEvent game_event) {}
+        public virtual void onGameEvent(GameEvent gameEvent) {}
 	}
 }
 

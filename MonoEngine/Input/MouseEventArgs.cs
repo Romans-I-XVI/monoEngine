@@ -10,11 +10,11 @@ namespace MonoEngine
         public Point Position { get; private set; }
         public int ScrollWheelValue { get; private set; }
 
-        public MouseEventArgs(MouseButtons button, Point position, int scroll_wheel_value)
+        public MouseEventArgs(MouseButtons button, Point position, int scrollWheelValue)
         {
             Button = button;
             Position = position;
-            ScrollWheelValue = scroll_wheel_value;
+            ScrollWheelValue = scrollWheelValue;
         }
     }
 }

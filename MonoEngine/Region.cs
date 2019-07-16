@@ -19,16 +19,16 @@ namespace MonoEngine
             Origin = origin;
         }
 
-        public Region(Texture2D texture, int x, int y, int width, int height, int origin_x, int origin_y) : this(texture, new Rectangle(x, y, width, height), new Vector2(origin_x, origin_y))
+        public Region(Texture2D texture, int x, int y, int width, int height, int originX, int originY) : this(texture, new Rectangle(x, y, width, height), new Vector2(originX, originY))
         {
         }
 
-        public void AutoOrigin(DrawFrom draw_from)
+        public void AutoOrigin(DrawFrom drawFrom)
         {
             int width = SourceRectangle.Width;
             int height = SourceRectangle.Height;
 
-            switch (draw_from)
+            switch (drawFrom)
             {
                 case DrawFrom.TopCenter:
                     Origin.X = width / 2;

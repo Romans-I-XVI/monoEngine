@@ -24,10 +24,10 @@ namespace MonoEngine
         public float Radius;
         public Point Offset;
 
-        public ColliderCircle(Entity owner, string name, float radius, int offset_x, int offset_y, bool enabled = true) : base(owner, name)
+        public ColliderCircle(Entity owner, string name, float radius, int offsetX, int offsetY, bool enabled = true) : base(owner, name)
         {
             Radius = radius;
-            Offset = new Point(offset_x, offset_y);
+            Offset = new Point(offsetX, offsetY);
             Enabled = enabled;
         }
     }
@@ -40,9 +40,9 @@ namespace MonoEngine
         public int Width;
         public int Height;
 
-        public ColliderRectangle(Entity owner, string name, int offset_x, int offset_y, int width, int height, bool enabled = true) : base(owner, name)
+        public ColliderRectangle(Entity owner, string name, int offsetX, int offsetY, int width, int height, bool enabled = true) : base(owner, name)
         {
-            Offset = new Point(offset_x, offset_y);
+            Offset = new Point(offsetX, offsetY);
             Width = width;
             Height = height;
             Enabled = enabled;

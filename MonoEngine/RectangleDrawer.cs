@@ -8,27 +8,27 @@ namespace MonoEngine
 {
 	public static class RectangleDrawer
 	{
-		static bool isValid = false;
-		static Texture2D RectangleTexture;
+		static bool _initialized = false;
+		static Texture2D _rectangleTexture;
 
 		public static void Initialize(GraphicsDevice graphicsDevice){
-			isValid = true;
-			RectangleTexture = new Texture2D (graphicsDevice, 1, 1);
-			RectangleTexture.SetData (new Color[] { Color.White });
+			_initialized = true;
+			_rectangleTexture = new Texture2D (graphicsDevice, 1, 1);
+			_rectangleTexture.SetData (new Color[] { Color.White });
 		}
 
 		public static Texture2D GetTexture(){
-			return RectangleTexture;
+			return _rectangleTexture;
 		}
 
 		public static void Draw(SpriteBatch spriteBatch, Rectangle rectangle, Color color, Vector2 origin = default(Vector2), float layerDepth = 0f){
-			if (isValid) {
-                spriteBatch.Draw (RectangleTexture, position: new Vector2(rectangle.X - origin.X, rectangle.Y - origin.Y), scale: new Vector2((float)rectangle.Width, (float)rectangle.Height), color: color, layerDepth: layerDepth);
+			if (_initialized) {
+                spriteBatch.Draw (_rectangleTexture, position: new Vector2(rectangle.X - origin.X, rectangle.Y - origin.Y), scale: new Vector2((float)rectangle.Width, (float)rectangle.Height), color: color, layerDepth: layerDepth);
 			}
 		}
 
 		public static void Draw(SpriteBatch spriteBatch, float x, float y, float width, float height, Color color, float origin_x = 0f, float origin_y = 0f, float layerDepth = 0f){
-			if (isValid) {
+			if (_initialized) {
 				Vector2 position = new Vector2 (x, y);
                 Rectangle rectangle = new Rectangle((int)x, (int)y, (int)width, (int)height);
 				Vector2 origin = new Vector2 (origin_x, origin_y);

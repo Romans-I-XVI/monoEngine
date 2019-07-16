@@ -256,7 +256,7 @@ namespace MonoEngine
             {
                 if (renderCanvas.ShouldDraw)
                 {
-                    Game.GraphicsDevice.SetRenderTarget(renderCanvas.othersRenderTarget);
+                    Game.GraphicsDevice.SetRenderTarget(renderCanvas.OthersRenderTarget);
                     if (renderCanvas.ShouldClear)
                     {
                         Game.GraphicsDevice.Clear(renderCanvas.BackgroundColor);
@@ -270,7 +270,7 @@ namespace MonoEngine
                     }
                     foreach (var entity in secondEntityList)
                     {
-                        if (entity.renderTarget == renderCanvas && entity.ShouldDraw)
+                        if (entity.RenderTarget == renderCanvas && entity.ShouldDraw)
                         {
                             entity.onDraw(Game.SpriteBatch);
                         }
@@ -290,7 +290,7 @@ namespace MonoEngine
             Game.SpriteBatch.Begin(_spriteSortMode, transformMatrix: Game.Viewport.GetScaleMatrix());
             foreach (var entity in entityList)
             {
-                if (entity.renderTarget == null && entity.ShouldDraw)
+                if (entity.RenderTarget == null && entity.ShouldDraw)
                 {
                     entity.onDraw(Game.SpriteBatch);
                 }

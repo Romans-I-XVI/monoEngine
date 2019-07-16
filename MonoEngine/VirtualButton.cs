@@ -16,12 +16,12 @@ namespace MonoEngine
         {
         }
 
-        private void AddButton(Buttons button, PlayerIndex? player_index)
+        private void AddButton(Buttons button, PlayerIndex? playerIndex)
         {
             bool exists = false;
             foreach (var pair in _buttons)
             {
-                if (pair.Key == button && pair.Value == player_index)
+                if (pair.Key == button && pair.Value == playerIndex)
                 {
                     exists = true;
                     break;
@@ -29,14 +29,14 @@ namespace MonoEngine
             }
             if (!exists)
             {
-                var item = new KeyValuePair<Buttons, PlayerIndex?>(button, player_index);
+                var item = new KeyValuePair<Buttons, PlayerIndex?>(button, playerIndex);
                 _buttons.Add(item);
             }
         }
 
-        public void AddButton(Buttons button, PlayerIndex player_index)
+        public void AddButton(Buttons button, PlayerIndex playerIndex)
         {
-            AddButton(button, (PlayerIndex?)player_index);
+            AddButton(button, (PlayerIndex?)playerIndex);
         }
 
         public void AddButton(Buttons button)
@@ -50,10 +50,10 @@ namespace MonoEngine
                 _keys.Add(key);
         }
 
-        public void AddMouseButton(MouseButtons mouse_button)
+        public void AddMouseButton(MouseButtons mouseButton)
         {
-            if (!_mouse_buttons.Contains(mouse_button))
-                _mouse_buttons.Add(mouse_button);
+            if (!_mouse_buttons.Contains(mouseButton))
+                _mouse_buttons.Add(mouseButton);
         }
 
         public void RemoveButton(Buttons button)
@@ -65,11 +65,11 @@ namespace MonoEngine
             }
         }
 
-        public void RemoveButton(Buttons button, PlayerIndex player_index)
+        public void RemoveButton(Buttons button, PlayerIndex playerIndex)
         {
             for (int i = _buttons.Count - 1; i >= 0; i--)
             {
-                if (_buttons[i].Key == button && _buttons[i].Value == player_index)
+                if (_buttons[i].Key == button && _buttons[i].Value == playerIndex)
                     _buttons.RemoveAt(i);
             }
         }
@@ -83,11 +83,11 @@ namespace MonoEngine
             }
         }
 
-        public void RemoveMouseButton(MouseButtons mouse_button)
+        public void RemoveMouseButton(MouseButtons mouseButton)
         {
             for (int i = _mouse_buttons.Count - 1; i >= 0; i--)
             {
-                if (_mouse_buttons[i] == mouse_button)
+                if (_mouse_buttons[i] == mouseButton)
                     _mouse_buttons.RemoveAt(i);
             }
         }
@@ -102,9 +102,9 @@ namespace MonoEngine
                 }
             }
 
-            foreach (var mouse_button in _mouse_buttons)
+            foreach (var mouseButton in _mouse_buttons)
             {
-                if (Input.Mouse.isPressed(mouse_button))
+                if (Input.Mouse.isPressed(mouseButton))
                 {
                     return true;
                 }
@@ -141,9 +141,9 @@ namespace MonoEngine
                 }
             }
 
-            foreach (var mouse_button in _mouse_buttons)
+            foreach (var mouseButton in _mouse_buttons)
             {
-                if (Input.Mouse.isReleased(mouse_button))
+                if (Input.Mouse.isReleased(mouseButton))
                 {
                     return true;
                 }
@@ -180,9 +180,9 @@ namespace MonoEngine
                 }
             }
 
-            foreach (var mouse_button in _mouse_buttons)
+            foreach (var mouseButton in _mouse_buttons)
             {
-                if (Input.Mouse.isHeld(mouse_button))
+                if (Input.Mouse.isHeld(mouseButton))
                 {
                     return true;
                 }

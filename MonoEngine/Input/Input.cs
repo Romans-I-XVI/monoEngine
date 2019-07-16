@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace MonoEngine
 {
-	static public class Input
+	public static class Input
 	{
 		public static void Update() {
-            Input.Mouse.Update();
-            Input.Keyboard.Update();
-            Input.Gamepad.Update();
-            Input.Touch.Update();
+            Mouse.Update();
+            Keyboard.Update();
+            Gamepad.Update();
+            Touch.Update();
         }
 
-		static public class Keyboard {
+		public static class Keyboard {
 			private static KeyboardState currentKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
 			private static KeyboardState previousKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
 
-			public static void Update() {
+			internal static void Update() {
 				previousKeyboardState = currentKeyboardState;
 				currentKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState ();
 			}
@@ -38,36 +37,38 @@ namespace MonoEngine
 			}
 		}
 
-		static public class Gamepad
+		public static class Gamepad
         {
-            private static List<PlayerIndex> player_index_enum = new List<PlayerIndex>()
+	        public static Dictionary<PlayerIndex, GamePadState> currentGamepadState = new Dictionary<PlayerIndex, GamePadState>
+	        {
+		        {PlayerIndex.One, GamePad.GetState(PlayerIndex.One)},
+		        {PlayerIndex.Two, GamePad.GetState(PlayerIndex.Two)},
+		        {PlayerIndex.Three, GamePad.GetState(PlayerIndex.Three)},
+		        {PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
+	        };
+            private static List<PlayerIndex> player_index_enum = new List<PlayerIndex>
             {
                 PlayerIndex.One,
                 PlayerIndex.Two,
                 PlayerIndex.Three,
                 PlayerIndex.Four
             };
-            public static Dictionary<PlayerIndex, GamePadState> currentGamepadState = new Dictionary<PlayerIndex, GamePadState>() {
-				{PlayerIndex.One, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One)},
-				{PlayerIndex.Two, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Two)},
-				{PlayerIndex.Three, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Three)},
-				{PlayerIndex.Four, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Four)}
-			};
-			private static Dictionary<PlayerIndex, GamePadState> previousGamepadState = new Dictionary<PlayerIndex, GamePadState>() {
-				{PlayerIndex.One, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One)},
-				{PlayerIndex.Two, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Two)},
-				{PlayerIndex.Three, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Three)},
-				{PlayerIndex.Four, Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.Four)}
+			private static Dictionary<PlayerIndex, GamePadState> previousGamepadState = new Dictionary<PlayerIndex, GamePadState>
+			{
+				{PlayerIndex.One, GamePad.GetState(PlayerIndex.One)},
+				{PlayerIndex.Two, GamePad.GetState(PlayerIndex.Two)},
+				{PlayerIndex.Three, GamePad.GetState(PlayerIndex.Three)},
+				{PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
 			};
 
-			public static void Update() {
+			internal static void Update() {
                 foreach (var key in player_index_enum)
                 {
                     previousGamepadState[key] = currentGamepadState[key];
                 }
                 foreach (var key in player_index_enum)
                 {
-                    currentGamepadState[key] = Microsoft.Xna.Framework.Input.GamePad.GetState(key);
+                    currentGamepadState[key] = GamePad.GetState(key);
                 }
 			}
 
@@ -133,7 +134,7 @@ namespace MonoEngine
             private static MouseState currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
             private static MouseState previousMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
-            public static void Update()
+            internal static void Update()
             {
                 previousMouseState = currentMouseState;
                 currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
@@ -184,9 +185,9 @@ namespace MonoEngine
         {
             public static List<TouchLocation> PressedTouches = new List<TouchLocation>();
             public static List<TouchLocation> ReleasedTouches = new List<TouchLocation>();
-            public static TouchCollection CurrentTouches = new TouchCollection();
+            public static TouchCollection CurrentTouches;
 
-            public static void Update()
+            internal static void Update()
             {
                 var touch_state = TouchPanel.GetState();
                 TouchLocation[] translated_touch_array = new TouchLocation[touch_state.Count];

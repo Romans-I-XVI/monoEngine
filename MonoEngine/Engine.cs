@@ -18,7 +18,6 @@ namespace MonoEngine
         private static bool _paused;
         private static GameTimeSpan _pauseTimer = new GameTimeSpan();
         private static GameTimeSpan _fpsTimer = new GameTimeSpan();
-        private static EngineInputState _inputState = new EngineInputState();
         private static Dictionary<string, object> _currentRoomArgs;
         private static List<Entity> _entities = new List<Entity>();
         private static int _currentFrameCount = 0;
@@ -32,7 +31,8 @@ namespace MonoEngine
         public static void Update(GameTime gameTime)
         {
             Dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _inputState.Update();
+            Input.Update();
+            EngineInputState.Update();
 
             List<Entity> entityList;
             lock (_entities)
@@ -50,14 +50,14 @@ namespace MonoEngine
                 if (startedPaused && entity.IsPauseable)
                     continue;
 
-                foreach (var mousePress in _inputState.MousePresses)
+                foreach (var mousePress in EngineInputState.MousePresses)
                 {
                     entity.onMouseDown(mousePress);
                     if (entity.IsExpired) break;
                 }
                 if (entity.IsExpired) continue;
 
-                foreach (var touchPress in _inputState.TouchPresses)
+                foreach (var touchPress in EngineInputState.TouchPresses)
                 {
                     if (entity is ITouchable)
                     {
@@ -68,43 +68,43 @@ namespace MonoEngine
                 if (entity.IsExpired) continue;
 
 
-                foreach (var keyPress in _inputState.KeyPresses)
+                foreach (var keyPress in EngineInputState.KeyPresses)
                 {
                     entity.onKeyDown(keyPress);
                     if (entity.IsExpired) break;
                 }
                 if (entity.IsExpired) continue;
 
-                foreach (var buttonPress in _inputState.GamepadPresses)
+                foreach (var buttonPress in EngineInputState.GamepadPresses)
                 {
                     entity.onButtonDown(buttonPress);
                     if (entity.IsExpired) break;
                 }
                 if (entity.IsExpired) continue;
 
-                entity.onMouse(_inputState.MouseState);
+                entity.onMouse(EngineInputState.MouseState);
                 if (entity.IsExpired) continue;
 
                 if (entity is ITouchable)
                 {
-                    ((ITouchable)entity).onTouch(_inputState.TouchState);
+                    ((ITouchable)entity).onTouch(EngineInputState.TouchState);
                     if (entity.IsExpired) continue;
                 }
 
-                entity.onKey(_inputState.KeyboardState);
+                entity.onKey(EngineInputState.KeyboardState);
                 if (entity.IsExpired) continue;
 
-                entity.onButton(_inputState.GamepadStates);
+                entity.onButton(EngineInputState.GamepadStates);
                 if (entity.IsExpired) continue;
 
-                foreach (var mouseRelease in _inputState.MouseReleases)
+                foreach (var mouseRelease in EngineInputState.MouseReleases)
                 {
                     entity.onMouseUp(mouseRelease);
                     if (entity.IsExpired) break;
                 }
                 if (entity.IsExpired) continue;
 
-                foreach (var touchRelease in _inputState.TouchReleases)
+                foreach (var touchRelease in EngineInputState.TouchReleases)
                 {
                     if (entity is ITouchable)
                     {
@@ -114,14 +114,14 @@ namespace MonoEngine
                 }
                 if (entity.IsExpired) continue;
 
-                foreach (var keyRelease in _inputState.KeyReleases)
+                foreach (var keyRelease in EngineInputState.KeyReleases)
                 {
                     entity.onKeyUp(keyRelease);
                     if (entity.IsExpired) break;
                 }
                 if (entity.IsExpired) continue;
 
-                foreach (var buttonRelease in _inputState.GamepadReleases)
+                foreach (var buttonRelease in EngineInputState.GamepadReleases)
                 {
                     entity.onButtonUp(buttonRelease);
                     if (entity.IsExpired) break;

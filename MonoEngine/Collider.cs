@@ -10,6 +10,8 @@ namespace MonoEngine
         public Entity Owner { get; }
         public string Name { get; }
         public bool Enabled = true;
+        public ColliderLayer MemberFlags = ColliderLayer.One;
+        public ColliderLayer CollidableFlags = ColliderLayer.One;
         protected Collider(Entity owner, string name)
         {
             Owner = owner;

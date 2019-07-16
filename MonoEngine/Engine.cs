@@ -148,23 +148,26 @@ namespace MonoEngine
                 }
             }
 
-            for (int i = colliderList.Count - 1; i >= 0; i--)
+            int colliderListCount = colliderList.Count;
+            for (int i = colliderListCount - 1; i >= 0; i--)
             {
-                var collider = colliderList[i];
-                for (int j = colliderList.Count - 2; j >= 0; j--)
+                Collider collider = colliderList[i];
+                for (int j = colliderListCount - 2; j >= 0; j--)
                 {
-                    var otherCollider = colliderList[j];
+                    Collider otherCollider = colliderList[j];
+                    bool collisionIsValid = ((collider.CollidableFlags & otherCollider.MemberFlags) != 0) || ((otherCollider.CollidableFlags & collider.MemberFlags) != 0);
 
                     if (collider.Owner.IsExpired)
                     {
                         break;
                     }
-                    if (otherCollider.Owner.IsExpired)
+
+                    if (!collisionIsValid || otherCollider.Owner.IsExpired)
                     {
                         continue;
                     }
 
-                    var collisionOccured = false;
+                    bool collisionOccured = false;
                     if (collider is ColliderCircle)
                     {
                         var c1 = (ColliderCircle)collider;
@@ -194,13 +197,15 @@ namespace MonoEngine
                         }
 
                     }
+
                     if (collisionOccured)
                     {
                         collider.Owner.onCollision(collider, otherCollider, otherCollider.Owner);
                         otherCollider.Owner.onCollision(otherCollider, collider, collider.Owner);
                     }
                 }
-                colliderList.RemoveAt(i);
+
+                colliderListCount--;
             }
 
             // Destroying Expired Entities

@@ -10,10 +10,10 @@ namespace MonoEngine
         public ViewportAdapter Viewport;
         public SpriteBatch SpriteBatch { get; private set; }
         public GraphicsDeviceManager Graphics { get; private set; }
-        public readonly int CanvasWidth;
-        public readonly int CanvasHeight;
-        public readonly int HorizontalBleed;
-        public readonly int VerticalBleed;
+        public int CanvasWidth { get; protected set; }
+        public int CanvasHeight { get; protected set; }
+        public int HorizontalBleed { get; protected set; }
+        public int VerticalBleed { get; protected set; }
 
         public EngineGame(int canvasWidth, int canvasHeight, int horizontalBleed, int verticalBleed)
         {

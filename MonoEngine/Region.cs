@@ -23,6 +23,10 @@ namespace MonoEngine
         {
         }
 
+        public Region(Texture2D texture) : this(texture, new Rectangle(0, 0, texture.Width, texture.Height), new Vector2(0, 0))
+        {
+        }
+
         public void AutoOrigin(DrawFrom drawFrom)
         {
             int width = SourceRectangle.Width;

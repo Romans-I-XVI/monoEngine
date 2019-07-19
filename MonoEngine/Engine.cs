@@ -8,7 +8,21 @@ namespace MonoEngine
 {
     public static class Engine
     {
-        public static EngineGame Game { get; private set; }
+        private static EngineGame _game = null;
+        public static EngineGame Game
+        {
+            get
+            {
+                return _game;
+            }
+            set
+            {
+                if (_game == null)
+                {
+                    _game = value;
+                }
+            }
+        }
         public static Room Room { get; private set; }
         public static float Dt { get; private set; }
         public static int FPS { get; private set; }
@@ -21,12 +35,6 @@ namespace MonoEngine
         private static Dictionary<string, object> _currentRoomArgs;
         private static List<Entity> _entities = new List<Entity>();
         private static int _currentFrameCount = 0;
-
-        public static void Start(EngineGame game)
-        {
-            Game = game;
-            Game.Run();
-        }
 
         public static void Update(GameTime gameTime)
         {

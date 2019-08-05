@@ -144,7 +144,7 @@ namespace MonoEngine
             _spriteFont = spriteFont;
         }
 
-        public override void onUpdate(GameTime gameTime)
+        public override void onUpdate(float deltaTime)
         {
             if (ConsoleOpen && _cursorBlinkTimer.TotalMilliseconds > 400)
             {
@@ -152,7 +152,7 @@ namespace MonoEngine
                 _cursorBlinkTimer.Mark();
             }
 
-            base.onUpdate(gameTime);
+            base.onUpdate(deltaTime);
         }
 
         public override void onKey(KeyboardState state)

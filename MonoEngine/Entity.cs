@@ -134,10 +134,10 @@ namespace MonoEngine
 
 		public virtual void onButtonUp(GamePadEventArgs e) {}
 
-		public virtual void onUpdate (GameTime gameTime)
+		public virtual void onUpdate (float deltaTime)
         {
-            Position.X += Speed.X * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Position.Y += Speed.Y * 60 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position.X += Speed.X * 60 * deltaTime;
+            Position.Y += Speed.Y * 60 * deltaTime;
         }
 
         public virtual void onCollision(Collider collider, Collider otherCollider, Entity otherInstance) {}

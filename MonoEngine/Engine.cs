@@ -136,7 +136,7 @@ namespace MonoEngine
                 }
                 if (entity.IsExpired) continue;
 
-                entity.onUpdate(gameTime);
+                entity.onUpdate(Dt);
             }
 
 

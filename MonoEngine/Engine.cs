@@ -23,6 +23,7 @@ namespace MonoEngine
                 }
             }
         }
+        public static float? FakeDt = null;
         public static Room Room { get; private set; }
         public static float Dt { get; private set; }
         public static int FPS { get; private set; }
@@ -39,6 +40,11 @@ namespace MonoEngine
         public static void Update(GameTime gameTime)
         {
             Dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime = Dt;
+            if (FakeDt != null)
+            {
+                deltaTime = (float)FakeDt;
+            }
             Input.Update();
             EngineInputState.Update();
 
@@ -136,7 +142,7 @@ namespace MonoEngine
                 }
                 if (entity.IsExpired) continue;
 
-                entity.onUpdate(Dt);
+                entity.onUpdate(deltaTime);
             }
 
 

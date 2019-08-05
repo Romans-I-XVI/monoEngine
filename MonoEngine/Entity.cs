@@ -18,6 +18,7 @@ namespace MonoEngine
         public bool IsPersistent = false;
         public bool IsPauseable = true;
         public bool ShouldDraw = true;
+        public InputLayer InputLayer = InputLayer.One;
         public int ID;
         public int Depth = 0;
 

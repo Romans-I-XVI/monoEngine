@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Engine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ColliderLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\InputLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\Circle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButtons.cs" />

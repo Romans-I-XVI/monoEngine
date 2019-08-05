@@ -24,6 +24,7 @@ namespace MonoEngine
             }
         }
         public static float? FakeDt = null;
+        public static InputLayer InputLayer { get; private set; } = InputLayer.One;
         public static Room Room { get; private set; }
         public static float Dt { get; private set; }
         public static int FPS { get; private set; }
@@ -64,83 +65,93 @@ namespace MonoEngine
                 if (startedPaused && entity.IsPauseable)
                     continue;
 
-                foreach (var mousePress in EngineInputState.MousePresses)
+                if ((entity.InputLayer & InputLayer) != 0)
                 {
-                    entity.onMouseDown(mousePress);
-                    if (entity.IsExpired) break;
-                }
-                if (entity.IsExpired) continue;
-
-                foreach (var touchPress in EngineInputState.TouchPresses)
-                {
-                    if (entity is ITouchable)
+                    foreach (var mousePress in EngineInputState.MousePresses)
                     {
-                        ((ITouchable)entity).onTouchPressed(touchPress);
+                        entity.onMouseDown(mousePress);
                         if (entity.IsExpired) break;
                     }
-                }
-                if (entity.IsExpired) continue;
 
+                    if (entity.IsExpired) continue;
 
-                foreach (var keyPress in EngineInputState.KeyPresses)
-                {
-                    entity.onKeyDown(keyPress);
-                    if (entity.IsExpired) break;
-                }
-                if (entity.IsExpired) continue;
+                    foreach (var touchPress in EngineInputState.TouchPresses)
+                    {
+                        if (entity is ITouchable)
+                        {
+                            ((ITouchable)entity).onTouchPressed(touchPress);
+                            if (entity.IsExpired) break;
+                        }
+                    }
 
-                foreach (var buttonPress in EngineInputState.GamepadPresses)
-                {
-                    entity.onButtonDown(buttonPress);
-                    if (entity.IsExpired) break;
-                }
-                if (entity.IsExpired) continue;
+                    if (entity.IsExpired) continue;
 
-                entity.onMouse(EngineInputState.MouseState);
-                if (entity.IsExpired) continue;
+                    foreach (var keyPress in EngineInputState.KeyPresses)
+                    {
+                        entity.onKeyDown(keyPress);
+                        if (entity.IsExpired) break;
+                    }
 
-                if (entity is ITouchable)
-                {
-                    ((ITouchable)entity).onTouch(EngineInputState.TouchState);
+                    if (entity.IsExpired) continue;
+
+                    foreach (var buttonPress in EngineInputState.GamepadPresses)
+                    {
+                        entity.onButtonDown(buttonPress);
+                        if (entity.IsExpired) break;
+                    }
+
+                    if (entity.IsExpired) continue;
+
+                    entity.onMouse(EngineInputState.MouseState);
+                    if (entity.IsExpired) continue;
+
+                    if (entity is ITouchable)
+                    {
+                        ((ITouchable)entity).onTouch(EngineInputState.TouchState);
+                        if (entity.IsExpired) continue;
+                    }
+
+                    entity.onKey(EngineInputState.KeyboardState);
+                    if (entity.IsExpired) continue;
+
+                    entity.onButton(EngineInputState.GamepadStates);
+                    if (entity.IsExpired) continue;
+
+                    foreach (var mouseRelease in EngineInputState.MouseReleases)
+                    {
+                        entity.onMouseUp(mouseRelease);
+                        if (entity.IsExpired) break;
+                    }
+
+                    if (entity.IsExpired) continue;
+
+                    foreach (var touchRelease in EngineInputState.TouchReleases)
+                    {
+                        if (entity is ITouchable)
+                        {
+                            ((ITouchable)entity).onTouchReleased(touchRelease);
+                            if (entity.IsExpired) break;
+                        }
+                    }
+
+                    if (entity.IsExpired) continue;
+
+                    foreach (var keyRelease in EngineInputState.KeyReleases)
+                    {
+                        entity.onKeyUp(keyRelease);
+                        if (entity.IsExpired) break;
+                    }
+
+                    if (entity.IsExpired) continue;
+
+                    foreach (var buttonRelease in EngineInputState.GamepadReleases)
+                    {
+                        entity.onButtonUp(buttonRelease);
+                        if (entity.IsExpired) break;
+                    }
+
                     if (entity.IsExpired) continue;
                 }
-
-                entity.onKey(EngineInputState.KeyboardState);
-                if (entity.IsExpired) continue;
-
-                entity.onButton(EngineInputState.GamepadStates);
-                if (entity.IsExpired) continue;
-
-                foreach (var mouseRelease in EngineInputState.MouseReleases)
-                {
-                    entity.onMouseUp(mouseRelease);
-                    if (entity.IsExpired) break;
-                }
-                if (entity.IsExpired) continue;
-
-                foreach (var touchRelease in EngineInputState.TouchReleases)
-                {
-                    if (entity is ITouchable)
-                    {
-                        ((ITouchable)entity).onTouchReleased(touchRelease);
-                        if (entity.IsExpired) break;
-                    }
-                }
-                if (entity.IsExpired) continue;
-
-                foreach (var keyRelease in EngineInputState.KeyReleases)
-                {
-                    entity.onKeyUp(keyRelease);
-                    if (entity.IsExpired) break;
-                }
-                if (entity.IsExpired) continue;
-
-                foreach (var buttonRelease in EngineInputState.GamepadReleases)
-                {
-                    entity.onButtonUp(buttonRelease);
-                    if (entity.IsExpired) break;
-                }
-                if (entity.IsExpired) continue;
 
                 entity.onUpdate(deltaTime);
             }
@@ -494,6 +505,11 @@ namespace MonoEngine
             {
                 entity.onGameEvent(gameEvent);
             }
+        }
+
+        public static void SetInputLayer(InputLayer inputLayer)
+        {
+            InputLayer = inputLayer;
         }
     }
 }

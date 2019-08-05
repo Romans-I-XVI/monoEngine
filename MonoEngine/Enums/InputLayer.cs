@@ -5,6 +5,7 @@ namespace MonoEngine
     [Flags]
     public enum InputLayer
     {
+        Zero = 0,
         One = 1 << 0,
         Two = 1 << 1,
         Three = 1 << 2,

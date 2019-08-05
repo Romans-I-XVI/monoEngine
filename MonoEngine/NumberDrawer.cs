@@ -60,137 +60,137 @@ namespace MonoEngine
                 case '0':
                     return new[]
                     {
-                        GetRectangle_TopLeft(c, height),
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_BottomRight(c, height),
-                        GetRectangle_BottomCenter(c, height),
-                        GetRectangle_BottomLeft(c, height)
+                        GetRectangle_TopLeft(height),
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_BottomRight(height),
+                        GetRectangle_BottomCenter(height),
+                        GetRectangle_BottomLeft(height)
                     };
                 case '1':
                     return new[]
                     {
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_BottomRight(c, height)
+                        GetRectangle_TopRight(height),
+                        GetRectangle_BottomRight(height)
                     };
                 case '2':
                     return new[]
                     {
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_BottomLeft(c, height),
-                        GetRectangle_BottomCenter(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_BottomLeft(height),
+                        GetRectangle_BottomCenter(height)
                     };
                 case '3':
                     return new[]
                     {
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_BottomCenter(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_BottomRight(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_BottomCenter(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_BottomRight(height)
                     };
                 case '4':
                     return new[]
                     {
-                        GetRectangle_TopLeft(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_BottomRight(c, height)
+                        GetRectangle_TopLeft(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_BottomRight(height)
                     };
                 case '5':
                     return new[]
                     {
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopLeft(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_BottomRight(c, height),
-                        GetRectangle_BottomCenter(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopLeft(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_BottomRight(height),
+                        GetRectangle_BottomCenter(height)
                     };
                 case '6':
                     return new[]
                     {
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopLeft(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_BottomRight(c, height),
-                        GetRectangle_BottomCenter(c, height),
-                        GetRectangle_BottomLeft(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopLeft(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_BottomRight(height),
+                        GetRectangle_BottomCenter(height),
+                        GetRectangle_BottomLeft(height)
                     };
                 case '7':
                     return new[]
                     {
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_BottomRight(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_BottomRight(height)
                     };
                 case '8':
                     return new[]
                     {
 
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopLeft(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_BottomLeft(c, height),
-                        GetRectangle_BottomCenter(c, height),
-                        GetRectangle_BottomRight(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopLeft(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_BottomLeft(height),
+                        GetRectangle_BottomCenter(height),
+                        GetRectangle_BottomRight(height)
                     };
                 case '9':
                     return new[]
                     {
 
-                        GetRectangle_TopCenter(c, height),
-                        GetRectangle_TopLeft(c, height),
-                        GetRectangle_TopRight(c, height),
-                        GetRectangle_MidCenter(c, height),
-                        GetRectangle_BottomCenter(c, height),
-                        GetRectangle_BottomRight(c, height)
+                        GetRectangle_TopCenter(height),
+                        GetRectangle_TopLeft(height),
+                        GetRectangle_TopRight(height),
+                        GetRectangle_MidCenter(height),
+                        GetRectangle_BottomCenter(height),
+                        GetRectangle_BottomRight(height)
                     };
                 default:
                     return null;
             }
         }
 
-        private static Rectangle GetRectangle_TopCenter(char c, int height)
+        private static Rectangle GetRectangle_TopCenter(int height)
         {
             return new Rectangle(0, 0, GetWidth(height), GetThickness(height));
         }
 
-        private static Rectangle GetRectangle_MidCenter(char c, int height)
+        private static Rectangle GetRectangle_MidCenter(int height)
         {
             int thickness = GetThickness(height);
             return new Rectangle(0, height / 2 - thickness / 2, GetWidth(height), thickness);
         }
 
-        private static Rectangle GetRectangle_BottomCenter(char c, int height)
+        private static Rectangle GetRectangle_BottomCenter(int height)
         {
             int thickness = GetThickness(height);
             return new Rectangle(0, height - thickness, GetWidth(height), thickness);
         }
 
-        private static Rectangle GetRectangle_TopLeft(char c, int height)
+        private static Rectangle GetRectangle_TopLeft(int height)
         {
             return new Rectangle(0, 0, GetThickness(height), height / 2);
         }
 
-        private static Rectangle GetRectangle_TopRight(char c, int height)
+        private static Rectangle GetRectangle_TopRight(int height)
         {
             int thickness = GetThickness(height);
             return new Rectangle(GetWidth(height) - thickness, 0, thickness, height / 2);
         }
 
-        private static Rectangle GetRectangle_BottomLeft(char c, int height)
+        private static Rectangle GetRectangle_BottomLeft(int height)
         {
-            Rectangle rect = GetRectangle_TopLeft(c, height);
+            Rectangle rect = GetRectangle_TopLeft(height);
             rect.Y += height / 2;
             return rect;
         }
 
-        private static Rectangle GetRectangle_BottomRight(char c, int height)
+        private static Rectangle GetRectangle_BottomRight(int height)
         {
-            Rectangle rect = GetRectangle_TopRight(c, height);
+            Rectangle rect = GetRectangle_TopRight(height);
             rect.Y += height / 2;
             return rect;
         }

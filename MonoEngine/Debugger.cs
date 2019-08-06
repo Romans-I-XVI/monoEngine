@@ -17,6 +17,7 @@ namespace MonoEngine
 
         public Debugger()
         {
+            InputLayer = InputLayer.One | InputLayer.DebuggerTerminal;
             Depth = -int.MaxValue;
             IsPersistent = true;
             IsPauseable = false;
@@ -138,9 +139,11 @@ namespace MonoEngine
         private readonly GameTimeSpan _keyRepeatTimer = new GameTimeSpan();
         private Keys _mostRecentKeyPressed;
         private bool _cursorBlinkState = false;
+        private InputLayer _previousInputLayer;
 
         public DebuggerWithTerminal(SpriteFont spriteFont)
         {
+            _previousInputLayer = Engine.InputLayer;
             _spriteFont = spriteFont;
         }
 
@@ -252,6 +255,15 @@ namespace MonoEngine
         public void OpenCloseConsole()
         {
             ConsoleOpen = !ConsoleOpen;
+            if (ConsoleOpen)
+            {
+                _previousInputLayer = Engine.InputLayer;
+                Engine.SetInputLayer(InputLayer.DebuggerTerminal);
+            }
+            else
+            {
+                Engine.SetInputLayer(_previousInputLayer);
+            }
             _consoleInput = "";
             if (ConsoleOpen)
             {

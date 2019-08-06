@@ -11,5 +11,6 @@ namespace MonoEngine
         Three = 1 << 2,
         Four = 1 << 3,
         Five = 1 << 4,
+        DebuggerTerminal = 1 << 5
     }
 }

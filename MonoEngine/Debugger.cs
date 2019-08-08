@@ -65,6 +65,11 @@ namespace MonoEngine
             {
                 foreach (Collider collider in entity.Colliders)
                 {
+                    if (!collider.Enabled)
+                    {
+                        continue;
+                    }
+
                     if (collider is ColliderRectangle)
                     {
                         var rect = ((ColliderRectangle)collider).Rectangle;

@@ -18,6 +18,7 @@ namespace MonoEngine
         public EngineGame(int canvasWidth, int canvasHeight, int horizontalBleed, int verticalBleed)
         {
             Engine.Game = this;
+            Content.RootDirectory = "Content";
             CanvasWidth = canvasWidth;
             CanvasHeight = canvasHeight;
             HorizontalBleed = horizontalBleed;

@@ -12,6 +12,12 @@ namespace MonoEngine
         public Vector2 Size { get; protected set; }
         public Color BackgroundColor = Color.Transparent;
         public bool ShouldClear = true;
+        public BlendState BlendState = null;
+        public SamplerState SamplerState = null;
+        public DepthStencilState DepthStencilState = null;
+        public RasterizerState RasterizerState = null;
+        public Effect Effect = null;
+        public Matrix? TransformMatrix = null;
 
 		public RenderCanvas(int width, int height, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None, int preferredMultiSampleCount = 0, RenderTargetUsage renderTargetUsage = RenderTargetUsage.PreserveContents) {
             Size = new Vector2(width, height);

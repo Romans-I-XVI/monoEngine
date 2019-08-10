@@ -29,6 +29,14 @@ namespace MonoEngine
         public static float Dt { get; private set; }
         public static int FPS { get; private set; }
         public static Random Random = new Random();
+        public static class MainSpritebatchSettings
+        {
+            public static BlendState BlendState = null;
+            public static SamplerState SamplerState = null;
+            public static DepthStencilState DepthStencilState = null;
+            public static RasterizerState RasterizerState = null;
+            public static Effect Effect = null;
+        }
 
         private static SpriteSortMode _spriteSortMode = SpriteSortMode.Deferred;
         private static bool _paused;
@@ -292,7 +300,7 @@ namespace MonoEngine
                         Game.GraphicsDevice.Clear(renderCanvas.BackgroundColor);
                     }
 
-                    Game.SpriteBatch.Begin(_spriteSortMode);
+                    Game.SpriteBatch.Begin(_spriteSortMode, renderCanvas.BlendState, renderCanvas.SamplerState, renderCanvas.DepthStencilState, renderCanvas.RasterizerState, renderCanvas.Effect, renderCanvas.TransformMatrix);
                     List<Entity> secondEntityList;
                     lock (_entities)
                     {
@@ -317,7 +325,7 @@ namespace MonoEngine
             Game.GraphicsDevice.Clear(Game.BackgroundColor);
 
             // Draw to the screen
-            Game.SpriteBatch.Begin(_spriteSortMode, transformMatrix: Game.Viewport.GetScaleMatrix());
+            Game.SpriteBatch.Begin(_spriteSortMode, MainSpritebatchSettings.BlendState, MainSpritebatchSettings.SamplerState, MainSpritebatchSettings.DepthStencilState, MainSpritebatchSettings.RasterizerState, MainSpritebatchSettings.Effect, Game.Viewport.GetScaleMatrix());
             foreach (var entity in entityList)
             {
                 if (entity.RenderTarget == null && entity.ShouldDraw)

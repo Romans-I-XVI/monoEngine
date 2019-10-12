@@ -1,8 +1,6 @@
 ﻿using System;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace MonoEngine
 {
@@ -40,9 +38,14 @@ namespace MonoEngine
 		{
             if (Enabled)
             {
-                spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), Region.Origin, Scale, SpriteEffects, LayerDepth);
+                this.DrawSelf(spriteBatch, position);
             }
 		}
+
+        public void DrawSelf(SpriteBatch spriteBatch, Vector2 position)
+        {
+            spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), Region.Origin, Scale, SpriteEffects, LayerDepth);
+        }
 	}
 
     public class AnimatedSprite : Sprite

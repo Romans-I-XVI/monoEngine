@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,7 +10,7 @@ namespace MonoEngine
 {
 	public abstract class Entity
 	{
-        public readonly Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
+        public readonly List<KeyValuePair<string, Sprite>> Sprites = new List<KeyValuePair<string, Sprite>>();
         public readonly List<Collider> Colliders = new List<Collider>();
         public RenderCanvas RenderTarget = null;
         public Vector2 Position = new Vector2();
@@ -36,23 +37,29 @@ namespace MonoEngine
 			this.IsExpired = true;
 		}
 
-        public Sprite AddSprite(string name, Sprite sprite)
+        public Sprite AddSprite(string name, Sprite sprite, int? insertIndex = null)
         {
-            Sprites.Add(name, sprite);
+            if (this.GetSprite(name) != null)
+            {
+                Debug.WriteLine("Entity::AddSprite - A sprite with that name already exists");
+                return null;
+            }
+
+            var kv = new KeyValuePair<string, Sprite>(name, sprite);
+            if (insertIndex == null)
+	            this.Sprites.Add(kv);
+            else
+                this.Sprites.Insert((int)insertIndex, kv);
             return sprite;
         }
 
         public void RemoveSprite(string name)
         {
-            Sprites.Remove(name);
+            Sprites.RemoveAll(kv => kv.Key == name);
         }
 
-        public Sprite GetSprite(string name)
-        {
-            if (Sprites.ContainsKey(name))
-                return Sprites[name];
-            else
-                return null;
+        public Sprite GetSprite(string name) {
+            return Sprites.FirstOrDefault(kv => kv.Key == name).Value;
         }
 
         public ColliderCircle AddColliderCircle(string colliderName, float radius, int offsetX = 0, int offsetY = 0, bool enabled = true)
@@ -105,9 +112,10 @@ namespace MonoEngine
         {
             if (IsPauseable)
             {
-                foreach (Sprite sprite in Sprites.Values)
+                for (int i = 0; i < Sprites.Count; i++)
                 {
-                    if (sprite is AnimatedSprite && this.IsPauseable)
+                    var sprite = Sprites[i].Value;
+                    if (sprite is AnimatedSprite && IsPauseable)
                     {
                         ((AnimatedSprite)sprite).Timer.RemoveTime(pauseTime);
                     }
@@ -145,9 +153,9 @@ namespace MonoEngine
 
         public virtual void onDraw(SpriteBatch spriteBatch)
 		{
-            foreach (var sprite in Sprites.Values)
+            for (int i = 0; i < this.Sprites.Count; i++)
             {
-                sprite.Draw(spriteBatch, Position);
+                Sprites[i].Value.Draw(spriteBatch, Position);
             }
         }
 

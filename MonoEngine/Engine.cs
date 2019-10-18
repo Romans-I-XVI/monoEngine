@@ -76,7 +76,7 @@ namespace MonoEngine
                     continue;
 
                 if ((entity.InputLayer & Engine.InputLayer) != 0) {
-                    for (int i = 0; i < EngineInputState.MousePresses.Count; i++) {
+                    for (int i = 0; i < EngineInputState.MousePresses.Length; i++) {
                         var mousePress = EngineInputState.MousePresses[i];
                         entity.onMouseDown(mousePress);
                         if (entity.IsExpired) break;
@@ -84,7 +84,7 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.TouchPresses.Count; i++) {
+                    for (int i = 0; i < EngineInputState.TouchPresses.Length; i++) {
                         var touchPress = EngineInputState.TouchPresses[i];
                         if (entity is ITouchable) {
                             ((ITouchable)entity).onTouchPressed(touchPress);
@@ -94,7 +94,7 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.KeyPresses.Count; i++) {
+                    for (int i = 0; i < EngineInputState.KeyPresses.Length; i++) {
                         var keyPress = EngineInputState.KeyPresses[i];
                         entity.onKeyDown(keyPress);
                         if (entity.IsExpired) break;
@@ -102,7 +102,7 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.GamepadPresses.Count; i++) {
+                    for (int i = 0; i < EngineInputState.GamepadPresses.Length; i++) {
                         var buttonPress = EngineInputState.GamepadPresses[i];
                         entity.onButtonDown(buttonPress);
                         if (entity.IsExpired) break;
@@ -124,7 +124,7 @@ namespace MonoEngine
                     entity.onButton(EngineInputState.GamepadStates);
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.MouseReleases.Count; i++) {
+                    for (int i = 0; i < EngineInputState.MouseReleases.Length; i++) {
                         var mouseRelease = EngineInputState.MouseReleases[i];
                         entity.onMouseUp(mouseRelease);
                         if (entity.IsExpired) break;
@@ -133,7 +133,7 @@ namespace MonoEngine
                     if (entity.IsExpired) continue;
 
                     if (entity is ITouchable) {
-                        for (int i = 0; i < EngineInputState.TouchReleases.Count; i++) {
+                        for (int i = 0; i < EngineInputState.TouchReleases.Length; i++) {
                             var touchRelease = EngineInputState.TouchReleases[i];
                             ((ITouchable)entity).onTouchReleased(touchRelease);
                             if (entity.IsExpired) break;
@@ -142,7 +142,7 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.KeyReleases.Count; i++) {
+                    for (int i = 0; i < EngineInputState.KeyReleases.Length; i++) {
                         var keyRelease = EngineInputState.KeyReleases[i];
                         entity.onKeyUp(keyRelease);
                         if (entity.IsExpired) break;
@@ -150,7 +150,7 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.GamepadReleases.Count; i++) {
+                    for (int i = 0; i < EngineInputState.GamepadReleases.Length; i++) {
                         var buttonRelease = EngineInputState.GamepadReleases[i];
                         entity.onButtonUp(buttonRelease);
                         if (entity.IsExpired) break;

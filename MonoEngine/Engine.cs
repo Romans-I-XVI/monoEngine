@@ -195,7 +195,7 @@ namespace MonoEngine
                         break;
                     }
 
-                    if (!collisionIsValid || otherCollider.Owner.IsExpired)
+                    if (!collisionIsValid || otherCollider.Owner.IsExpired || collider.Owner == otherCollider.Owner)
                     {
                         continue;
                     }

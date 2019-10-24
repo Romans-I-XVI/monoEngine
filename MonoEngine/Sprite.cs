@@ -84,8 +84,9 @@ namespace MonoEngine
 
             if (currentTime > AnimationSpeed)
             {
-                currentTime -= AnimationSpeed;
-                Timer.RemoveTime(AnimationSpeed);
+                int time_to_remove = ((int)(currentTime / AnimationSpeed)) * AnimationSpeed;
+                currentTime -= time_to_remove;
+                Timer.RemoveTime(time_to_remove);
             }
             Index = (int)Tweening.SwitchTween(AnimationTween, startFrame, destFrame, currentTime, AnimationSpeed);
             if (Index > frameCount - 1)

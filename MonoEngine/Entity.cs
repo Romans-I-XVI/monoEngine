@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoEngine
 {
-	public abstract class Entity
+	public abstract class Entity : IComparable<Entity>
 	{
         public readonly List<KeyValuePair<string, Sprite>> Sprites = new List<KeyValuePair<string, Sprite>>();
         public readonly List<Collider> Colliders = new List<Collider>();
@@ -160,6 +160,11 @@ namespace MonoEngine
         }
 
         public virtual void onGameEvent(GameEvent gameEvent) {}
+
+        public int CompareTo(Entity other)
+        {
+	        return other.Depth.CompareTo(this.Depth);
+        }
 	}
 }
 

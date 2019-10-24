@@ -32,14 +32,14 @@ namespace MonoEngine
             {PlayerIndex.Four, GamePad.GetState(PlayerIndex.Four)}
         };
         public static TouchCollection TouchState { get; private set; }
-        public static List<MouseEventArgs> MousePresses { get; private set; }
-        public static List<MouseEventArgs> MouseReleases { get; private set; }
-        public static List<KeyboardEventArgs> KeyPresses { get; private set; }
-        public static List<KeyboardEventArgs> KeyReleases { get; private set; }
-        public static List<GamePadEventArgs> GamepadPresses { get; private set; }
-        public static List<GamePadEventArgs> GamepadReleases { get; private set; }
-        public static List<TouchLocation> TouchPresses { get; private set; }
-        public static List<TouchLocation> TouchReleases { get; private set; }
+        public static MouseEventArgs[] MousePresses { get; private set; }
+        public static MouseEventArgs[] MouseReleases { get; private set; }
+        public static KeyboardEventArgs[] KeyPresses { get; private set; }
+        public static KeyboardEventArgs[] KeyReleases { get; private set; }
+        public static GamePadEventArgs[] GamepadPresses { get; private set; }
+        public static GamePadEventArgs[] GamepadReleases { get; private set; }
+        public static TouchLocation[] TouchPresses { get; private set; }
+        public static TouchLocation[] TouchReleases { get; private set; }
 
         public static void Update()
         {
@@ -91,14 +91,14 @@ namespace MonoEngine
             GamepadStates[PlayerIndex.Three] = GamePad.GetState(PlayerIndex.Three);
             GamepadStates[PlayerIndex.Four] = GamePad.GetState(PlayerIndex.Four);
             TouchState = Input.Touch.CurrentTouches;
-            MousePresses = mouse_pressed_events;
-            MouseReleases = mouse_released_events;
-            KeyPresses = keyboard_pressed_events;
-            KeyReleases = keyboard_released_events;
-            GamepadPresses = gamepad_pressed_events;
-            GamepadReleases = gamepad_released_events;
-            TouchPresses = Input.Touch.PressedTouches;
-            TouchReleases = Input.Touch.ReleasedTouches;
+            MousePresses = mouse_pressed_events.ToArray();
+            MouseReleases = mouse_released_events.ToArray();
+            KeyPresses = keyboard_pressed_events.ToArray();
+            KeyReleases = keyboard_released_events.ToArray();
+            GamepadPresses = gamepad_pressed_events.ToArray();
+            GamepadReleases = gamepad_released_events.ToArray();
+            TouchPresses = Input.Touch.PressedTouches.ToArray();
+            TouchReleases = Input.Touch.ReleasedTouches.ToArray();
         }
 
     }

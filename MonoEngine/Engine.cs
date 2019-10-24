@@ -57,34 +57,38 @@ namespace MonoEngine
             Input.Update();
             EngineInputState.Update();
 
-            List<Entity> entityList;
+            Entity[] sortedEntities;
             lock (_entities)
             {
-                entityList = _entities.OrderByDescending(entity => entity.Depth).ToList();
+                sortedEntities = _entities.ToArray();
+                Array.Sort(sortedEntities);
             }
             var startingRoom = Room;
             bool startedPaused = _paused;
 
-            foreach (var entity in entityList)
+            for (int entity_index = 0; entity_index < sortedEntities.Length; entity_index++)
             {
+                var entity = sortedEntities[entity_index];
+
                 if (Room != startingRoom)
                     break;
 
                 if (startedPaused && entity.IsPauseable)
                     continue;
 
-                if ((entity.InputLayer & InputLayer) != 0)
-                {
-                    foreach (var mousePress in EngineInputState.MousePresses)
+                if ((entity.InputLayer & Engine.InputLayer) != 0) {
+                    for (int i = 0; i < EngineInputState.MousePresses.Length; i++)
                     {
+                        var mousePress = EngineInputState.MousePresses[i];
                         entity.onMouseDown(mousePress);
                         if (entity.IsExpired) break;
                     }
 
                     if (entity.IsExpired) continue;
 
-                    foreach (var touchPress in EngineInputState.TouchPresses)
+                    for (int i = 0; i < EngineInputState.TouchPresses.Length; i++)
                     {
+                        var touchPress = EngineInputState.TouchPresses[i];
                         if (entity is ITouchable)
                         {
                             ((ITouchable)entity).onTouchPressed(touchPress);
@@ -94,16 +98,18 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    foreach (var keyPress in EngineInputState.KeyPresses)
+                    for (int i = 0; i < EngineInputState.KeyPresses.Length; i++)
                     {
+                        var keyPress = EngineInputState.KeyPresses[i];
                         entity.onKeyDown(keyPress);
                         if (entity.IsExpired) break;
                     }
 
                     if (entity.IsExpired) continue;
 
-                    foreach (var buttonPress in EngineInputState.GamepadPresses)
+                    for (int i = 0; i < EngineInputState.GamepadPresses.Length; i++)
                     {
+                        var buttonPress = EngineInputState.GamepadPresses[i];
                         entity.onButtonDown(buttonPress);
                         if (entity.IsExpired) break;
                     }
@@ -125,18 +131,20 @@ namespace MonoEngine
                     entity.onButton(EngineInputState.GamepadStates);
                     if (entity.IsExpired) continue;
 
-                    foreach (var mouseRelease in EngineInputState.MouseReleases)
+                    for (int i = 0; i < EngineInputState.MouseReleases.Length; i++)
                     {
+                        var mouseRelease = EngineInputState.MouseReleases[i];
                         entity.onMouseUp(mouseRelease);
                         if (entity.IsExpired) break;
                     }
 
                     if (entity.IsExpired) continue;
 
-                    foreach (var touchRelease in EngineInputState.TouchReleases)
+                    if (entity is ITouchable)
                     {
-                        if (entity is ITouchable)
+                        for (int i = 0; i < EngineInputState.TouchReleases.Length; i++)
                         {
+                            var touchRelease = EngineInputState.TouchReleases[i];
                             ((ITouchable)entity).onTouchReleased(touchRelease);
                             if (entity.IsExpired) break;
                         }
@@ -144,16 +152,18 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    foreach (var keyRelease in EngineInputState.KeyReleases)
+                    for (int i = 0; i < EngineInputState.KeyReleases.Length; i++)
                     {
+                        var keyRelease = EngineInputState.KeyReleases[i];
                         entity.onKeyUp(keyRelease);
                         if (entity.IsExpired) break;
                     }
 
                     if (entity.IsExpired) continue;
 
-                    foreach (var buttonRelease in EngineInputState.GamepadReleases)
+                    for (int i = 0; i < EngineInputState.GamepadReleases.Length; i++)
                     {
+                        var buttonRelease = EngineInputState.GamepadReleases[i];
                         entity.onButtonUp(buttonRelease);
                         if (entity.IsExpired) break;
                     }
@@ -164,15 +174,15 @@ namespace MonoEngine
                 entity.onUpdate(deltaTime);
             }
 
-
             // Do all collision checking
             var colliderList = new List<Collider>();
-            foreach (var entity in entityList)
+            for (int i = 0; i < sortedEntities.Length; i++)
             {
-                if (!entity.IsExpired)
-                {
-                    foreach (var collider in entity.Colliders)
+                var entity = sortedEntities[i];
+                if (!entity.IsExpired) {
+                    for (int j = 0; j < entity.Colliders.Count; j++)
                     {
+                        var collider = entity.Colliders[j];
                         if (collider.Enabled)
                         {
                             colliderList.Add(collider);
@@ -181,13 +191,14 @@ namespace MonoEngine
                 }
             }
 
-            int colliderListCount = colliderList.Count;
-            for (int i = colliderListCount - 1; i >= 0; i--)
+            var colliderArray = colliderList.ToArray();
+            int colliderArrayCount = colliderArray.Length;
+            for (int i = colliderArrayCount - 1; i >= 0; i--)
             {
-                Collider collider = colliderList[i];
-                for (int j = colliderListCount - 2; j >= 0; j--)
+                Collider collider = colliderArray[i];
+                for (int j = colliderArrayCount - 2; j >= 0; j--)
                 {
-                    Collider otherCollider = colliderList[j];
+                    Collider otherCollider = colliderArray[j];
                     bool collisionIsValid = ((collider.CollidableFlags & otherCollider.MemberFlags) != 0) || ((otherCollider.CollidableFlags & collider.MemberFlags) != 0);
 
                     if (collider.Owner.IsExpired)
@@ -238,7 +249,7 @@ namespace MonoEngine
                     }
                 }
 
-                colliderListCount--;
+                colliderArrayCount--;
             }
 
             // Destroying Expired Entities
@@ -246,18 +257,24 @@ namespace MonoEngine
 
             destroy_expired_entities:
             int destroyedEntityCount = 0;
-            lock (_entities)
+            if (gotoCount > 0)
             {
-                entityList = _entities.ToList();
+                lock (_entities)
+                {
+                    sortedEntities = _entities.ToArray();
+                }
             }
-            foreach (var entity in entityList)
+
+            for (int i = 0; i < sortedEntities.Length; i++)
             {
+                var entity = sortedEntities[i];
                 if (entity.IsExpired)
                 {
                     destroyedEntityCount++;
                     DestroyInstance(entity);
                 }
             }
+
             if (destroyedEntityCount > 0)
             {
                 gotoCount++;

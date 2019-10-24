@@ -66,7 +66,8 @@ namespace MonoEngine
             var startingRoom = Room;
             bool startedPaused = _paused;
 
-            for (int entity_index = 0; entity_index < sortedEntities.Length; entity_index++) {
+            for (int entity_index = 0; entity_index < sortedEntities.Length; entity_index++)
+            {
                 var entity = sortedEntities[entity_index];
 
                 if (Room != startingRoom)
@@ -76,7 +77,8 @@ namespace MonoEngine
                     continue;
 
                 if ((entity.InputLayer & Engine.InputLayer) != 0) {
-                    for (int i = 0; i < EngineInputState.MousePresses.Length; i++) {
+                    for (int i = 0; i < EngineInputState.MousePresses.Length; i++)
+                    {
                         var mousePress = EngineInputState.MousePresses[i];
                         entity.onMouseDown(mousePress);
                         if (entity.IsExpired) break;
@@ -84,9 +86,11 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.TouchPresses.Length; i++) {
+                    for (int i = 0; i < EngineInputState.TouchPresses.Length; i++)
+                    {
                         var touchPress = EngineInputState.TouchPresses[i];
-                        if (entity is ITouchable) {
+                        if (entity is ITouchable)
+                        {
                             ((ITouchable)entity).onTouchPressed(touchPress);
                             if (entity.IsExpired) break;
                         }
@@ -94,7 +98,8 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.KeyPresses.Length; i++) {
+                    for (int i = 0; i < EngineInputState.KeyPresses.Length; i++)
+                    {
                         var keyPress = EngineInputState.KeyPresses[i];
                         entity.onKeyDown(keyPress);
                         if (entity.IsExpired) break;
@@ -102,7 +107,8 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.GamepadPresses.Length; i++) {
+                    for (int i = 0; i < EngineInputState.GamepadPresses.Length; i++)
+                    {
                         var buttonPress = EngineInputState.GamepadPresses[i];
                         entity.onButtonDown(buttonPress);
                         if (entity.IsExpired) break;
@@ -113,7 +119,8 @@ namespace MonoEngine
                     entity.onMouse(EngineInputState.MouseState);
                     if (entity.IsExpired) continue;
 
-                    if (entity is ITouchable) {
+                    if (entity is ITouchable)
+                    {
                         ((ITouchable)entity).onTouch(EngineInputState.TouchState);
                         if (entity.IsExpired) continue;
                     }
@@ -124,7 +131,8 @@ namespace MonoEngine
                     entity.onButton(EngineInputState.GamepadStates);
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.MouseReleases.Length; i++) {
+                    for (int i = 0; i < EngineInputState.MouseReleases.Length; i++)
+                    {
                         var mouseRelease = EngineInputState.MouseReleases[i];
                         entity.onMouseUp(mouseRelease);
                         if (entity.IsExpired) break;
@@ -132,8 +140,10 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    if (entity is ITouchable) {
-                        for (int i = 0; i < EngineInputState.TouchReleases.Length; i++) {
+                    if (entity is ITouchable)
+                    {
+                        for (int i = 0; i < EngineInputState.TouchReleases.Length; i++)
+                        {
                             var touchRelease = EngineInputState.TouchReleases[i];
                             ((ITouchable)entity).onTouchReleased(touchRelease);
                             if (entity.IsExpired) break;
@@ -142,7 +152,8 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.KeyReleases.Length; i++) {
+                    for (int i = 0; i < EngineInputState.KeyReleases.Length; i++)
+                    {
                         var keyRelease = EngineInputState.KeyReleases[i];
                         entity.onKeyUp(keyRelease);
                         if (entity.IsExpired) break;
@@ -150,7 +161,8 @@ namespace MonoEngine
 
                     if (entity.IsExpired) continue;
 
-                    for (int i = 0; i < EngineInputState.GamepadReleases.Length; i++) {
+                    for (int i = 0; i < EngineInputState.GamepadReleases.Length; i++)
+                    {
                         var buttonRelease = EngineInputState.GamepadReleases[i];
                         entity.onButtonUp(buttonRelease);
                         if (entity.IsExpired) break;
@@ -164,12 +176,15 @@ namespace MonoEngine
 
             // Do all collision checking
             var colliderList = new List<Collider>();
-            for (int i = 0; i < sortedEntities.Length; i++) {
+            for (int i = 0; i < sortedEntities.Length; i++)
+            {
                 var entity = sortedEntities[i];
                 if (!entity.IsExpired) {
-                    for (int j = 0; j < entity.Colliders.Count; j++) {
+                    for (int j = 0; j < entity.Colliders.Count; j++)
+                    {
                         var collider = entity.Colliders[j];
-                        if (collider.Enabled) {
+                        if (collider.Enabled)
+                        {
                             colliderList.Add(collider);
                         }
                     }
@@ -250,9 +265,11 @@ namespace MonoEngine
                 }
             }
 
-            for (int i = 0; i < sortedEntities.Length; i++) {
+            for (int i = 0; i < sortedEntities.Length; i++)
+            {
                 var entity = sortedEntities[i];
-                if (entity.IsExpired) {
+                if (entity.IsExpired)
+                {
                     destroyedEntityCount++;
                     DestroyInstance(entity);
                 }

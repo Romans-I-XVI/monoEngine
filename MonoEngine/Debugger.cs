@@ -138,6 +138,7 @@ namespace MonoEngine
     public class DebuggerWithTerminal : Debugger
     {
         public bool ConsoleOpen { get; private set; }
+        private Action<string> _evaluator;
         private SpriteFont _spriteFont;
         private string _consoleInput = "";
         private readonly GameTimeSpan _cursorBlinkTimer = new GameTimeSpan();
@@ -148,6 +149,7 @@ namespace MonoEngine
 
         public DebuggerWithTerminal(SpriteFont spriteFont)
         {
+            _evaluator = this.Evaluate;
             _previousInputLayer = Engine.InputLayer;
             _spriteFont = spriteFont;
         }
@@ -240,7 +242,9 @@ namespace MonoEngine
                 }
                 else if (e.Key == Keys.Enter)
                 {
-                    Evaluate(_consoleInput);
+                    if (_evaluator == null)
+                        _evaluator = Evaluate;
+                    _evaluator(_consoleInput);
                     OpenCloseConsole();
                 }
                 else
@@ -270,6 +274,7 @@ namespace MonoEngine
                 Engine.SetInputLayer(_previousInputLayer);
             }
             _consoleInput = "";
+            _evaluator = Evaluate;
             if (ConsoleOpen)
             {
                 if (!Engine.IsPaused())
@@ -284,6 +289,14 @@ namespace MonoEngine
                     Engine.Resume();
                 }
             }
+        }
+
+        public void OpenConsoleWithCustomEvaluator(Action<string> evaluator)
+        {
+            if (!ConsoleOpen) {
+                OpenCloseConsole();
+            }
+            _evaluator = evaluator;
         }
 
         public void Evaluate(string input)

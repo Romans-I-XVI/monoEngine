@@ -420,7 +420,17 @@ namespace MonoEngine
             // Clear entities and change the room
             lock (_entities)
             {
-                _entities = _entities.Where(entity => entity.IsPersistent).ToList();
+                var persistent_entities = new List<Entity>();
+                for (int i = 0; i < _entities.Count; i++)
+                {
+                    var entity = _entities[i];
+                    if (entity.IsPersistent)
+                        persistent_entities.Add(entity);
+                    else
+                        entity.IsExpired = true;
+                }
+
+                _entities = persistent_entities;
             }
             Room.onSwitchTo(previousRoom, args);
         }

@@ -23,10 +23,10 @@ namespace MonoEngine
                 }
             }
         }
-        public static float? FakeDt = null;
+        public static double? FakeDt = null;
         public static InputLayer InputLayer { get; private set; } = InputLayer.One;
         public static Room Room { get; private set; }
-        public static float Dt { get; private set; }
+        public static double Dt { get; private set; }
         public static int FPS { get; private set; }
         public static Random Random = new Random();
         public static class MainSpritebatchSettings
@@ -48,8 +48,8 @@ namespace MonoEngine
 
         public static void Update(GameTime gameTime)
         {
-            Dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            float deltaTime = Dt;
+            Dt = gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime = (float)Dt;
             if (FakeDt != null)
             {
                 deltaTime = (float)FakeDt;

@@ -29,10 +29,7 @@ namespace MonoEngine
 
 		public static void Draw(SpriteBatch spriteBatch, float x, float y, float width, float height, Color color, float origin_x = 0f, float origin_y = 0f, float layerDepth = 0f){
 			if (_initialized) {
-				Vector2 position = new Vector2 (x, y);
-                Rectangle rectangle = new Rectangle((int)x, (int)y, (int)width, (int)height);
-				Vector2 origin = new Vector2 (origin_x, origin_y);
-                Draw(spriteBatch, rectangle, color, origin, layerDepth);
+				spriteBatch.Draw (_rectangleTexture, position: new Vector2(x - origin_x, y - origin_y), scale: new Vector2(width, height), color: color, layerDepth: layerDepth);
 			}
 		}
 

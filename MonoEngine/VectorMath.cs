@@ -57,20 +57,24 @@ namespace MonoEngine
             return (float)((180f / Math.PI) * radians);
         }
 
-        public static Vector2 RotateVectorAroundVector(Vector2 vector1, Vector2 vector2, float radians) {
+        public static Vector2 RotateVectorAroundVector(float x1, float y1, float x2, float y2, float radians) {
             double s = Math.Sin(radians);
             double c = Math.Cos(radians);
 
-            vector1.X -= vector2.X;
-            vector1.Y -= vector2.Y;
+            x1 -= x2;
+            y1 -= y2;
 
-            double new_x = vector1.X * c - vector1.Y * s;
-            double new_y = vector1.X * s + vector1.Y * c;
+            double new_x = x1 * c - y1 * s;
+            double new_y = x1 * s + y1 * c;
 
-            vector1.X = (float)new_x + vector2.X;
-            vector1.Y = (float)new_y + vector2.Y;
+            x1 = (float)new_x + x2;
+            y1 = (float)new_y + y2;
 
-            return vector1;
+            return new Vector2(x1, y1);
+        }
+
+        public static Vector2 RotateVectorAroundVector(Vector2 vector1, Vector2 vector2, float radians) {
+            return RotateVectorAroundVector(vector1.X, vector1.Y, vector2.X, vector2.Y, radians);
         }
     }
 }

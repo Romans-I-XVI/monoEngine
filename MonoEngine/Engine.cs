@@ -201,12 +201,12 @@ namespace MonoEngine
                     Collider otherCollider = colliderArray[j];
                     bool collisionIsValid = ((collider.CollidableFlags & otherCollider.MemberFlags) != 0) || ((otherCollider.CollidableFlags & collider.MemberFlags) != 0);
 
-                    if (collider.Owner.IsExpired)
+                    if (collider.Owner.IsExpired || !collider.Enabled)
                     {
                         break;
                     }
 
-                    if (!collisionIsValid || otherCollider.Owner.IsExpired || collider.Owner == otherCollider.Owner)
+                    if (!collisionIsValid || otherCollider.Owner.IsExpired || !otherCollider.Enabled || collider.Owner == otherCollider.Owner)
                     {
                         continue;
                     }

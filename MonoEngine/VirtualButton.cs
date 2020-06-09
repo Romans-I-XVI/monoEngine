@@ -11,10 +11,9 @@ namespace MonoEngine
         private List<KeyValuePair<Buttons, PlayerIndex?>> _buttons = new List<KeyValuePair<Buttons, PlayerIndex?>>();
         private List<Keys> _keys = new List<Keys>();
         private List<MouseButtons> _mouse_buttons = new List<MouseButtons>();
+        public InputLayer InputLayer = InputLayer.One;
 
-        public VirtualButton()
-        {
-        }
+        public VirtualButton() {}
 
         private void AddButton(Buttons button, PlayerIndex? playerIndex)
         {
@@ -94,6 +93,9 @@ namespace MonoEngine
 
         public bool IsPressed()
         {
+            if ((this.InputLayer & Engine.InputLayer) == 0)
+                return false;
+
             foreach (var key in _keys)
             {
                 if (Input.Keyboard.isPressed(key))
@@ -133,6 +135,9 @@ namespace MonoEngine
 
         public bool IsReleased()
         {
+            if ((this.InputLayer & Engine.InputLayer) == 0)
+                return false;
+
             foreach (var key in _keys)
             {
                 if (Input.Keyboard.isReleased(key))
@@ -172,6 +177,9 @@ namespace MonoEngine
 
         public bool IsHeld()
         {
+            if ((this.InputLayer & Engine.InputLayer) == 0)
+                return false;
+
             foreach (var key in _keys)
             {
                 if (Input.Keyboard.isHeld(key))

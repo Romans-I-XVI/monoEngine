@@ -23,8 +23,8 @@ namespace MonoEngine
                     EventHandler<EventArgs> on_disposed = null;
                     on_disposed = (object sender, EventArgs e) =>
                     {
-                        _game = null;
                         _game.Disposed -= on_disposed;
+                        _game = null;
                     };
                     _game.Disposed += on_disposed;
                 }

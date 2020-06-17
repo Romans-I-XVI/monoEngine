@@ -23,13 +23,13 @@ namespace MonoEngine
 
 		public static void Draw(SpriteBatch spriteBatch, Rectangle rectangle, Color color, Vector2 origin = default(Vector2), float layerDepth = 0f){
 			if (_initialized) {
-                spriteBatch.Draw (_rectangleTexture, position: new Vector2(rectangle.X - origin.X, rectangle.Y - origin.Y), scale: new Vector2((float)rectangle.Width, (float)rectangle.Height), color: color, layerDepth: layerDepth);
+                spriteBatch.Draw (_rectangleTexture, new Vector2(rectangle.X - origin.X, rectangle.Y - origin.Y), null, color, 0, Vector2.Zero, new Vector2((float)rectangle.Width, (float)rectangle.Height), SpriteEffects.None, layerDepth);
 			}
 		}
 
 		public static void Draw(SpriteBatch spriteBatch, float x, float y, float width, float height, Color color, float origin_x = 0f, float origin_y = 0f, float layerDepth = 0f){
 			if (_initialized) {
-				spriteBatch.Draw (_rectangleTexture, position: new Vector2(x - origin_x, y - origin_y), scale: new Vector2(width, height), color: color, layerDepth: layerDepth);
+				spriteBatch.Draw (_rectangleTexture, new Vector2(x - origin_x, y - origin_y), null, color, 0, Vector2.Zero, new Vector2(width, height), SpriteEffects.None, layerDepth);
 			}
 		}
 

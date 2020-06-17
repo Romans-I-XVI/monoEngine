@@ -23,6 +23,7 @@ namespace MonoEngine
                     EventHandler<EventArgs> on_disposed = null;
                     on_disposed = (object sender, EventArgs e) =>
                     {
+                        Engine.Reset();
                         _game.Disposed -= on_disposed;
                         _game = null;
                     };
@@ -552,6 +553,23 @@ namespace MonoEngine
         public static void SetInputLayer(InputLayer inputLayer)
         {
             InputLayer = inputLayer;
+        }
+
+        private static void Reset()
+        {
+            _spriteSortMode = SpriteSortMode.Deferred;
+            _paused = false;
+            _currentRoomArgs = null;
+            _entities = new List<Entity>();
+            _currentFrameCount = 0;
+            FakeDt = null;
+            InputLayer = InputLayer.One;
+            Room = null;
+            MainSpritebatchSettings.BlendState = null;
+            MainSpritebatchSettings.SamplerState = null;
+            MainSpritebatchSettings.DepthStencilState = null;
+            MainSpritebatchSettings.RasterizerState = null;
+            MainSpritebatchSettings.Effect = null;
         }
     }
 }

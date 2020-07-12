@@ -68,8 +68,8 @@ namespace MonoEngine
             Entity[] sortedEntities;
             lock (_entities)
             {
+                _entities = _entities.OrderByDescending(entity => entity.Depth).ToList();
                 sortedEntities = _entities.ToArray();
-                Array.Sort(sortedEntities);
             }
             var startingRoom = Room;
             bool startedPaused = _paused;

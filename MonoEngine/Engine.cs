@@ -187,6 +187,10 @@ namespace MonoEngine
             for (int i = 0; i < sortedEntities.Length; i++)
             {
                 var entity = sortedEntities[i];
+
+                if (startedPaused && entity.IsPauseable)
+                    continue;
+
                 if (!entity.IsExpired) {
                     for (int j = 0; j < entity.Colliders.Count; j++)
                     {

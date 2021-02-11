@@ -36,16 +36,20 @@ namespace MonoEngine
 
         public virtual void Draw (SpriteBatch spriteBatch, Vector2 position)
 		{
-            if (Enabled)
-            {
-                this.DrawSelf(spriteBatch, position);
+            if (Enabled) {
+                var origin = Region.Origin;
+
+                // If SpriteEffects flips the sprite adjust the origin
+                if ((SpriteEffects & SpriteEffects.FlipHorizontally) != SpriteEffects.None) {
+                    origin.X = Region.SourceRectangle.Width - Region.Origin.X;
+                }
+                if ((SpriteEffects & SpriteEffects.FlipVertically) != SpriteEffects.None) {
+                    origin.Y = Region.SourceRectangle.Height - Region.Origin.Y;
+                }
+
+                spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), origin, Scale, SpriteEffects, LayerDepth);
             }
 		}
-
-        public void DrawSelf(SpriteBatch spriteBatch, Vector2 position)
-        {
-            spriteBatch.Draw(Region.Texture, position + Offset, Region.SourceRectangle, Color * (Alpha / 255f), VectorMath.DegreesToRadians(Rotation), Region.Origin, Scale, SpriteEffects, LayerDepth);
-        }
 	}
 
     public class AnimatedSprite : Sprite

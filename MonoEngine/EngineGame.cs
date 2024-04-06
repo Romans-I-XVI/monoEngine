@@ -7,6 +7,7 @@ namespace MonoEngine
     public class EngineGame : Game
     {
         public Color BackgroundColor = Color.Black;
+        public bool SuppressDrawing = false;
         public ViewportAdapter Viewport;
         public SpriteBatch SpriteBatch { get; private set; }
         public GraphicsDeviceManager Graphics { get; private set; }
@@ -47,6 +48,10 @@ namespace MonoEngine
         {
             Engine.Update(gameTime);
             base.Update(gameTime);
+
+            if (SuppressDrawing) {
+                SuppressDraw();
+            }
         }
 
         protected override void Draw(GameTime gameTime)
